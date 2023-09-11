@@ -28,19 +28,6 @@ function isValidDate(date, validDates) {
   return validDates.indexOf(dayjs(date).format('YYYY-MM-DD')) >= 0;
 }
 
-function isValidYear(date, earliestYear) {
-  return dayjs(date).year() >= earliestYear;
-}
-
-// returns an the earliest year that has valid dates in it
-function getEarliestYear(validDates) {
-  console.log(validDates);
-  return validDates.reduce((earliestYear, curDate) => {
-    console.log(Math.min(earliestYear, parseInt(dayjs(curDate).format('YYYY'), 10)));
-    return Math.min(earliestYear, parseInt(dayjs(curDate).format('YYYY'), 10));
-  }, dayjs().year());
-}
-
 function ServerDay(props) {
   const { versionDates = [], day, ...other } = props;
 
@@ -55,15 +42,10 @@ function ServerDay(props) {
 
 export default function DatasetCalendar(props) {
   const { onChange, versions } = props;
-  // const [earliestYear, setEarliestYear] = useState(dayjs().year());
 
   const versionDates = versions
     .filter((version) => version.version.length === 10) // valid date
     .map((version) => version.version);
-
-  // useEffect(() => {
-  //   setEarliestYear(getEarliestYear(versionDates));
-  // }, [setEarliestYear, versionDates]);
 
   return (
     <ClickAwayListener onClickAway={() => onChange('close')}>
@@ -93,7 +75,6 @@ export default function DatasetCalendar(props) {
             // disable the date if its not a valid date
             shouldDisableDate={(day) => !isValidDate(day, versionDates)}
             disableHighlightToday
-            // shouldDisableYear={(year) => !isValidYear(year, earliestYear)}
             minDate={dayjs(versionDates.slice(-1)[0])}
             maxDate={dayjs(versionDates[0])}
           />
