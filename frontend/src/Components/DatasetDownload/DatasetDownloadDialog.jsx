@@ -205,6 +205,9 @@ const Dataset = (props) => {
     visibleVersions.pop();
   }
 
+  // only show Calendar option if there are more than NUM_RECENT_VERSIONS versions
+  const shouldShowCalendar = dataset?.versions.length > NUM_RECENT_VERSIONS;
+
   const handleVersionChange = (event) => {
     const selectedVal = event.target.value
     if (selectedVal === 'Calendar') {
@@ -289,13 +292,6 @@ const Dataset = (props) => {
             onChange={handleCalendarChange}
             versions={dataset?.versions}
           />}
-
-          {/* <Dialog
-            open={showCalendar}
-            onClose={() => setShowCalendar(false)}>
-            <DatasetCalendar />
-          </Dialog> */}
-
           <FormControl size="small">
             <Select
               value={selectedVersionOfThisDataset?.version}
@@ -312,23 +308,23 @@ const Dataset = (props) => {
                   value={aDatasetVersion.version}
                   sx={
                     (index === visibleVersions.length - 1) && {
-                      borderBottom: '0.5px solid',
-                      mb: 0.5
+                      mb: -0.75
                     }}
                 >
                   {aDatasetVersion.version}
                 </MenuItem>
               ))}
-              <MenuItem
-                key={"Calendar"}
+              {shouldShowCalendar && <MenuItem
+                key="Calendar"
                 value="Calendar"
-                sx={{ mb: -0.5 }}
+                sx={{ pt: 1, mt: 1, mb: -0.75, borderTop: '0.5px solid' }}
               >
                 <Stack direction="row" alignItems="center">
                   Older Versions
                   <EventIcon fontSize='small' sx={{ ml: 0.5 }} />
                 </Stack>
               </MenuItem>
+              }
             </Select>
           </FormControl>
         </TableCell>
