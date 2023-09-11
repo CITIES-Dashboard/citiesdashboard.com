@@ -155,7 +155,7 @@ const DatasetsTable = (props) => {
       sx={{
         tableLayout: 'fixed',
         '& td, div, .MuiMenuItem-root': {
-          fontSize: smallScreen ? '0.625rem !important' : '0.8rem !important'
+          fontSize: smallScreen ? '0.625rem' : '0.8rem'
         }
       }}
     >
@@ -164,7 +164,7 @@ const DatasetsTable = (props) => {
           <TableCell sx={{ pl: 1 }}>
             Dataset
           </TableCell>
-          <TableCell sx={{ width: smallScreen ? '6.5rem' : '8rem' }}>Version</TableCell>
+          <TableCell sx={{ width: smallScreen ? '9.5rem' : '11rem' }}>Version</TableCell>
           <TableCell sx={{ width: smallScreen ? '5rem' : '6rem' }}>
             Size
           </TableCell>
@@ -311,7 +311,18 @@ const Dataset = (props) => {
                       mb: -0.75
                     }}
                 >
-                  {aDatasetVersion.version}
+                  <Stack direction="row" alignItems="center">
+                    {aDatasetVersion.version}
+                    { /* 'LATEST' chip for latest version */ }
+                    { aDatasetVersion === latestVersionOfThisDataset && 
+                      <Chip label={'LATEST'} size="small" color="info" variant="outlined"
+                        sx={{
+                          fontSize: '0.7rem!important',
+                          ml: 1,
+                          height: '16px'
+                        }}/>
+                    }
+                  </Stack>
                 </MenuItem>
               ))}
               {shouldShowCalendar && <MenuItem
