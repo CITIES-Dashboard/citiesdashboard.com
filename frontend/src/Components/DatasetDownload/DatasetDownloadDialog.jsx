@@ -1,7 +1,7 @@
 // disable eslint for this file
 /* eslint-disable */
 import { useState, useEffect, useContext } from 'react';
-import { Box, Link, Typography, Stack, Select, FormControl, MenuItem, Grid, Chip, Dialog, Button, DialogActions, DialogContent, useMediaQuery, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Avatar, Tooltip, Box, Link, Typography, Stack, Select, FormControl, MenuItem, Grid, Chip, Dialog, Button, DialogActions, DialogContent, useMediaQuery, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 import { RawDatasetsMetadataContext } from '../../ContextProviders/RawDatasetsMetadataContext';
@@ -11,6 +11,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import DataObjectIcon from '@mui/icons-material/DataObject';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import EventIcon from '@mui/icons-material/Event';
+import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 
 import * as Tracking from '../../Utils/Tracking';
 import { fetchDataFromURL } from './DatasetFetcher';
@@ -46,7 +47,6 @@ export default function DatasetDownloadDialog(props) {
       return `${oxfordCommaOwners}, and ${lastOwner}`;
     }
   }
-
 
   return (
     <>
@@ -192,26 +192,25 @@ const Dataset = (props) => {
   const NUM_RECENT_VERSIONS = 3;
 
   const latestVersionOfThisDataset = dataset?.versions[0] || {};
-  const [showCalendar, setShowCalendar] = useState(false)
+  const [showCalendar, setShowCalendar] = useState(false);
   const [selectedVersionOfThisDataset, setSelectedVersionOfThisDataset] = useState(latestVersionOfThisDataset);
 
   // only show NUM_RECENT_VERSIONS rows in Dropdown
-  const visibleVersions = dataset?.versions.slice(0, NUM_RECENT_VERSIONS)
+  const visibleVersions = dataset?.versions.slice(0, NUM_RECENT_VERSIONS);
   // if currently selected version is not in first NUM_RECENT_VERSION rows,
   // add it to the list
   if (!visibleVersions.find((version) => version == selectedVersionOfThisDataset)) {
-    visibleVersions.unshift(selectedVersionOfThisDataset);
-    visibleVersions.pop();
+    visibleVersions.push({ ...selectedVersionOfThisDataset, isOlderVersion: true });
   }
 
   // only show Calendar option if there are more than NUM_RECENT_VERSIONS versions
   const shouldShowCalendar = dataset?.versions.length > NUM_RECENT_VERSIONS;
 
   const handleVersionChange = (event) => {
-    const selectedVal = event.target.value
+    const selectedVal = event.target.value;
     if (selectedVal === 'Calendar') {
-      setShowCalendar(true)
-      return
+      setShowCalendar(true);
+      return;
     }
     // Loop through the array (allVersionsOfThisDataset) to find the one with the selected version
     const selectedVersion = dataset?.versions.find(aDatasetVersion => {
@@ -305,25 +304,44 @@ const Dataset = (props) => {
                 <MenuItem
                   key={aDatasetVersion.version}
                   value={aDatasetVersion.version}
-                  sx={
+                  sx={[
                     (index === visibleVersions.length - 1) && {
                       mb: -0.75
-                    }}
+                    },
+                    aDatasetVersion.isOlderVersion && {
+                      marginTop: '1rem',
+                      '&::before': {
+                        content: '""',
+                        borderTop: `2px dotted ${theme.palette.text.secondary}`,
+                        width: '1rem',
+                        height: '1rem',
+                        position: 'absolute',
+                        top: 0,
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)'
+                      }
+                    }
+                  ]}
                 >
                   <Stack direction="row" alignItems="center">
                     {aDatasetVersion.version}
                     { /* 'LATEST' chip for latest version */}
                     {aDatasetVersion === latestVersionOfThisDataset &&
-                      <Chip label={'LATEST'} size="small" color="info" variant="outlined"
-                        sx={{
-                          fontSize: '0.7rem!important',
-                          ml: 1,
-                          height: '16px'
-                        }} />
+                      <Tooltip title="Latest version" enterDelay={0} leaveDelay={200}>
+                        <Avatar sx={{
+                          ml: 0.5,
+                          width: '1rem',
+                          height: '1rem',
+                          background: theme.palette.success.main
+                        }}>
+                          <PublishedWithChangesIcon sx={{ width: '0.8rem', height: '0.8rem' }} />
+                        </Avatar>
+                      </Tooltip>
                     }
                   </Stack>
                 </MenuItem>
               ))}
+
               {shouldShowCalendar && <MenuItem
                 key="Calendar"
                 value="Calendar"
@@ -341,7 +359,7 @@ const Dataset = (props) => {
         <TableCell sx={{ background: isPreviewing && theme.palette.background.NYUpurpleLight }}>
           {formatFileSize(selectedVersionOfThisDataset?.sizeInBytes)}
         </TableCell>
-      </TableRow>
+      </TableRow >
     </>
   )
 }
