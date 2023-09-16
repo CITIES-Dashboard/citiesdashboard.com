@@ -1,4 +1,4 @@
-import { Link, List, ListItem, ListItemText, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, styled, TableFooter } from '@mui/material';
+import { Link, List, ListItem, ListItemText, Table, TableBody, TableCell, TableHead, TableRow, styled, TableFooter } from '@mui/material';
 import parse, { domToReact } from 'html-react-parser';
 
 // Function to replace characters like "-" with " " from a string and capitalize it
@@ -38,7 +38,12 @@ export const replacePlainHTMLWithMuiComponents = (node) => {
   switch (node.name) {
     case 'a': {
       return (
-        <Link href={node.attribs.href} target="_blank" rel="noopener noreferrer" underline="hover">
+        <Link
+          href={node.attribs.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          underline="hover"
+        >
           {node.children && node.children.length > 0 && parse(node.children[0].data)}
         </Link>
       );
@@ -78,35 +83,33 @@ export const replacePlainHTMLWithMuiComponents = (node) => {
       const footerCells = tfoot ? tfoot.children.find((child) => child.name === 'tr') : [];
 
       return (
-        <TableContainer component={Paper} sx={{ margin: '0.935rem 0' }}>
-          <Table>
-            <TableHead>
+        <Table size="small" sx={{ mt: 1, width: 'fit-content' }}>
+          <TableHead>
+            <TableRow>
+              {headerCells.map((child) => (
+                <TableCell>{domToReact(child.children)}</TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row) => (
               <TableRow>
-                {headerCells.map((child) => (
-                  <TableCell>{domToReact(child.children)}</TableCell>
+                {row.children.filter((child) => child.name === 'td').map((cell) => (
+                  <TableCell>{domToReact(cell.children)}</TableCell>
                 ))}
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row) => (
-                <TableRow>
-                  {row.children.filter((child) => child.name === 'td').map((cell) => (
-                    <TableCell>{domToReact(cell.children)}</TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableBody>
-            <TableFooter>
-              {footerCells.map((row) => (
-                <TableRow>
-                  {row.children.filter((child) => child.name === 'td').map((cell) => (
-                    <TableCell>{domToReact(cell.children)}</TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableFooter>
-          </Table>
-        </TableContainer>
+            ))}
+          </TableBody>
+          <TableFooter>
+            {footerCells.map((row) => (
+              <TableRow>
+                {row.children.filter((child) => child.name === 'td').map((cell) => (
+                  <TableCell>{domToReact(cell.children)}</TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableFooter>
+        </Table>
       );
     }
 

@@ -6,14 +6,13 @@ import { LinkContext } from '../../ContextProviders/LinkContext';
 import { TabContext } from '../../ContextProviders/TabContext';
 import parse from 'html-react-parser';
 import ChartComponent from '../../Graphs/ChartComponent';
-import SampleDataTable from '../../Graphs/SampleDataTable';
 import UppercaseTitle from '../../Components/UppercaseTitle';
 import CommentSection from '../../Components/CommentSection';
 import { Box, Typography, Container, Divider, Chip, Grid, Tooltip } from '@mui/material';
 
-import GetInTouch from '../Home/GetInTouch';
+import { useTheme } from '@mui/material/styles';
 
-import ExpandableSection from './ExpandableSection';
+import GetInTouch from '../Home/GetInTouch';
 
 import ThemePreferences from '../../Themes/ThemePreferences';
 
@@ -96,6 +95,8 @@ const Project = ({ themePreference }) => {
     setChartsTitlesList(chartsTitles);
 
   }, [id, setCurrentPage, setChartsTitlesList]);
+
+  const theme = useTheme();
 
   return (
     <>
@@ -182,9 +183,14 @@ const Project = ({ themePreference }) => {
               </Grid>
 
               <Typography
+                component="div"
                 variant="body1"
                 color="text.secondary"
-                sx={{ textAlign: 'justify', pb: 3, mb: 0 }}
+                sx={{
+                  textAlign: 'justify', pb: 3, mb: 0, "& table *": {
+                    color: `${theme.palette.text.secondary}`
+                  }
+                }}
                 gutterBottom
               >
                 {parse(project.description, {
@@ -244,6 +250,7 @@ const Project = ({ themePreference }) => {
 
                   <Box sx={{ my: 3 }}>
                     <Typography
+                      component="div"
                       variant="body1"
                       color="text.secondary"
                     >

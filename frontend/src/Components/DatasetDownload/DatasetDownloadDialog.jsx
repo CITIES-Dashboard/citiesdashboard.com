@@ -23,7 +23,6 @@ export default function DatasetDownloadDialog(props) {
 
   useEffect(() => {
     if (!project || !rawDatasetsMetadata) return;
-    console.log(rawDatasetsMetadata);
     setDatasets(rawDatasetsMetadata[project?.id]); // get all the dataset(s) of this project
   }, [project, rawDatasetsMetadata]);
 
@@ -313,14 +312,14 @@ const Dataset = (props) => {
                 >
                   <Stack direction="row" alignItems="center">
                     {aDatasetVersion.version}
-                    { /* 'LATEST' chip for latest version */ }
-                    { aDatasetVersion === latestVersionOfThisDataset && 
+                    { /* 'LATEST' chip for latest version */}
+                    {aDatasetVersion === latestVersionOfThisDataset &&
                       <Chip label={'LATEST'} size="small" color="info" variant="outlined"
                         sx={{
                           fontSize: '0.7rem!important',
                           ml: 1,
                           height: '16px'
-                        }}/>
+                        }} />
                     }
                   </Stack>
                 </MenuItem>

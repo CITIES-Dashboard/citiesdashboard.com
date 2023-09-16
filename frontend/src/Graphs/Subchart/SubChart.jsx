@@ -181,7 +181,6 @@ export default function SubChart(props) {
     const dataColumns = allInitialColumns.filter((col, index) => {
       return col.role === 'data' && options.series?.[index - 1]?.visibleInLegend !== false;
     });
-    console.log(dataColumns)
     setDataColumns(dataColumns);
   };
 
