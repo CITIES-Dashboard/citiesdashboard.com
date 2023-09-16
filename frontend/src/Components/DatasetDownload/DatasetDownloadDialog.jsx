@@ -10,9 +10,11 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import DownloadIcon from '@mui/icons-material/Download';
 import DataObjectIcon from '@mui/icons-material/DataObject';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import EventIcon from '@mui/icons-material/Event';
 
 import * as Tracking from '../../Utils/Tracking';
 import { fetchDataFromURL } from './DatasetFetcher';
+import DatasetCalendar from './DatasetCalendar';
 
 export default function DatasetDownloadDialog(props) {
   const { project } = props;
@@ -153,7 +155,7 @@ const DatasetsTable = (props) => {
       sx={{
         tableLayout: 'fixed',
         '& td, div, .MuiMenuItem-root': {
-          fontSize: smallScreen ? '0.625rem !important' : '0.8rem !important'
+          fontSize: smallScreen ? '0.625rem' : '0.8rem'
         }
       }}
     >
@@ -162,7 +164,7 @@ const DatasetsTable = (props) => {
           <TableCell sx={{ pl: 1 }}>
             Dataset
           </TableCell>
-          <TableCell sx={{ width: smallScreen ? '6.5rem' : '8rem' }}>Version</TableCell>
+          <TableCell sx={{ width: smallScreen ? '9.5rem' : '11rem' }}>Version</TableCell>
           <TableCell sx={{ width: smallScreen ? '5rem' : '6rem' }}>
             Size
           </TableCell>
@@ -188,14 +190,33 @@ const Dataset = (props) => {
   const { dataset, setPreviewingDataset, isPreviewing, previewingDatasetId, setPreviewingDatasetId } = props;
 
   const [fetchedDatasets, setFetchedDatasets] = useState({});
+  const NUM_RECENT_VERSIONS = 3;
 
   const latestVersionOfThisDataset = dataset?.versions[0] || {};
+  const [showCalendar, setShowCalendar] = useState(false)
   const [selectedVersionOfThisDataset, setSelectedVersionOfThisDataset] = useState(latestVersionOfThisDataset);
 
+  // only show NUM_RECENT_VERSIONS rows in Dropdown
+  const visibleVersions = dataset?.versions.slice(0, NUM_RECENT_VERSIONS)
+  // if currently selected version is not in first NUM_RECENT_VERSION rows,
+  // add it to the list
+  if (!visibleVersions.find((version) => version == selectedVersionOfThisDataset)) {
+    visibleVersions.unshift(selectedVersionOfThisDataset);
+    visibleVersions.pop();
+  }
+
+  // only show Calendar option if there are more than NUM_RECENT_VERSIONS versions
+  const shouldShowCalendar = dataset?.versions.length > NUM_RECENT_VERSIONS;
+
   const handleVersionChange = (event) => {
+    const selectedVal = event.target.value
+    if (selectedVal === 'Calendar') {
+      setShowCalendar(true)
+      return
+    }
     // Loop through the array (allVersionsOfThisDataset) to find the one with the selected version
     const selectedVersion = dataset?.versions.find(aDatasetVersion => {
-      return aDatasetVersion.version === event.target.value;
+      return aDatasetVersion.version === selectedVal;
     });
     setSelectedVersionOfThisDataset(selectedVersion);
     setPreviewingDatasetId(dataset.id);
@@ -203,6 +224,16 @@ const Dataset = (props) => {
 
     fetchThisDataset(selectedVersion);
   };
+
+  const handleCalendarChange = (event) => {
+    // close calendar after selecting
+    setShowCalendar(false)
+    if (event === 'close') { // click outside of card
+      return
+    }
+
+    handleVersionChange({ target: { value: event } });
+  }
 
   const fetchThisDataset = (selectedVersion) => {
     // If this dataset version hasn't been fetched yet,
@@ -256,7 +287,11 @@ const Dataset = (props) => {
           {selectedVersionOfThisDataset?.name}
         </TableCell>
 
-        <TableCell sx={{ background: isPreviewing && theme.palette.background.NYUpurpleLight }}>
+        <TableCell sx={{ position: 'relative', background: isPreviewing && theme.palette.background.NYUpurpleLight }}>
+          {showCalendar && <DatasetCalendar
+            onChange={handleCalendarChange}
+            versions={dataset?.versions}
+          />}
           <FormControl size="small">
             <Select
               value={selectedVersionOfThisDataset?.version}
@@ -267,15 +302,40 @@ const Dataset = (props) => {
               variant="standard"
               MenuProps={{ disablePortal: true }}
             >
-              {dataset?.versions.map((aDatasetVersion) => (
+              {visibleVersions.map((aDatasetVersion, index) => (
                 <MenuItem
                   key={aDatasetVersion.version}
                   value={aDatasetVersion.version}
-
+                  sx={
+                    (index === visibleVersions.length - 1) && {
+                      mb: -0.75
+                    }}
                 >
-                  {aDatasetVersion.version}
+                  <Stack direction="row" alignItems="center">
+                    {aDatasetVersion.version}
+                    { /* 'LATEST' chip for latest version */ }
+                    { aDatasetVersion === latestVersionOfThisDataset && 
+                      <Chip label={'LATEST'} size="small" color="info" variant="outlined"
+                        sx={{
+                          fontSize: '0.7rem!important',
+                          ml: 1,
+                          height: '16px'
+                        }}/>
+                    }
+                  </Stack>
                 </MenuItem>
               ))}
+              {shouldShowCalendar && <MenuItem
+                key="Calendar"
+                value="Calendar"
+                sx={{ pt: 1, mt: 1, mb: -0.75, borderTop: '0.5px solid' }}
+              >
+                <Stack direction="row" alignItems="center">
+                  Older Versions
+                  <EventIcon fontSize='small' sx={{ ml: 0.5 }} />
+                </Stack>
+              </MenuItem>
+              }
             </Select>
           </FormControl>
         </TableCell>

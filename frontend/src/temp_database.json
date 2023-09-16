@@ -904,7 +904,7 @@
     "rawDataTables": [
       {
         "gid": 1952244844,
-        "query": "SELECT A, B, C, D, E, F ORDER BY A DESC LIMIT 10"
+        "query": "SELECT A, B, C, D, E, F"
       }
     ],
     "charts": [
@@ -1304,7 +1304,7 @@
     "rawDataTables": [
       {
         "gid": 1622588326,
-        "query": "SELECT A, B, C, D, E, F, G LIMIT 10"
+        "query": "SELECT A, B, C, D, E, F, G"
       }
     ],
     "charts": [
