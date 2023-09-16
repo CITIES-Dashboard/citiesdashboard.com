@@ -1,4 +1,4 @@
-import { Link, List, ListItem, ListItemText, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, styled } from '@mui/material';
+import { Link, List, ListItem, ListItemText, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, styled, TableFooter } from '@mui/material';
 import parse, { domToReact } from 'html-react-parser';
 
 // Function to replace characters like "-" with " " from a string and capitalize it
@@ -71,8 +71,11 @@ export const replacePlainHTMLWithMuiComponents = (node) => {
     case 'table': {
       const thead = node.children.find((child) => child.name === 'thead');
       const tbody = node.children.find((child) => child.name === 'tbody');
+      const tfoot = node.children.find((child) => child.name === 'tfoot');
+
       const headerCells = thead ? thead.children.find((child) => child.name === 'tr').children.filter((child) => child.name === 'th') : [];
       const rows = tbody ? tbody.children.filter((child) => child.name === 'tr') : [];
+      const footerCells = tfoot ? tfoot.children.find((child) => child.name === 'tr') : [];
 
       return (
         <TableContainer component={Paper} sx={{ margin: '0.935rem 0' }}>
@@ -93,6 +96,15 @@ export const replacePlainHTMLWithMuiComponents = (node) => {
                 </TableRow>
               ))}
             </TableBody>
+            <TableFooter>
+              {footerCells.map((row) => (
+                <TableRow>
+                  {row.children.filter((child) => child.name === 'td').map((cell) => (
+                    <TableCell>{domToReact(cell.children)}</TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableFooter>
           </Table>
         </TableContainer>
       );
