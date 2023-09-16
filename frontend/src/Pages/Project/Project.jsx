@@ -45,7 +45,7 @@ import ChartSubstituteComponentLoader from '../../Graphs/ChartSubstituteComponen
 const CustomChip = (props) => {
   const { tooltipTitle, ...otherProps } = props;
   return (
-    <Tooltip title={tooltipTitle}>
+    <Tooltip title={tooltipTitle} enterDelay={0} leaveDelay={200}>
       <Chip
         size="small"
         {...otherProps}

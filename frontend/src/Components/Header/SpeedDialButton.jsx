@@ -90,7 +90,7 @@ export default function SpeedDialButton(props) {
           ) : (
             // If there is no chart to scroll to
             // Simply display a button to scroll to the top
-            <Tooltip title="Scroll to Top">
+            <Tooltip title="Scroll to Top" enterDelay={0} leaveDelay={200}>
               <Fab
                 onClick={() => {
                   if (topAnchorID) {

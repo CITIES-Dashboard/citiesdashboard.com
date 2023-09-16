@@ -91,7 +91,7 @@ export default function Header(props) {
                     <NavBar currentPage={currentPage} />
                   </Box>
 
-                  <Tooltip title="Navigation Menu">
+                  <Tooltip title="Navigation Menu" enterDelay={0} leaveDelay={200}>
                     <IconButton
                       color="inherit"
                       aria-label="open mobile menu drawer"
@@ -103,7 +103,7 @@ export default function Header(props) {
                     </IconButton>
                   </Tooltip>
 
-                  <Tooltip title="Settings">
+                  <Tooltip title="Settings" enterDelay={0} leaveDelay={200}>
                     <IconButton
                       color="inherit"
                       aria-label="open setting drawer"
