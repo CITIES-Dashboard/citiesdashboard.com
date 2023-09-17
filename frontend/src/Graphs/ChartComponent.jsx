@@ -25,6 +25,13 @@ const ChartStyleWrapper = styled(Box)(({ theme }) => ({
   '& .Calendar [dir]:not(:empty)': {
     margin: 'auto'
   },
+
+  // add horizontal scrollbar to Calendar charts
+  '& .Calendar > div > div:last-of-type > div': {
+    overflowX: 'auto',
+    overflowY: 'hidden',
+    scrollbarGutter: 'stable'
+  }
 }));
 
 const StyledTabs = styled(Tabs)(({ theme }) => ({

@@ -36,6 +36,10 @@ const GoogleChartStyleWrapper = styled(Box)(({ theme, isPortrait }) => ({
     marginTop: '0.75rem',
     marginBottom: '-0.75rem',
 
+    '& .goog-inline-block > .goog-menu-button': {
+      marginTop: 0
+    },
+
     '& .goog-menu-button-hover .goog-menu-button-outer-box, .goog-menu-button-hover .goog-menu-button-inner-box': {
       borderColor: 'inherit !important'
     },
@@ -44,7 +48,7 @@ const GoogleChartStyleWrapper = styled(Box)(({ theme, isPortrait }) => ({
       color: theme.palette.text.secondary,
       fontWeight: 500,
       verticalAlign: 'middle',
-      marginBottom: '0.5rem'
+      marginBottom: '0.25rem'
     },
     '& .goog-menu-button-outer-box': {
       backgroundColor: theme.palette.background.paper,
