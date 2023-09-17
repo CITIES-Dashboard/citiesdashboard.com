@@ -1,30 +1,114 @@
-import { Typography, Container, Paper, Box, Button } from '@mui/material';
-import { styled } from '@mui/material/styles';
-
+import { Typography, Container, Paper, Box, Button, TextField } from '@mui/material';
 import parse from 'html-react-parser';
-import LaunchIcon from '@mui/icons-material/Launch';
+import SendIcon from '@mui/icons-material/Send';
+import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
+import DataObjectIcon from '@mui/icons-material/DataObject';
+import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
 import UppercaseTitle from '../../Components/UppercaseTitle';
-
 import jsonData from '../../section_data.json';
 import { replacePlainHTMLWithMuiComponents, capitalizePhrase } from '../../Utils/Utils';
 
-import * as Tracking from '../../Utils/Tracking';
+const googleFormLink = 'https://docs.google.com/forms/d/e/1FAIpQLSenxtTIizWED0PT3hBOn3IU6fwmj4sr1yhjU70mjmK4R-ipsw/';
 
-const IFrameWrapper = styled(Box)(({ theme }) => ({
-  filter: theme.palette.mode === 'dark' && 'invert(0.848) hue-rotate(180deg)',
-  display: 'flex',
-  justifyContent: 'center',
-  marginTop: theme.spacing(2),
-  height: '90vh',
-  maxHeight: '980px',
-  [theme.breakpoints.down('sm')]: {
-    marginLeft: theme.spacing(-2),
-    marginRight: theme.spacing(-2),
-  },
-}));
+function FeedbackForm() {
+  return (
+    <Box
+      component="form"
+      action={`${googleFormLink}/formResponse`}
+      method="get"
+      sx={{
+        '& svg': {
+          verticalAlign: 'middle',
+          mr: 0.5
+        }
+      }}
+    >
+      <TextField
+        sx={{ mb: 2 }}
+        label={(
+          <>
+            <AlternateEmailIcon />
+            Your Email
+          </>
+        )}
+        size="small"
+        type="email"
+        variant="outlined"
+        fullWidth
+        name="entry.639426313"
+        required
+      />
+      <TextField
+        sx={{ mb: 2 }}
+        label={(
+          <>
+            <DataObjectIcon />
+            Let us know if you have a dataset to contribute!
+          </>
+        )}
+        helperText="It should be relevant to the NYU Abu Dhabi campus community, especially on sustainability, well-being, or other quantifiable metrics (i.e. campus operations, consumptions, etc)"
+        size="small"
+        variant="outlined"
+        fullWidth
+        name="entry.746740204"
+        multiline
+        rows={4}
+      />
+      <TextField
+        sx={{ mb: 1 }}
+        label={(
+          <>
+            <TipsAndUpdatesIcon />
+            What can be improved regarding your experience using the dashboard?
+          </>
+        )}
+        helperText={(
+          <div>
+            For example:
+            <ul style={{ marginTop: 0 }}>
+              <li>
+                The navigation between pages
+              </li>
+              <li>
+                The data visualizations
+              </li>
+              <li>
+                The datasets
+              </li>
+              <li>
+                Any other user interface elements
+              </li>
+            </ul>
+          </div>
+        )}
+        size="small"
+        variant="outlined"
+        fullWidth
+        name="entry.1433812927"
+        multiline
+        rows={4}
+      />
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        startIcon={<SendIcon />}
+      >
+        Submit
+      </Button>
+      <Typography
+        variant="caption"
+        component="p"
+        color="text.secondary"
+        sx={{ mt: 0.5, fontStyle: 'italic' }}
+      >
+        By clicking this, you will be re-directed to Google Form&apos;s post-submission page.
+      </Typography>
+    </Box>
+  );
+}
 
 function GetInTouch() {
-  const googleFormLink = 'https://docs.google.com/forms/d/e/1FAIpQLScnPA_ohsOvyZoO9QfjNk7shfXEyUGxOfxrpGzXq0VOSxjwbA/';
   return (
     <Container>
       <UppercaseTitle text={capitalizePhrase(jsonData.getInTouch.id)} />
@@ -36,32 +120,9 @@ function GetInTouch() {
               replace: replacePlainHTMLWithMuiComponents,
             })}
           </Typography>
-          <Container sx={{ mt: 3, textAlign: 'center' }}>
-            <Button
-              href={`${googleFormLink}/viewform`}
-              onClick={() => {
-                Tracking.sendEventAnalytics(Tracking.Events.openContactFormInExternalTab);
-              }}
-              target="_blank"
-              rel="noreferrer"
-              variant="contained"
-              size="small"
-            >
-              <LaunchIcon sx={{ fontSize: '1rem' }} />
-              &nbsp;
-              OPEN FORM
-            </Button>
+          <Container sx={{ mt: 3 }}>
+            <FeedbackForm />
           </Container>
-          {/* <IFrameWrapper>
-            <iframe
-              title="Survey Google Form Link"
-              src={`${googleFormLink}viewform?embedded=true`}
-              width="100%"
-              height="100%"
-            >
-              Loading...
-            </iframe>
-          </IFrameWrapper> */}
         </Paper>
       </Box>
     </Container>
