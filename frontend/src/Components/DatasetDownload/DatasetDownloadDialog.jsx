@@ -1,7 +1,7 @@
 // disable eslint for this file
 /* eslint-disable */
 import { useState, useEffect, useContext } from 'react';
-import { Avatar, Tooltip, Box, Link, Typography, Stack, Select, FormControl, MenuItem, Grid, Chip, Dialog, Button, DialogActions, DialogContent, useMediaQuery, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Avatar, Modal, Tooltip, Box, Link, Typography, Stack, Select, FormControl, MenuItem, Grid, Chip, Dialog, Button, DialogActions, DialogContent, useMediaQuery, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 import { RawDatasetsMetadataContext } from '../../ContextProviders/RawDatasetsMetadataContext';
@@ -186,7 +186,7 @@ const DatasetsTable = (props) => {
 }
 
 const Dataset = (props) => {
-  const { dataset, setPreviewingDataset, isPreviewing, previewingDatasetId, setPreviewingDatasetId } = props;
+  const { smallScreen, dataset, setPreviewingDataset, isPreviewing, previewingDatasetId, setPreviewingDatasetId } = props;
 
   const [fetchedDatasets, setFetchedDatasets] = useState({});
   const NUM_RECENT_VERSIONS = 3;
@@ -286,10 +286,25 @@ const Dataset = (props) => {
         </TableCell>
 
         <TableCell sx={{ position: 'relative', background: isPreviewing && theme.palette.background.NYUpurpleLight }}>
-          {showCalendar && <DatasetCalendar
+          {showCalendar && 
+            (smallScreen ? <Modal
+              open={showCalendar}
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+              >
+                <DatasetCalendar
+                  onChange={handleCalendarChange}
+                  smallScreen={smallScreen}
+                  versions={dataset?.versions}
+                />
+            </Modal>
+            : <DatasetCalendar
             onChange={handleCalendarChange}
             versions={dataset?.versions}
-          />}
+          />)}
           <FormControl size="small">
             <Select
               value={selectedVersionOfThisDataset?.version}

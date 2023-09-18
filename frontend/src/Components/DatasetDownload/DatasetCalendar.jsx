@@ -28,7 +28,7 @@ function isValidDate(date, validDates) {
   return validDates.indexOf(dayjs(date).format('YYYY-MM-DD')) >= 0;
 }
 
-function ServerDay(props) {
+function CustomDayComponent(props) {
   const { versionDates = [], day, ...other } = props;
 
   const isHighlighted = versionDates.indexOf(dayjs(day).format('YYYY-MM-DD')) >= 0;
@@ -41,7 +41,7 @@ function ServerDay(props) {
 }
 
 export default function DatasetCalendar(props) {
-  const { onChange, versions } = props;
+  const { smallScreen, onChange, versions } = props;
 
   const versionDates = versions
     .filter((version) => version.version.length === 10) // valid date
@@ -50,7 +50,7 @@ export default function DatasetCalendar(props) {
   return (
     <ClickAwayListener onClickAway={() => onChange('close')}>
       <Card
-        sx={{ position: 'absolute', right: 0, zIndex: 999 }}
+        sx={!smallScreen && { position: 'absolute', right: 0, zIndex: 999 }}
         raised
       >
         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -59,7 +59,7 @@ export default function DatasetCalendar(props) {
             format="YYYY-MM-DD"
             renderLoading={() => <DayCalendarSkeleton />}
             slots={{
-              day: ServerDay,
+              day: CustomDayComponent,
             }}
             onChange={(value, selectionState) => {
               if (selectionState === 'finish') {
