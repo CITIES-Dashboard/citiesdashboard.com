@@ -82,27 +82,33 @@
           "series": {
             "0": {
               "pointSize": 0,
-              "visibleInLegend": false
+              "visibleInLegend": false,
+              "enableInteractivity": false
             },
             "1": {
               "pointSize": 0,
-              "visibleInLegend": false
+              "visibleInLegend": false,
+              "enableInteractivity": false
             },
             "2": {
               "pointSize": 0,
-              "visibleInLegend": false
+              "visibleInLegend": false,
+              "enableInteractivity": false
             },
             "3": {
               "pointSize": 0,
-              "visibleInLegend": false
+              "visibleInLegend": false,
+              "enableInteractivity": false
             },
             "4": {
               "pointSize": 0,
-              "visibleInLegend": false
+              "visibleInLegend": false,
+              "enableInteractivity": false
             },
             "5": {
               "pointSize": 0,
-              "visibleInLegend": false
+              "visibleInLegend": false,
+              "enableInteractivity": false
             },
             "6": {
               "lineWidth": 1.5,
