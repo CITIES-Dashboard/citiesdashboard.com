@@ -1,7 +1,7 @@
 import { Box, Typography, Container, Paper } from '@mui/material';
 import { Comments } from '@hyvor/hyvor-talk-react';
 
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 
 import parse from 'html-react-parser';
 import jsonData from '../section_data.json';

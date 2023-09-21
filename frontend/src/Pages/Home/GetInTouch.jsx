@@ -1,4 +1,5 @@
-import { Typography, Container, Paper, Box, Button, TextField } from '@mui/material';
+import { Typography, Paper, Box, Button, TextField } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import parse from 'html-react-parser';
 import SendIcon from '@mui/icons-material/Send';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
@@ -10,6 +11,11 @@ import { replacePlainHTMLWithMuiComponents, capitalizePhrase } from '../../Utils
 
 const googleFormLink = 'https://docs.google.com/forms/d/e/1FAIpQLSenxtTIizWED0PT3hBOn3IU6fwmj4sr1yhjU70mjmK4R-ipsw/';
 
+const StyledTextField = styled(TextField)(({ theme }) => ({
+  marginBottom: theme.spacing(2),
+  '& .MuiInputLabel-root:not(.MuiInputLabel-shrink), textarea': { fontSize: '0.8rem' }
+}));
+
 function FeedbackForm() {
   return (
     <Box
@@ -17,14 +23,14 @@ function FeedbackForm() {
       action={`${googleFormLink}/formResponse`}
       method="get"
       sx={{
+        mt: 3,
         '& svg': {
           verticalAlign: 'middle',
           mr: 0.5
         }
       }}
     >
-      <TextField
-        sx={{ mb: 2 }}
+      <StyledTextField
         label={(
           <>
             <AlternateEmailIcon />
@@ -38,8 +44,7 @@ function FeedbackForm() {
         name="entry.639426313"
         required
       />
-      <TextField
-        sx={{ mb: 2 }}
+      <StyledTextField
         label={(
           <>
             <DataObjectIcon />
@@ -54,33 +59,14 @@ function FeedbackForm() {
         multiline
         rows={4}
       />
-      <TextField
-        sx={{ mb: 1 }}
+      <StyledTextField
         label={(
           <>
             <TipsAndUpdatesIcon />
             What can be improved regarding your experience using the dashboard?
           </>
         )}
-        helperText={(
-          <div>
-            For example:
-            <ul style={{ marginTop: 0 }}>
-              <li>
-                The navigation between pages
-              </li>
-              <li>
-                The data visualizations
-              </li>
-              <li>
-                The datasets
-              </li>
-              <li>
-                Any other user interface elements
-              </li>
-            </ul>
-          </div>
-        )}
+        helperText="For example: the navigation between pages, the data visualizations, the datasets, or any other user interface elements"
         size="small"
         variant="outlined"
         fullWidth
@@ -92,7 +78,17 @@ function FeedbackForm() {
         type="submit"
         variant="contained"
         color="primary"
+        fullWidth
         startIcon={<SendIcon />}
+        sx={{
+          '& .MuiButton-startIcon': {
+            mr: 0,
+            '& svg': {
+              verticalAlign: 'middle',
+              fontSize: '0.8rem !important'
+            }
+          }
+        }}
       >
         Submit
       </Button>
@@ -102,7 +98,9 @@ function FeedbackForm() {
         color="text.secondary"
         sx={{ mt: 0.5, fontStyle: 'italic' }}
       >
-        By clicking this, you will be re-directed to Google Form&apos;s post-submission page.
+        By clicking the
+        <b> Submit </b>
+        button, you will be re-directed to Google Form&apos;s post-submission page.
       </Typography>
     </Box>
   );
@@ -110,7 +108,7 @@ function FeedbackForm() {
 
 function GetInTouch() {
   return (
-    <Container>
+    <>
       <UppercaseTitle text={capitalizePhrase(jsonData.getInTouch.id)} />
 
       <Box maxWidth="lg" margin="auto">
@@ -120,12 +118,10 @@ function GetInTouch() {
               replace: replacePlainHTMLWithMuiComponents,
             })}
           </Typography>
-          <Container sx={{ mt: 3 }}>
-            <FeedbackForm />
-          </Container>
+          <FeedbackForm />
         </Paper>
       </Box>
-    </Container>
+    </>
   );
 }
 

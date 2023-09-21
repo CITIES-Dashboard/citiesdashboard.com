@@ -6,8 +6,8 @@
     "about": {
         "id": "about",
         "content": [
-            "<b>The CITIES Dashboard</b> is a data repository for community-wide actions on sustainability and well-being. It is created by and for the NYUAD community (students, researchers, faculty, staff, and partners alike). The Dashboard is a handy tool for: <ul><li>Informing the NYUAD community and promoting sustainable behaviors</li><li>Supporting research, education, and community outreach within the NYUAD campus</li><li>Supporting campus stakeholders and partners to improve operations and meet Key Performance Indicators (KPIs), e.g. reducing food waste...</li></ul><b>We thank</b> Department of Athletics, NYUAD Institutional Research, NYUAD Residential Education (ResEd), and Royal Catering Services (RCS) for supporting this project with their data.",
-            "<b><a href='https://sites.nyuad.nyu.edu/cities/'>The Center for Interacting Urban Networks (CITIES)</a></b> at NYUAD is an interdisciplinary research center dedicated to advance urban science and promote cutting-edge research that is translated into practical, real-world solutions for the benefit of society. Our ultimate goal is to foster sustainable, resilient, and equitable cities. To test and showcase cutting-edge applications of its research in real life, CITIES uses the NYUAD campus as a field lab."
+            "<b>The CITIES Dashboard</b> is a data repository for community-wide actions on sustainability and well-being. Created by and for the NYUAD community (students, researchers, faculty, staff, and partners alike), the dashboard is a handy tool to: <ul><li>Inform the NYUAD community and promote sustainable behaviors</li><li>Support research, education, and community outreach at NYUAD</li><li>Support NYUAD's stakeholders and partners in improving operations and meeting Key Performance Indicators (KPIs), e.g. reducing food waste...</li></ul><b>We thank</b> Department of Athletics, Institutional Research, Residential Education (ResEd), and Royal Catering Services (RCS) for providing datasets for this project.<br/><br/><b>Stay tuned as more datasets will be available soon!</b>",
+            "<b><a href='https://sites.nyuad.nyu.edu/cities/'>The Center for Interacting Urban Networks (CITIES)</a></b> at NYUAD is an interdisciplinary research center dedicated to advance urban science and promote cutting-edge research that is translated into real-world solutions benefiting the society. Our ultimate goal is to foster sustainable, resilient, and equitable cities. To test and showcase its research in real life, CITIES uses the NYUAD campus as a field lab."
         ]
     },
     "commentSection": {
@@ -16,7 +16,7 @@
     },
     "getInTouch": {
         "id": "get-in-touch",
-        "content": "<b>Simply fill out the feedback form below or reach out to us at <a href='mailto:nyuad.cities@nyu.edu'>nyuad.cities@nyu.edu</a> to share your thoughts and/or get involved!</b><br><br>The CITIES dashboard is on its first public-release iteration. Feedback on the existing datasets and visualizations, and/or contributions of new datasets are welcomed. Meanwhile, explore existing datasets with interactive data visualizations designed by CITIES' students, researchers, and staffs in collaboration with CITIES partners. Stay tuned as more datasets will be available soon."
+        "content": "<b>Simply fill out the feedback form below or reach out to us at <a href='mailto:nyuad.cities@nyu.edu'>nyuad.cities@nyu.edu</a> to share your thoughts and/or get involved!</b><br><br>The CITIES dashboard is on its first public-release iteration. Feedback on the existing datasets and visualizations, and/or contributions of new datasets are welcomed."
     },
     "statistics": {
         "partners": 3,
