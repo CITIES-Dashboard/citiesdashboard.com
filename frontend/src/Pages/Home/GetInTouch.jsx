@@ -29,7 +29,7 @@ function GetInTouch() {
     <Container>
       <UppercaseTitle text={capitalizePhrase(jsonData.getInTouch.id)} />
 
-      <Box maxWidth="md" margin="auto">
+      <Box maxWidth="lg" margin="auto">
         <Paper elevation={2} sx={{ p: 3 }}>
           <Typography variant="body2" color="text.secondary">
             {parse(jsonData.getInTouch.content, {

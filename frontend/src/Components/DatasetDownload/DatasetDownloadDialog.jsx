@@ -286,7 +286,7 @@ const Dataset = (props) => {
         </TableCell>
 
         <TableCell sx={{ position: 'relative', background: isPreviewing && theme.palette.background.NYUpurpleLight }}>
-          {showCalendar && 
+          {showCalendar &&
             (smallScreen ? <Modal
               open={showCalendar}
               sx={{
@@ -294,17 +294,17 @@ const Dataset = (props) => {
                 justifyContent: 'center',
                 alignItems: 'center'
               }}
-              >
-                <DatasetCalendar
-                  onChange={handleCalendarChange}
-                  smallScreen={smallScreen}
-                  versions={dataset?.versions}
-                />
+            >
+              <DatasetCalendar
+                onChange={handleCalendarChange}
+                smallScreen={smallScreen}
+                versions={dataset?.versions}
+              />
             </Modal>
-            : <DatasetCalendar
-            onChange={handleCalendarChange}
-            versions={dataset?.versions}
-          />)}
+              : <DatasetCalendar
+                onChange={handleCalendarChange}
+                versions={dataset?.versions}
+              />)}
           <FormControl size="small">
             <Select
               value={selectedVersionOfThisDataset?.version}
@@ -450,19 +450,14 @@ const PreviewDataset = (props) => {
   return (
     <Stack spacing={1}>
       <Box sx={{ '& *': { fontFamily: "monospace !important" } }}>
-        <Chip
-          icon={<VisibilityIcon />}
-          label={`Previewing${previewingDataset && `: ${previewingDataset.name} (${previewingDataset?.version})`}`}
-          size="small"
-          sx={{
-            backgroundColor: theme.palette.customBackground,
-            borderRadius: 0,
-            borderTopLeftRadius: theme.spacing(1),
-            borderTopRightRadius: theme.spacing(1),
-            p: 1,
-            pb: 0,
-          }}
-        />
+        <Stack direction="row">
+          <Typography variant='body2' gutterBottom fontWeight={600}>
+            {previewingDataset ?
+              `Previewing: ${previewingDataset.name} (${previewingDataset?.version})`
+              : 'Not previewing any dataset'}
+          </Typography>
+        </Stack>
+
         <Box
           component="pre"
           sx={{

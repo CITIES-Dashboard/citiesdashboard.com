@@ -29,7 +29,7 @@ function CommentSection({ pageID }) {
   return (
     <Container>
       <UppercaseTitle text={capitalizePhrase(jsonData.commentSection.id)} />
-      <Box maxWidth="md" margin="auto">
+      <Box maxWidth="lg" margin="auto">
         <Paper elevation={2} sx={{ p: 3, pb: 0 }}>
           <Typography variant="body2" color="text.secondary" sx={{ pb: 1 }}>
             {parse(jsonData.commentSection.content, {

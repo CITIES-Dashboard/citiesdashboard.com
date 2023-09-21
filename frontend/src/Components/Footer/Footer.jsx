@@ -9,8 +9,8 @@ function getYear() {
 export default function Footer() {
   return (
     <Box width="100%" backgroundColor="customAlternateBackground" p={3} pt={2}>
-      <Container maxWidth="sm">
-        <Stack direction="column" textAlign="center">
+      <Container maxWidth="lg">
+        <Stack direction="column">
           <Typography variant="body1" fontWeight="bold" color="text.primary" pb={2}>
             Center for Interacting Urban Networks (CITIES)
             <br />

@@ -12,8 +12,6 @@ import { Box, Typography, Container, Divider, Chip, Grid, Tooltip } from '@mui/m
 
 import { useTheme } from '@mui/material/styles';
 
-import GetInTouch from '../Home/GetInTouch';
-
 import ThemePreferences from '../../Themes/ThemePreferences';
 
 import AirQualityIndexLegendQuickGlance from '../../Components/AirQualityHelper';
@@ -291,12 +289,6 @@ const Project = ({ themePreference }) => {
 
           <FullWidthBox id={jsonData.commentSection.id} sx={{ pt: 3, pb: 4 }}>
             <CommentSection pageID={project.id} />
-          </FullWidthBox>
-
-          <Divider />
-
-          <FullWidthBox id={jsonData.getInTouch.id} sx={{ pt: 3, pb: 4 }}>
-            <GetInTouch />
           </FullWidthBox>
         </Box>
       )}

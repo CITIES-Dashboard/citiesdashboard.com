@@ -5,11 +5,10 @@ import CustomLink from '../CustomLink';
 
 export default function SocialHandleGrid() {
   return (
-    <Stack direction="column" textAlign="center">
+    <Stack direction="column">
       <Stack
         direction="row"
         spacing={1}
-        justifyContent="center"
         sx={{
           '& svg': {
             fontSize: '2rem'
