@@ -14,7 +14,7 @@ export default function Footer() {
       <Container maxWidth="lg">
         <Stack direction="column" textAlign="center">
           <Typography variant="body1" fontWeight="bold" color="text.primary" pb={2}>
-            Center for Interacting Urban Networks (CITIES)
+            CITIES Dashboard | Center for Interacting Urban Networks (CITIES)
             <br />
             {getYear()}
           </Typography>

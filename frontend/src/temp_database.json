@@ -1485,7 +1485,10 @@
               "pointSize": 5
             }
           }
-        ]
+        ],
+        "options": {
+          "seriesSelector": true
+        }
       },
       {
         "title": "Compositions of Undergraduate Student Population, by Academic Year (AY)",

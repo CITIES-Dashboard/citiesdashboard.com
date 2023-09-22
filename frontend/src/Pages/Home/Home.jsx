@@ -149,10 +149,10 @@ function Home({ themePreference, title }) {
       <FullWidthBox id={jsonData.about.id} sx={{ pt: 3, pb: 4 }}>
         <Container>
           <Grid container spacing={3}>
-            <Grid item md={5}>
+            <Grid item md={5} id={jsonData.about.id}>
               <About />
             </Grid>
-            <Grid item md={7}>
+            <Grid item md={7} id={jsonData.getInTouch.id}>
               <GetInTouch />
             </Grid>
           </Grid>

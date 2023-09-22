@@ -104,8 +104,8 @@ const Project = ({ themePreference }) => {
             project.id === 'air-quality' && <AirQualityIndexLegendQuickGlance />
           }
 
-          <FullWidthBox>
-            <Container sx={{ pt: 4, pb: 4 }}>
+          <FullWidthBox backgroundColor='customAlternateBackground'>
+            <Container sx={{ pt: 5, pb: 3 }}>
 
               <UppercaseTitle text={project.title} />
 
@@ -197,21 +197,6 @@ const Project = ({ themePreference }) => {
               </Typography>
 
               <DatasetDownloadDialog project={project} />
-
-              {/* <ExpandableSection
-                title="Sample Data"
-                content={
-                  <>
-                    {project.rawDataTables.map((element, index) => (
-                      <SampleDataTable
-                        key={index}
-                        chartData={{ sheetId: project.sheetId, ...element }}
-                        marginBottom={(index < project.rawDataTables.length - 1) ? 3 : 1}
-                      />
-                    ))}
-                  </>
-                }
-              /> */}
             </Container>
           </FullWidthBox>
 
@@ -221,7 +206,7 @@ const Project = ({ themePreference }) => {
                 id={chartsTitlesList[index].chartID} // set the chartWrapper's ID to help Navbar in Header scroll to
                 key={index}
                 backgroundColor={
-                  index % 2 == 0 ? 'customAlternateBackground' : ''
+                  index % 2 != 0 && 'customAlternateBackground'
                 }
               >
                 <Container

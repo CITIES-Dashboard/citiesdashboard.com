@@ -48,7 +48,7 @@ function FeedbackForm() {
         label={(
           <>
             <DataObjectIcon />
-            Let us know if you have a dataset to contribute!
+            Do you have a dataset to contribute?
           </>
         )}
         helperText="It should be relevant to the NYU Abu Dhabi campus community, especially on sustainability, well-being, or other quantifiable metrics (i.e. campus operations, consumptions, etc)"
@@ -63,7 +63,7 @@ function FeedbackForm() {
         label={(
           <>
             <TipsAndUpdatesIcon />
-            What can be improved regarding your experience using the dashboard?
+            How can we improve the user experience?
           </>
         )}
         helperText="For example: the navigation between pages, the data visualizations, the datasets, or any other user interface elements"
