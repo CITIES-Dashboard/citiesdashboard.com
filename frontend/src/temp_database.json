@@ -71,7 +71,10 @@
         "headers": 1,
         "chartType": "ComboChart",
         "options": {
-          "seriesSelector": true,
+          "seriesSelector": {
+            "allowMultiple": true,
+            "method": "toggleVisibility"
+          },
           "colors": "reverseAqi",
           "chartArea": {
             "backgroundColor": "#fff"
@@ -352,7 +355,10 @@
         "headers": 2,
         "chartType": "LineChart",
         "options": {
-          "seriesSelector": true,
+          "seriesSelector": {
+            "allowMultiple": true,
+            "method": "toggleVisibility"
+          },
           "colors": "grayscale",
           "vAxis": {
             "title": "PM2.5 Concentration (µg/m3)"
@@ -574,7 +580,10 @@
           }
         ],
         "options": {
-          "seriesSelector": true,
+          "seriesSelector": {
+            "allowMultiple": true,
+            "method": "setViewColumn"
+          },
           "curveType": "none",
           "hAxis": {
             "title": "Academic Year (Aug - Sep next year)"
@@ -689,6 +698,146 @@
         "headers": 1,
         "chartType": "LineChart",
         "options": {
+          "vAxis": {
+            "title": "Average Hourly Number of Facilities Check-in"
+          },
+          "hAxis": {
+            "title": "Hour of the Day",
+            "slantedText": true,
+            "slantedTextAngle": 30
+          }
+        }
+      },
+      {
+        "subcharts": [
+          {
+            "subchartTitle": "All time average (2020-2022)",
+            "subchartSubtitle": "As the typical workday draws to a close at around <b>5-6pm</b> for students, faculty, and staff, this time window is the busiest period for fitness activities. There is another relatively smaller peak in the morning from 8-9am; however, its magnitude doesn't usually surpass half of the afternoon rush's. For those who prefer a quieter workout, aim for <b>early-morning or midday</b> time slots where the occupancy rate is only a quarter of the busiest time.",
+            "query": "SELECT A, B, G, I, J",
+            "columns": [
+              1,
+              2,
+              {
+                "role": "interval",
+                "sourceColumn": 3
+              },
+              {
+                "role": "interval",
+                "sourceColumn": 4
+              }
+            ],
+            "options": {
+              "colors": "monochromatic2Colors",
+              "series": {
+                "0": {
+                  "type": "line",
+                  "lineWidth": 3
+                }
+              },
+              "intervals": {
+                "style": "area"
+              }
+            }
+          },
+          {
+            "subchartTitle": "By year",
+            "subchartSubtitle": "Due to COVID-19 restrictions, there was a limit on how many people could be in the same facilities during 2020-2022. Take the fitness center, for example, the cap was 15 people in 2020, which was gradually loosened to 25 people in 2022.",
+            "query": "SELECT A, B, C, D, E",
+            "columns": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "options": {
+              "seriesType": "line"
+            }
+          }
+        ],
+        "title": "CategoryFilter Average Number of Facilities Check-in Throughout the Day",
+        "gid": 1944137522,
+        "headers": 1,
+        "chartType": "LineChart",
+        "options": {
+          "vAxis": {
+            "title": "Average Hourly Number of Facilities Check-in"
+          },
+          "hAxis": {
+            "title": "Hour of the Day",
+            "slantedText": true,
+            "slantedTextAngle": 30
+          }
+        },
+        "control": {
+          "controlType": "CategoryFilter",
+          "options": {
+            "filterColumnIndex": 0,
+            "ui": {
+              "label": "Filter by facility:",
+              "allowTyping": false,
+              "allowMultiple": false,
+              "allowNone": false
+            }
+          }
+        }
+      },
+      {
+        "subcharts": [
+          {
+            "subchartTitle": "All time average (2020-2022)",
+            "subchartSubtitle": "As the typical workday draws to a close at around <b>5-6pm</b> for students, faculty, and staff, this time window is the busiest period for fitness activities. There is another relatively smaller peak in the morning from 8-9am; however, its magnitude doesn't usually surpass half of the afternoon rush's. For those who prefer a quieter workout, aim for <b>early-morning or midday</b> time slots where the occupancy rate is only a quarter of the busiest time.",
+            "columns": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13
+            ],
+            "control": {
+              "controlType": "CategoryFilter",
+              "options": {
+                "filterColumnIndex": 14,
+                "ui": {
+                  "label": "Filter by year:",
+                  "allowTyping": false,
+                  "allowMultiple": false,
+                  "allowNone": false
+                }
+              }
+            },
+            "options": {
+              "seriesType": "bars",
+              "series": {
+                "0": {
+                  "type": "line",
+                  "lineWidth": 3,
+                  "pointSize": 5
+                }
+              },
+              "intervals": {
+                "style": "bars"
+              }
+            }
+          }
+        ],
+        "title": "SeriesSelector Average Number of Facilities Check-in Throughout the Day",
+        "gid": 1513362816,
+        "headers": 1,
+        "chartType": "ComboChart",
+        "options": {
+          "seriesSelector": {
+            "allowMultiple": true,
+            "method": "setViewColumn"
+          },
           "vAxis": {
             "title": "Average Hourly Number of Facilities Check-in"
           },

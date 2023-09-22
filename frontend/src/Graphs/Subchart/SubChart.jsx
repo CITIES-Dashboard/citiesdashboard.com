@@ -69,7 +69,9 @@ export default function SubChart(props) {
   const [isFirstRender, setIsFirstRender] = useState(true);
 
   // Keep track of the columns (series) of the chart
-  const [dataColumns, setDataColumns] = useState([]);
+  const [allInitialColumns, setAllInitialColumns] = useState();
+  const [dataColumns, setDataColumns] = useState();
+  const [initialVAxisRange, setInitialVAxisRage] = useState();
 
   // Define the DOM container's ID for drawing the google chart inside
   const [chartID, __] = useState(generateRandomID());
@@ -134,8 +136,17 @@ export default function SubChart(props) {
     }
   }, [theme, isPortrait, windowSize, chartTotalHeight]);
 
+  // Set new initialColumnsColors if the theme changes
+  // This only applies to when seriesSelector.method == "setViewColumn"
+  useEffect(() => {
+    if (!dataColumns) return;
+    if (seriesSelector && seriesSelector.method == "setViewColumn") {
+      setInitialColumnsColors({ dataColumns: dataColumns });
+      handleSeriesSelection(dataColumns);
+    }
+  }, [theme]);
 
-  const getInitialColumns = ({ chartWrapper, dataTable }) => {
+  const getInitialColumns = ({ chartWrapper, dataTable, seriesSelector }) => {
     // Update the initial DataView's columns (often, all of the series are displayed initially)
     var initialView = chartWrapper.getView();
     // If (optional) columns is not specified in database
@@ -151,62 +162,141 @@ export default function SubChart(props) {
     let shouldAssignDomainRoleToFistColumn = true; // variable to only assign type: 'domain' to the very first column
     let dataSeriesIndex = 0;
     const allInitialColumns = initialView.columns.map((col, index) => {
-      const sourceColumn = (typeof col === 'number') ? col : col.sourceColumn;
-      const columnLabel = dataTable.getColumnLabel(sourceColumn);
-
       // A column can either be a number (that denotes the index of the sourceColumn) or an object
       // The code below harmonize all columns to be an object to store crucial data to toggle their visibility
-      let newCol = (typeof col === 'number')
-        ? {
-          label: columnLabel,
-          role: shouldAssignDomainRoleToFistColumn ? 'domain' : 'data',
-          sourceColumn: sourceColumn
-        }
-        : { label: columnLabel, ...col };
+      if (typeof col === 'number') col = {
+        role: shouldAssignDomainRoleToFistColumn ? 'domain' : 'data',
+        sourceColumn: col
+      }
+      col.label = dataTable.getColumnLabel(col.sourceColumn);
+      col.indexInAllInitialColumns = index;
+
       shouldAssignDomainRoleToFistColumn = shouldAssignDomainRoleToFistColumn && false;
 
-      // Set the visibility of data column, initially, all data columns are selected
-      if (newCol.role === 'data') {
-        newCol.selected = true;
-        newCol.seriesIndex = dataSeriesIndex;
-        dataSeriesIndex++
+      // Set the visibility of data column, 
+      if (col.role === 'data') {
+        // initially, all data columns are selected if multiple series are selectable
+        if (seriesSelector?.allowMultiple) {
+          col.selected = true;
+        } else {
+          // else for single serie selector, only first data column is selected
+          if (dataSeriesIndex === 0) {
+            col.selected = true;
+          } else {
+            col.selected = false;
+          }
+        }
+        col.seriesIndex = dataSeriesIndex;
+        dataSeriesIndex++;
       }
-      return newCol;
+      return col;
     });
-
-
+    setAllInitialColumns(allInitialColumns);
+    const initialVAxisRange = getInitialVAxisRange({ dataTable: dataTable, allInitialColumns: allInitialColumns });
+    setInitialVAxisRage(initialVAxisRange);
     // To track selection, only get the columns that are:
     // role === 'data'
     // visibleInLegend !== false
-    const dataColumns = allInitialColumns.filter((col, index) => {
-      return col.role === 'data' && options.series?.[index - 1]?.visibleInLegend !== false;
+    const dataColumns = allInitialColumns.filter((col) => {
+      return col.role === 'data' && options.series?.[col.seriesIndex]?.visibleInLegend !== false;
     });
+
+    if (seriesSelector.method === "setViewColumn") setInitialColumnsColors({ dataColumns: dataColumns });
+
     setDataColumns(dataColumns);
+    return dataColumns;
   };
 
-  const handleSeriesSelection = (newDataColumns) => {
+  const setInitialColumnsColors = ({ dataColumns }) => {
+    dataColumns.forEach((col) => {
+      // Assign inherit color to this data column
+      col.color = options.colors[col.seriesIndex % options.colors.length];
+      // Assign other inherit attributes from its serie object (if existed)
+      col.serieAttribute = options.series?.[col.seriesIndex];
+    });
+  }
+
+  const getInitialVAxisRange = ({ dataTable, allInitialColumns }) => {
+    let vAxisMin, vAxisMax;
+    allInitialColumns.forEach((col, index) => {
+      if (index === 0) return; // the first column is the domain (hAxis)
+      const range = dataTable.getColumnRange(col.sourceColumn);
+      if (!isNaN(range.min) && range.min) vAxisMin = vAxisMin ? Math.min(vAxisMin, range.min) : range.min;
+      if (!isNaN(range.max) && range.max) vAxisMax = vAxisMax ? Math.max(vAxisMax, range.max) : range.max;
+    });
+    return { min: vAxisMin, max: vAxisMax };
+  }
+
+  const handleSeriesSelection = (newDataColumns, _chartWrapper = chartWrapper) => {
+    if (!allInitialColumns) return;
+
     setDataColumns(newDataColumns);
 
-    const hiddenSeriesObject = {};
-    newDataColumns.forEach((col) => {
-      if (!col.selected)
-        hiddenSeriesObject[col.seriesIndex] = {
-          color: 'transparent',
-          enableInteractivity: false,
-          visibleInLegend: false
-        }; // 'hide' the serie by making it transparent
-    });
+    if (seriesSelector.method === "toggleVisibility" || seriesSelector.method === null) {
+      const hiddenSeriesObject = {};
+      newDataColumns.forEach((col) => {
+        if (!col.selected)
+          hiddenSeriesObject[col.seriesIndex] = {
+            color: 'transparent',
+            enableInteractivity: false,
+            visibleInLegend: false
+          }; // 'hide' the serie by making it transparent
+      });
 
-    chartWrapper?.setOptions({
-      ...options,
-      series: {
-        ...options.series,
-        ...hiddenSeriesObject
-      }
-    });
+      _chartWrapper?.setOptions({
+        ...options,
+        series: {
+          ...options.series,
+          ...hiddenSeriesObject
+        }
+      });
+    }
+    else if (seriesSelector.method === "setViewColumn") {
+      let newViewColumns = [];
+      newViewColumns.push(0); // this is the domain column
+      newDataColumns.forEach((dataColumn) => {
+        if (dataColumn.selected) {
+          newViewColumns.push(dataColumn);
+          // Find this dataColumn's supporting columns (whose role !== 'data')
+          // A dataColumn has its supporting columns (can be many) follow it immediately
+          for (let i = dataColumn.indexInAllInitialColumns + 1; i < allInitialColumns.length; i++) {
+            if (allInitialColumns[i].role !== 'data') {
+              newViewColumns.push(allInitialColumns[i]);
+            }
+            // If this loop encounter the next dataColumn, break the loop, all supporting columns for this dataColumn have been discovered
+            else {
+              break;
+            }
+          }
+        }
+      });
+      _chartWrapper?.setView({ columns: newViewColumns });
+
+      const newOptions = { ...options };
+      // Preserve the initial vAxis range so that the vAxis doesn't shift based on the visible serie(s)
+      // newOptions.vAxis.viewWindow = {
+      //   min: (options.vAxis.viewWindow.min == null) ? initialVAxisRange.min : options.vAxis.viewWindow.min,
+      //   max: (options.vAxis.viewWindow.max == null) ? initialVAxisRange.max : options.vAxis.viewWindow.max,
+      // }
+      // Set the new color array
+      newOptions.colors = newDataColumns.filter((col) => col.selected).map((col) => col.color);
+      // Set the new series object (if any)
+      // this contains other series' attributes (lineWidth, seriesType...)
+      const series = {};
+      let selectedSeriesCount = 0;
+      newDataColumns.forEach((col) => {
+        if (!col.selected) return;
+        if (col.serieAttribute != null) {
+          series[selectedSeriesCount] = col.serieAttribute;
+        }
+        selectedSeriesCount++;
+      })
+      newOptions.series = series;
+      _chartWrapper?.setOptions(newOptions);
+    }
 
     // Call draw to apply the new DataView and 'refresh' the chart
-    chartWrapper?.draw();
+    _chartWrapper?.draw();
 
     if (hasChartControl) {
       controlWrapper?.draw();
@@ -260,7 +350,11 @@ export default function SubChart(props) {
             thisChartWrapper.draw();
           }
 
-          if (seriesSelector) getInitialColumns({ chartWrapper: thisChartWrapper, dataTable: thisDataTable });
+          // Run the seriesSelector for the first time
+          if (seriesSelector) {
+            const initColumns = getInitialColumns({ chartWrapper: thisChartWrapper, dataTable: thisDataTable, seriesSelector: seriesSelector });
+            handleSeriesSelection(initColumns, thisChartWrapper);
+          }
 
         })
         .catch(error => {
@@ -327,9 +421,9 @@ export default function SubChart(props) {
       {(seriesSelector && !isFirstRender) && (
         <SeriesSelector
           items={dataColumns}
+          allowMultiple={seriesSelector.allowMultiple}
           selectorID={`${chartData.title}-selector`}
           onSeriesSelection={handleSeriesSelection}
-          isPortrait={isPortrait}
         />
       )}
 
