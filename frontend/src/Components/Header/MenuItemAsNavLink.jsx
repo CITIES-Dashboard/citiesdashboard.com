@@ -23,16 +23,13 @@ export const StyledMenuItem = styled(MenuItem)(({ theme, sx }) => ({
     '&:hover': {
       backgroundColor: theme.palette.backgroundColorForNavLink
     }
-  },
-  '&:hover': {
-    borderBottom: 'solid'
-  },
+  }
 }));
 
 const StyledIcon = styled(Box)(({ theme }) => ({
   marginRight: theme.spacing(0.5),
   '& .MuiSvgIcon-root': {
-    fontSize: '1.25rem'
+    fontSize: '0.8rem'
   }
 }));
 
@@ -95,6 +92,17 @@ export default function MenuItemAsNavLink(props) {
         >
           {icon && <StyledIcon>{icon}</StyledIcon>}
           {label || capitalizePhrase(scrollToSectionID)}
+        </StyledMenuItem>
+      );
+
+    case NavLinkBehavior.doNothing:
+      return (
+        <StyledMenuItem
+          sx={sx}
+          disabled
+        >
+          {icon && <StyledIcon>{icon}</StyledIcon>}
+          {label}
         </StyledMenuItem>
       );
 

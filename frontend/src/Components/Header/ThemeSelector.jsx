@@ -96,7 +96,7 @@ export default function ThemeSelector({ isFullWidth, setThemePreference }) {
       default:
         break;
     }
-    return () => {};
+    return () => { };
   }, [themeValue, themeChangeHandler, setThemePreference]);
 
   return (
@@ -111,21 +111,21 @@ export default function ThemeSelector({ isFullWidth, setThemePreference }) {
         <StyledMenuItem value={ThemePreferences.system}>
           <Typography color="text.primary">
             <Contrast />
-            System
+            {ThemePreferences.system}
           </Typography>
         </StyledMenuItem>
 
         <StyledMenuItem value={ThemePreferences.light}>
           <Typography color="text.primary">
             <LightMode />
-            Light
+            {ThemePreferences.light}
           </Typography>
         </StyledMenuItem>
 
         <StyledMenuItem value={ThemePreferences.dark}>
           <Typography color="text.primary">
             <DarkMode />
-            Dark
+            {ThemePreferences.dark}
           </Typography>
         </StyledMenuItem>
       </Select>

@@ -24,7 +24,6 @@ export const showInMobile = (defaultDisplay) => ({ display: { xs: (defaultDispla
 export const showInDesktop = (defaultDisplay) => ({ display: { xs: 'none', lg: (defaultDisplay || 'block') } });
 
 const toolBarHeightInRem = 3;
-const topAnchorID = 'top-anchor';
 
 const StyledAppBar = styled(AppBar)(() => ({
   boxShadow: 'none',
@@ -88,7 +87,7 @@ export default function Header(props) {
 
                   {/* Navbar in landscape placed here, will be hidden in mobile  */}
                   <Box sx={{ ...showInDesktop('block'), height: '100%' }}>
-                    <NavBar currentPage={currentPage} />
+                    {/* <NavBar currentPage={currentPage} /> */}
                   </Box>
 
                   <Tooltip title="Navigation Menu" enterDelay={0} leaveDelay={200}>
@@ -139,7 +138,7 @@ export default function Header(props) {
                 <Typography variant="h6" color="text.secondary" fontWeight="medium" gutterBottom>
                   CITIES Dashboard
                 </Typography>
-                <NavBar currentPage={currentPage} />
+                {/* <NavBar currentPage={currentPage} /> */}
               </Container>
               <Divider />
             </Box>
@@ -162,7 +161,7 @@ export default function Header(props) {
       behind the app bar. Here is how to fix:
       You can render a second <Toolbar /> component: */}
       <Toolbar
-        id={topAnchorID}
+        id={jsonData.topAnchor.id}
         sx={{ backgroundColor: 'customAlternateBackground', height: `${toolBarHeightInRem * 1.5}rem` }}
       />
 
@@ -190,7 +189,7 @@ export default function Header(props) {
         </Container>
       </FullWidthBox>
 
-      <SpeedDialButton chartsTitlesList={chartsTitlesList} topAnchorID={topAnchorID} />
+      <SpeedDialButton chartsTitlesList={chartsTitlesList} topAnchorID={jsonData.topAnchor.id} />
 
     </>
   );

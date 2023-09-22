@@ -3,12 +3,18 @@ import parse from 'html-react-parser';
 
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
+import CommentIcon from '@mui/icons-material/Comment';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import NorthIcon from '@mui/icons-material/North';
+
 import HoverMenu from 'material-ui-popup-state/HoverMenu';
 import PopupState, { bindHover, bindFocus, bindMenu } from 'material-ui-popup-state';
 import MenuItemAsNavLink, { StyledMenuItem, scrollToSection } from './MenuItemAsNavLink';
 import NavLinkBehavior from './NavLinkBehavior';
 import * as Tracking from '../../Utils/Tracking';
 import { FadeInButtonForSpeedDial } from './FadeInButtonForSpeedDial';
+
+import jsonData from '../../section_data.json';
 
 function HoverFocusMenu(props) {
   const { popupId, label, menuItems } = props;
@@ -52,19 +58,36 @@ export default function SpeedDialButton(props) {
       )}
       analyticsOriginID="speed-dial"
       analyticsDestinationLabel={element.chartTitle}
-      sx={{ fontSize: '0.8rem' }}
+      sx={{ fontSize: '0.8rem', ml: 2 }}
     />
   )) : [];
 
   if (menuItemsArray.length > 0) {
     menuItemsArray.unshift(
       <StyledMenuItem disabled sx={{ fontWeight: '600' }}>
-        Quick Chart Navigation
+        Quick Navigation
       </StyledMenuItem>,
       <MenuItemAsNavLink
         behavior={NavLinkBehavior.scrollTo}
         scrollToSectionID={topAnchorID}
-        label="↑ Scroll to Top"
+        icon={<NorthIcon />}
+        label="Scroll to Top"
+        analyticsOriginID="speed-dial"
+        sx={{ fontSize: '0.8rem' }}
+      />,
+      <MenuItemAsNavLink
+        behavior={NavLinkBehavior.doNothing}
+        label="Charts List:"
+        icon={<BarChartIcon />}
+        sx={{ fontSize: '0.8rem' }}
+      />
+    );
+    menuItemsArray.push(
+      <MenuItemAsNavLink
+        behavior={NavLinkBehavior.scrollTo}
+        scrollToSectionID={jsonData.commentSection.id}
+        label={jsonData.commentSection.id}
+        icon={<CommentIcon />}
         analyticsOriginID="speed-dial"
         sx={{ fontSize: '0.8rem' }}
       />

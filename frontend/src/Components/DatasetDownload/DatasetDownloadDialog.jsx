@@ -1,12 +1,11 @@
 // disable eslint for this file
 /* eslint-disable */
 import { useState, useEffect, useContext } from 'react';
-import { Avatar, Modal, Tooltip, Box, Link, Typography, Stack, Select, FormControl, MenuItem, Grid, Chip, Dialog, Button, DialogActions, DialogContent, useMediaQuery, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Container, Avatar, Modal, Tooltip, Box, Link, Typography, Stack, Select, FormControl, MenuItem, Grid, Chip, Dialog, Button, DialogActions, DialogContent, useMediaQuery, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 import { RawDatasetsMetadataContext } from '../../ContextProviders/RawDatasetsMetadataContext';
 
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import DownloadIcon from '@mui/icons-material/Download';
 import DataObjectIcon from '@mui/icons-material/DataObject';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -91,10 +90,11 @@ export default function DatasetDownloadDialog(props) {
           <Typography variant="h6" >
             Preview and download raw dataset(s)
           </Typography>
+
           <DatasetSelectorAndPreviewer datasets={datasets} smallScreen={smallScreen} project={project} />
           {
             datasets &&
-            <Typography variant="caption" sx={{ mb: 3, fontStyle: 'italic' }} >
+            <Typography variant="caption" sx={{ my: 3, fontStyle: 'italic' }} >
               This dataset is provided by the CITIES Dashboard with the support of {getOwnerString(project.owners)}. Should you intend to utilize this dataset for your project, research, or publication, we kindly request that you notify us at <Link href='mailto:nyuad.cities@nyu.edu'>nyuad.cities@nyu.edu</Link> to discuss citation requirements.
             </Typography>
           }
@@ -132,15 +132,13 @@ const DatasetSelectorAndPreviewer = (props) => {
           setPreviewingDatasetId={setPreviewingDatasetId}
         />
       </Grid>
-      <Grid item sm={12} md={6} maxWidth={smallScreen ? '100%' : 'unset'}>
+      <Grid item sm={12} md={6} maxWidth={smallScreen ? '100%' : 'unset'} sx={{ mt: 1 }}>
         <PreviewDataset
           previewingDataset={previewingDataset}
           previewingDatasetId={previewingDatasetId}
           project={project}
           smallScreen={smallScreen}
         />
-      </Grid>
-      <Grid item>
       </Grid>
     </Grid>
   )

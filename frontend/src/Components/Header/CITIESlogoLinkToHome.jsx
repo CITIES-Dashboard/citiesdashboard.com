@@ -23,8 +23,8 @@ function CITIESlogoLinkToHome() {
           height: '100%', width: 'auto', borderRadius: '0.5rem'
         }}
         src={citiesLogo}
-        title="CITIES Dashboard Logo"
-        alt="CITIES Dashboard Logo"
+        title="Go to Homepage"
+        alt="Go to Homepage"
       />
     </Link>
   );

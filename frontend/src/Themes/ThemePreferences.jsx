@@ -4,7 +4,7 @@
 const ThemePreferences = {
     dark: "Dark",
     light: "Light",
-    system: "System"
+    system: "Same as System"
 }
 
 export default ThemePreferences;
