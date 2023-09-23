@@ -1313,7 +1313,7 @@
     "description": "This dataset provides a comprehensive view of the student population at NYUAD. It visualizes the number enrolled of students in each term since Fall 2010, including those visiting from other NYU campuses, those studying abroad, as well as the number of students registered for on-campus housing. It also presents data on student compositions based on education levels and countries of origin.<br><br>This dataset serves as a foundational for assessing the impact of the student population on various campus metrics such as the number of <a href='/project/athletics-fabs-membership'>Athletics FABS Memberships</a>, the number of <a href='/project/athletic-facilities-check-in'>Athletic Facilities Check-in</a>, and the amount of <a href='/project/food-waste'>Food Waste</a> in dining facilities. It is important to note, however, that the dataset estimates the theoretical maximum of on-campus students every semester and actual numbers may vary.<br><br>In a somewhat familiar vein, NYUAD also publish student enrollment data on its <a href='https://nyuad.nyu.edu/en/about/nyuad-at-a-glance/fast-facts.html'>Fast Fact</a> public page, albeit with less detailed historical statistics.",
     "owners": [
       "NYU Institutional Research",
-      "NYUAD Residential Education"
+      "NYUAD Residential Education (ResEd)"
     ],
     "contact": "cities.nyuad@nyu.edu",
     "rawDataTables": [
@@ -1324,8 +1324,8 @@
     ],
     "charts": [
       {
-        "title": "Approximate Number of Students on Campus",
-        "subtitle": "This visualization combines stacked columns and lines to illustrate the estimated size and composition of the <i>on-campus</i> student community. <br>The columns represent the student compositions data obtained from Institutional Research, from top to bottom:<br><ol type='a'><li><b>Visiting students</b> from other campuses (New York and Shanghai) </li><li><b>Total enrolled NYUAD students</b>, consisting of Undergraduates, Master's, and PhD students</li><li><b>NYUAD undergraduates studying abroad</b> at NYU global sites</li></ol>The lines illustrate the approximate number of students on-campus from two different data sources:<ul><li><b>Institutional Research: </b> the student compositions mentioned above can be used to estimate the student population on-campus with the following formula:<br><span style='margin-left: 1rem'><i>Theoretical maximum number of students on-campus</i> = a. Visiting students + b. NYUAD Students - c. NYUAD undergrads abroad</span></li><li><b>Residential Education (ResEd): </b> the number of students registered for NYUAD on-campus housing</li></ul>These data sources offer estimates of <i>on-campus</i> student presence each semester, influenced by variables that cannot be accurately measured. These variables include weekend home visits of some Emirati students, off-campus residency of some PhD students, mid-semester leave-of-absence, and  COVID-19 housing disruptions affecting data reliability between Spring 2020 and Spring 2021. Nonetheless, under typical conditions, these figures effectively demonstrate the growth of the student population and a reduced on-campus presence in Spring semesters when more undergraduates study abroad. Despite disruptions from the COVID-19 pandemic, the chart shows a steady increase in on-campus student numbers, reflecting NYUAD's growth and resilience, especially post Fall 2022 when the campus community largely returned.",
+        "title": "Number of Students on Campus",
+        "subtitle": "The lines in this visualization illustrate the approximate number of <i>on-campus</i> students from two different approaches (data sources): <ul><li>Formulaic (Institutional Research):<br><div style='margin-left: 1.5rem; margin-top: 0.75rem'>Visiting students from other campuses (New York and Shanghai) <div style='margin-left: -1rem; margin-top: -0.5rem; margin-bottom: -0.5rem'>+</div>Enrolled NYUAD students (all Undergraduates, Master's, and PhD students)<div style='margin-left: -0.92rem; margin-top: -0.5rem; margin-bottom: -0.5rem'>-</div>NYUAD undergraduates studying abroad at <a href='https://www.nyu.edu/about/leadership-university-administration/office-of-the-president/office-of-the-provost/global-programs/OfficeOfGlobalPrograms.html'>NYU global sites</a><div style='margin-left: -1rem; margin-top: 0.5rem; padding-top: 0.5rem; padding-right: 15rem; border-top: solid 1px; display: table'><div style='margin-left: 1rem'><i>Maximum number of students on-campus</i></div></div></div></li><li>Number of students registered for NYUAD on-campus housing (ResEd)</li></ul>These data sources offer estimates of <i>on-campus</i> student presence each semester, influenced by variables that cannot be accurately measured. These variables include weekend home visits of some Emirati students, off-campus residency of some PhD students, mid-semester leave-of-absence, and  COVID-19 housing disruptions affecting data reliability between Spring 2020 and Spring 2021. Nonetheless, under typical conditions, these figures effectively demonstrate the growth of the student population and a reduced on-campus presence in Spring semesters when more undergraduates study abroad. Despite disruptions from the COVID-19 pandemic, the chart shows a steady increase in on-campus student numbers, reflecting NYUAD's growth and resilience, especially post Fall 2022 when the campus community largely returned.",
         "chartType": "ComboChart",
         "gid": 1803261581,
         "headers": 1,
@@ -1459,7 +1459,7 @@
               "vAxis": {
                 "title": "Number of Students"
               },
-              "seriesType": "bars",
+              "seriesType": "line",
               "pointSize": 5,
               "series": {
                 "3": {
@@ -1477,21 +1477,6 @@
               "vAxis": {
                 "format": "#.#%"
               }
-            }
-          },
-          {
-            "subchartTitle": "Year-over-Year Change",
-            "query": "SELECT A, F, G, H",
-            "options": {
-              "seriesType": "line",
-              "vAxis": {
-                "title": "YoY Change (%)",
-                "format": "#.#%",
-                "viewWindow": {
-                  "min": -0.1
-                }
-              },
-              "pointSize": 5
             }
           }
         ],
@@ -1517,7 +1502,7 @@
                 "title": "Number of Students",
                 "format": "decimal"
               },
-              "seriesType": "bars",
+              "seriesType": "line",
               "series": {
                 "0": {
                   "type": "line"
@@ -1535,20 +1520,6 @@
               },
               "seriesType": "bars",
               "isStacked": "percent"
-            }
-          },
-          {
-            "subchartTitle": "Year-over-Year Change",
-            "query": "SELECT A, F, G, H",
-            "options": {
-              "vAxis": {
-                "title": "YoY Change (%)",
-                "format": "#.#%",
-                "viewWindow": {
-                  "min": -0.1
-                }
-              },
-              "seriesType": "line"
             }
           }
         ],
@@ -1582,27 +1553,14 @@
             }
           },
           {
-            "subchartTitle": "Approx. Absolute Numbers **",
+            "subchartTitle": "Absolute Numbers **",
             "query": "SELECT A, F, G, H",
             "options": {
               "vAxis": {
                 "title": "Number of Students"
               },
-              "seriesType": "bars"
-            }
-          },
-          {
-            "subchartTitle": "Year-over-Year Change",
-            "query": "SELECT A, J, K, L",
-            "options": {
               "seriesType": "line",
-              "pointSize": 5,
-              "vAxis": {
-                "format": "#.#%",
-                "viewWindow": {
-                  "min": -0.15
-                }
-              }
+              "pointSize": 5
             }
           }
         ]

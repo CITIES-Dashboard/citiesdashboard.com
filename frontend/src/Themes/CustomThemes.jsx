@@ -61,7 +61,7 @@ const CustomThemes = {
           rainbow: [colors.red[darkShade], colors.orange[darkShade], colors.amber[darkShade], colors.green[darkShade], colors.blue[darkShade], colors.indigo[darkShade], colors.blue[darkShade]],
           aqi: getAQIPalette({ increasingOrder: true, isDark: true }),
           reverseAqi: getAQIPalette({ increasingOrder: false, isDark: true }),
-          studentPopulation: [colors.grey[darkShade + 200], '#111111', colors.red[darkShade], colors.amber[darkShade], colors.teal[darkShade]]
+          studentPopulation: ['#aaa', '#666', colors.red[darkShade], colors.amber[darkShade + 100], colors.teal[darkShade]]
         },
         colorAxisFirstColor: colors.grey[darkShadeColorAxis],
         aqiColorAxis: {
