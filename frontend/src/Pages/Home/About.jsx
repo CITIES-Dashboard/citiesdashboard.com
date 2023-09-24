@@ -1,4 +1,4 @@
-import { Stack, Typography, Container, Paper } from '@mui/material';
+import { Stack, Typography, Paper } from '@mui/material';
 
 import parse from 'html-react-parser';
 import UppercaseTitle from '../../Components/UppercaseTitle';
@@ -12,7 +12,7 @@ function About() {
       <UppercaseTitle text={capitalizePhrase(jsonData.about.id)} />
       <Stack spacing={3}>
         {jsonData.about.content.map((element, index) => (
-          <Paper elevation={2} sx={{ p: 3 }}>
+          <Paper key={index} elevation={2} sx={{ p: 3 }}>
             <Typography variant="body2" color="text.secondary">
               {parse(element, {
                 replace: replacePlainHTMLWithMuiComponents,
