@@ -37,7 +37,8 @@ export const replacePlainHTMLWithMuiComponents = (node) => {
   const options = {
     replace: replacePlainHTMLWithMuiComponents
   };
-  const parseChildren = (children) => children.map((child) => domToReact([child], options));
+
+  const parseChildren = (children) => children.map((child, index) => domToReact([child], { ...options, key: `child-${index}` }));
 
   switch (node.name) {
     case 'a': {
@@ -56,7 +57,11 @@ export const replacePlainHTMLWithMuiComponents = (node) => {
     case 'ul': {
       return (
         <List dense sx={{ listStyleType: htmlOrderedListTypeToMUIListStyle.disc, paddingLeft: 4, paddingTop: '6px' }}>
-          {parseChildren(node.children)}
+          {node.children.map((child, index) => (
+            <StyleListItem key={`ul-item-${index}`}>
+              <ListItemText primary={parseChildren(child.children)} />
+            </StyleListItem>
+          ))}
         </List>
       );
     }
@@ -64,16 +69,12 @@ export const replacePlainHTMLWithMuiComponents = (node) => {
     case 'ol': {
       return (
         <List dense sx={{ listStyleType: htmlOrderedListTypeToMUIListStyle[node.attribs.type], paddingLeft: 4, paddingTop: '6px' }}>
-          {parseChildren(node.children)}
+          {node.children.map((child, index) => (
+            <StyleListItem key={`ol-item-${index}`}>
+              <ListItemText primary={parseChildren(child.children)} />
+            </StyleListItem>
+          ))}
         </List>
-      );
-    }
-
-    case 'li': {
-      return (
-        <StyleListItem>
-          <ListItemText primary={parseChildren(node.children)} />
-        </StyleListItem>
       );
     }
 

@@ -170,6 +170,7 @@ const DatasetsTable = (props) => {
       <TableBody>
         {datasets?.map((dataset) => (
           <Dataset
+          key={dataset.id}
             smallScreen={smallScreen}
             dataset={dataset}
             previewingDataset={previewingDataset}
