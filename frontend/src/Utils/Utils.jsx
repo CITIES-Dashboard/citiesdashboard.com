@@ -1,5 +1,5 @@
 import { Link, List, ListItem, ListItemText, Table, TableBody, TableCell, TableHead, TableRow, styled, TableFooter } from '@mui/material';
-import parse, { domToReact } from 'html-react-parser';
+import { domToReact } from 'html-react-parser';
 
 // Function to replace characters like "-" with " " from a string and capitalize it
 export const capitalizePhrase = (str) => {
@@ -31,9 +31,13 @@ const StyleListItem = styled(ListItem)(() => ({
   paddingLeft: '0.25rem'
 }));
 
-// Function to replace HTML tags with MUI components
 export const replacePlainHTMLWithMuiComponents = (node) => {
   if (node.type !== 'tag') return undefined;
+
+  const options = {
+    replace: replacePlainHTMLWithMuiComponents
+  };
+  const parseChildren = (children) => children.map((child) => domToReact([child], options));
 
   switch (node.name) {
     case 'a': {
@@ -44,7 +48,7 @@ export const replacePlainHTMLWithMuiComponents = (node) => {
           rel="noopener noreferrer"
           underline="hover"
         >
-          {node.children && node.children.length > 0 && parse(node.children[0].data)}
+          {parseChildren(node.children)}
         </Link>
       );
     }
@@ -52,11 +56,7 @@ export const replacePlainHTMLWithMuiComponents = (node) => {
     case 'ul': {
       return (
         <List dense sx={{ listStyleType: htmlOrderedListTypeToMUIListStyle.disc, paddingLeft: 4, paddingTop: '6px' }}>
-          {node.children.map((child) => (
-            <StyleListItem>
-              <ListItemText primary={domToReact(child.children)} />
-            </StyleListItem>
-          ))}
+          {parseChildren(node.children)}
         </List>
       );
     }
@@ -64,12 +64,16 @@ export const replacePlainHTMLWithMuiComponents = (node) => {
     case 'ol': {
       return (
         <List dense sx={{ listStyleType: htmlOrderedListTypeToMUIListStyle[node.attribs.type], paddingLeft: 4, paddingTop: '6px' }}>
-          {node.children.map((child) => (
-            <StyleListItem>
-              <ListItemText primary={domToReact(child.children)} />
-            </StyleListItem>
-          ))}
+          {parseChildren(node.children)}
         </List>
+      );
+    }
+
+    case 'li': {
+      return (
+        <StyleListItem>
+          <ListItemText primary={parseChildren(node.children)} />
+        </StyleListItem>
       );
     }
 
@@ -100,15 +104,13 @@ export const replacePlainHTMLWithMuiComponents = (node) => {
               </TableRow>
             ))}
           </TableBody>
-          <TableFooter>
-            {footerCells.map((row) => (
-              <TableRow>
-                {row.children.filter((child) => child.name === 'td').map((cell) => (
-                  <TableCell>{domToReact(cell.children)}</TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableFooter>
+          {footerCells && (
+            <TableFooter>
+              {footerCells.children.filter((child) => child.name === 'td').map((cell) => (
+                <TableCell>{domToReact(cell.children)}</TableCell>
+              ))}
+            </TableFooter>
+          )}
         </Table>
       );
     }
