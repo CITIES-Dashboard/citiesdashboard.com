@@ -22,6 +22,10 @@ function FeedbackForm() {
       component="form"
       action={`${googleFormLink}/formResponse`}
       method="get"
+      target="_blank"
+      // On form submission, wait for 1 second before resetting the form
+      onSubmit={() => setTimeout(() => document.getElementById('feedback-form').reset(), 1000)}
+      id="feedback-form"
       sx={{
         mt: 3,
         '& svg': {
