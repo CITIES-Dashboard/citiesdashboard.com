@@ -1,7 +1,6 @@
-import { Link } from 'react-router-dom';
 import { useState, useContext } from 'react';
 import { styled } from '@mui/material/styles';
-import { Button, Tooltip, Box, Typography, Container, Paper, AppBar, Toolbar, useScrollTrigger, Slide, Stack, Drawer, Divider } from '@mui/material';
+import { Link, Tooltip, Box, Typography, Container, Paper, AppBar, Toolbar, useScrollTrigger, Slide, Stack, Drawer, Divider } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -196,27 +195,30 @@ export default function Header(props) {
                 {parse(jsonData.siteDescription, {
                   replace: replacePlainHTMLWithMuiComponents,
                 })}
-              </Typography>
-
-              <Button
-                variant="contained"
-                size="small"
-                onClick={() => {
-                  const section = document.getElementById(jsonData.getInTouch.id);
-                  if (section) {
-                    section.scrollIntoView({ behavior: 'smooth' });
-                  }
-                  Tracking.sendEventAnalytics(
-                    Tracking.Events.internalNavigation,
-                    {
-                      destination_id: jsonData.getInTouch.id,
-                      origin_id: 'header'
+                <br />
+                <Link
+                  href={`#${jsonData.getInTouch.id}`}
+                  underline="hover"
+                  onClick={(e) => {
+                    // Smooth scrolling
+                    e.preventDefault();
+                    const section = document.getElementById(jsonData.getInTouch.id);
+                    if (section) {
+                      section.scrollIntoView({ behavior: 'smooth' });
                     }
-                  );
-                }}
-              >
-                Get in Touch!
-              </Button>
+
+                    Tracking.sendEventAnalytics(
+                      Tracking.Events.internalNavigation,
+                      {
+                        destination_id: jsonData.getInTouch.id,
+                        origin_id: 'header'
+                      }
+                    );
+                  }}
+                >
+                  Reach out to get involved!
+                </Link>
+              </Typography>
             </Container>
           </FullWidthBox>
         )
