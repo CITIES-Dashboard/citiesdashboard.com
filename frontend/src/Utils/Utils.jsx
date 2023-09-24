@@ -84,33 +84,31 @@ export const replacePlainHTMLWithMuiComponents = (node) => {
 
       const headerCells = thead ? thead.children.find((child) => child.name === 'tr').children.filter((child) => child.name === 'th') : [];
       const rows = tbody ? tbody.children.filter((child) => child.name === 'tr') : [];
-      const footerCells = tfoot ? tfoot.children.find((child) => child.name === 'tr') : [];
+      const footerCells = tfoot ? tfoot.children.find((child) => child.name === 'tr').children.filter((child) => child.name === 'td') : [];
 
       return (
         <Table size="small" sx={{ mt: 1, width: 'fit-content' }}>
           <TableHead>
             <TableRow>
-              {headerCells.map((child) => (
-                <TableCell>{domToReact(child.children)}</TableCell>
+              {headerCells.map((child, index) => (
+                <TableCell key={`headerCell-${index}`}>{domToReact(child.children)}</TableCell>
               ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <TableRow>
-                {row.children.filter((child) => child.name === 'td').map((cell) => (
-                  <TableCell>{domToReact(cell.children)}</TableCell>
+            {rows.map((row, rowIndex) => (
+              <TableRow key={`row-${rowIndex}`}>
+                {row.children.filter((child) => child.name === 'td').map((cell, cellIndex) => (
+                  <TableCell key={`cell-${rowIndex}-${cellIndex}`}>{domToReact(cell.children)}</TableCell>
                 ))}
               </TableRow>
             ))}
           </TableBody>
-          {footerCells && (
-            <TableFooter>
-              {footerCells.children.filter((child) => child.name === 'td').map((cell) => (
-                <TableCell>{domToReact(cell.children)}</TableCell>
-              ))}
-            </TableFooter>
-          )}
+          <TableFooter>
+            {footerCells.map((child, index) => (
+              <TableCell key={`footerCell-${index}`}>{domToReact(child.children)}</TableCell>
+            ))}
+          </TableFooter>
         </Table>
       );
     }
