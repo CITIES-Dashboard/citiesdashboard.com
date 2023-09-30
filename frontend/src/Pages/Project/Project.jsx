@@ -39,6 +39,8 @@ import { SheetsDataContext } from '../../ContextProviders/SheetsDataContext';
 
 import ChartSubstituteComponentLoader from '../../Graphs/ChartSubstituteComponents/ChartSubstituteComponentLoader';
 
+import CollapsableSubtitle from '../../Components/CollapsableSubtitle';
+
 // Custom Chip component to display metadata
 const CustomChip = (props) => {
   const { tooltipTitle, ...otherProps } = props;
@@ -231,25 +233,20 @@ const Project = ({ themePreference }) => {
                       />
                     )}
 
-                  <Box sx={{ my: 3 }}>
+                  <Box sx={{ my: 3}}>
                     <Typography
                       component="div"
                       variant="body1"
                       color="text.secondary"
+                      sx={{ mb: 1 }}
                     >
-                      {element.subtitle && parse(element.subtitle, {
-                        replace: replacePlainHTMLWithMuiComponents,
-                      })}
+                      {element.subtitle && <CollapsableSubtitle text={element.subtitle} />}
                       {Object.keys(tab)[index] == index &&
                         element.subcharts &&
                         element.subcharts[Object.values(tab)[index]]
                           .subchartSubtitle &&
-                        parse(
-                          element.subcharts[Object.values(tab)[index]]
-                            .subchartSubtitle, {
-                          replace: replacePlainHTMLWithMuiComponents,
-                        }
-                        )}
+                        <CollapsableSubtitle text={element.subcharts[Object.values(tab)[index]].subchartSubtitle} />
+                      }
                     </Typography>
                     <Typography variant="caption" color="text.secondary">
                       {element.reference && parse(element.reference, {
