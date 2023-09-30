@@ -6,7 +6,7 @@ import parse from 'html-react-parser';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { replacePlainHTMLWithMuiComponents } from '../Utils/Utils';
 
-function CollapsableSubtitle({ text, wordLimit = 50 }) {
+function CollapsableSubtitle({ text, wordLimit = 50, reference }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   // React to changes in screen width
@@ -17,7 +17,17 @@ function CollapsableSubtitle({ text, wordLimit = 50 }) {
 
   // If not on mobile or words are within limit, just display the full text
   if (!isMobile || words.length <= wordLimit) {
-    return <Typography>{parse(text, { replace: replacePlainHTMLWithMuiComponents })}</Typography>;
+    return (
+      <Box>
+        <Typography>{parse(text, { replace: replacePlainHTMLWithMuiComponents })}</Typography>
+        {reference
+        && (
+        <Typography variant="caption" color="text.secondary">
+          {parse(reference, { replace: replacePlainHTMLWithMuiComponents })}
+        </Typography>
+        )}
+      </Box>
+    );
   }
 
   let displayText = words.slice(0, wordLimit).join(' ');
@@ -31,7 +41,12 @@ function CollapsableSubtitle({ text, wordLimit = 50 }) {
     <ClickAwayListener onClickAway={() => setIsExpanded(false)}>
       <Box onClick={() => setIsExpanded(!isExpanded)} style={{ cursor: 'pointer' }}>
         {isExpanded
-          ? <Typography>{parse(text, { replace: replacePlainHTMLWithMuiComponents })}</Typography>
+          ? (
+            <>
+              <Typography>{parse(text, { replace: replacePlainHTMLWithMuiComponents })}</Typography>
+              {reference && <Typography variant="caption" color="text.secondary">{parse(reference, { replace: replacePlainHTMLWithMuiComponents })}</Typography>}
+            </>
+          )
           : (
             <>
               <Typography display="inline">{parse(displayText, { replace: replacePlainHTMLWithMuiComponents })}</Typography>

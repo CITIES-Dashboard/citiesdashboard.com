@@ -232,34 +232,27 @@ const Project = ({ themePreference }) => {
                         }}
                       />
                     )}
-
-                  <Box sx={{ my: 3}}>
+                  <Box sx={{ my: 3 }}>
                     <Typography
                       component="div"
                       variant="body1"
                       color="text.secondary"
                       sx={{ mb: 1 }}
                     >
-                      {element.subtitle && <CollapsableSubtitle text={element.subtitle} />}
-                      {Object.keys(tab)[index] == index &&
-                        element.subcharts &&
-                        element.subcharts[Object.values(tab)[index]]
-                          .subchartSubtitle &&
-                        <CollapsableSubtitle text={element.subcharts[Object.values(tab)[index]].subchartSubtitle} />
+                      {element.subtitle &&
+                        <CollapsableSubtitle
+                          text={element.subtitle}
+                          reference={element.reference ? element.reference : undefined}
+                        />
                       }
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      {element.reference && parse(element.reference, {
-                        replace: replacePlainHTMLWithMuiComponents,
-                      })}
                       {Object.keys(tab)[index] == index &&
                         element.subcharts &&
-                        element.subcharts[Object.values(tab)[index]].reference &&
-                        parse(
-                          element.subcharts[Object.values(tab)[index]].reference, {
-                          replace: replacePlainHTMLWithMuiComponents,
-                        }
-                        )}
+                        element.subcharts[Object.values(tab)[index]].subchartSubtitle &&
+                        <CollapsableSubtitle
+                          text={element.subcharts[Object.values(tab)[index]].subchartSubtitle}
+                          reference={element.subcharts[Object.values(tab)[index]].reference ? element.subcharts[Object.values(tab)[index]].reference : undefined}
+                        />
+                      }
                     </Typography>
                   </Box>
                 </Container>
