@@ -6,7 +6,7 @@ import parse from 'html-react-parser';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { replacePlainHTMLWithMuiComponents } from '../Utils/Utils';
 
-function CollapsableSubtitle({ text, wordLimit = 50, reference }) {
+function CollapsibleSubtitle({ text, wordLimit = 75, reference }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   // React to changes in screen width
@@ -21,11 +21,11 @@ function CollapsableSubtitle({ text, wordLimit = 50, reference }) {
       <Box>
         <Typography>{parse(text, { replace: replacePlainHTMLWithMuiComponents })}</Typography>
         {reference
-        && (
-        <Typography variant="caption" color="text.secondary">
-          {parse(reference, { replace: replacePlainHTMLWithMuiComponents })}
-        </Typography>
-        )}
+          && (
+            <Typography variant="caption" color="text.secondary">
+              {parse(reference, { replace: replacePlainHTMLWithMuiComponents })}
+            </Typography>
+          )}
       </Box>
     );
   }
@@ -49,8 +49,25 @@ function CollapsableSubtitle({ text, wordLimit = 50, reference }) {
           )
           : (
             <>
-              <Typography display="inline">{parse(displayText, { replace: replacePlainHTMLWithMuiComponents })}</Typography>
-              <Typography display="inline" color="#8C8C8C" sx={{ ml: 1 }}>...see more</Typography>
+              <Typography
+                display="inline"
+              >
+                {parse(displayText, { replace: replacePlainHTMLWithMuiComponents })}
+                ...
+              </Typography>
+              <Typography
+                display="inline"
+                color="text.primary"
+                fontWeight="500"
+                sx={{
+                  ml: 0.5,
+                  '& :hover': {
+                    textDecoration: 'underline'
+                  }
+                }}
+              >
+                See more
+              </Typography>
             </>
           )}
       </Box>
@@ -58,4 +75,4 @@ function CollapsableSubtitle({ text, wordLimit = 50, reference }) {
   );
 }
 
-export default CollapsableSubtitle;
+export default CollapsibleSubtitle;

@@ -39,7 +39,7 @@ import { SheetsDataContext } from '../../ContextProviders/SheetsDataContext';
 
 import ChartSubstituteComponentLoader from '../../Graphs/ChartSubstituteComponents/ChartSubstituteComponentLoader';
 
-import CollapsableSubtitle from '../../Components/CollapsableSubtitle';
+import CollapsibleSubtitle from '../../Components/CollapsibleSubtitle';
 
 // Custom Chip component to display metadata
 const CustomChip = (props) => {
@@ -240,7 +240,7 @@ const Project = ({ themePreference }) => {
                       sx={{ mb: 1 }}
                     >
                       {element.subtitle &&
-                        <CollapsableSubtitle
+                        <CollapsibleSubtitle
                           text={element.subtitle}
                           reference={element.reference ? element.reference : undefined}
                         />
@@ -248,7 +248,7 @@ const Project = ({ themePreference }) => {
                       {Object.keys(tab)[index] == index &&
                         element.subcharts &&
                         element.subcharts[Object.values(tab)[index]].subchartSubtitle &&
-                        <CollapsableSubtitle
+                        <CollapsibleSubtitle
                           text={element.subcharts[Object.values(tab)[index]].subchartSubtitle}
                           reference={element.subcharts[Object.values(tab)[index]].reference ? element.subcharts[Object.values(tab)[index]].reference : undefined}
                         />
