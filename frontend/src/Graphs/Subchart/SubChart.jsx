@@ -4,7 +4,7 @@ import { useState, useEffect, useContext } from 'react';
 
 import { GoogleContext } from '../../ContextProviders/GoogleContext';
 
-import { Box, Stack, Tooltip } from '@mui/material/';
+import { Box, Stack, Tooltip, Typography } from '@mui/material/';
 
 import { useTheme } from '@mui/material/styles';
 import HeatMap from '../HeatMap';
@@ -372,29 +372,9 @@ export default function SubChart(props) {
   };
 
   const renderChartControlBox = () => {
-    if (chartControl.controlType === "ChartRangeFilter") {
-      return (
-        <Tooltip
-          title="Use the sliders to interact with the graph"
-          placement="bottom"
-          arrow
-          open={tooltipOpen}
-          onClose={() => setTooltipOpen(false)}
-        >
-          <Box
-            id={`control-${chartID}`}
-            sx={{
-              height: `calc(${height} / 8)`,
-              opacity: 0.8,
-              filter: 'saturate(0.3)'
-            }}
-            onClick={handleControlBoxClick}
-            onMouseEnter={() => !tooltipClosed && setTooltipOpen(true)}
-          />
-        </Tooltip>
-      );
-    }
-    return (
+    const rangeFilterTooltipText = 'Use the sliders to interact with the graph';
+
+    const chartControlBox = (
       <Box
         id={`control-${chartID}`}
         sx={{
@@ -406,6 +386,37 @@ export default function SubChart(props) {
         onMouseEnter={() => !tooltipClosed && setTooltipOpen(true)}
       />
     );
+
+    if (isPortrait) {
+      return (
+        <>
+          <Typography
+            variant="caption"
+            color={theme.palette.text.secondary}
+            sx={{ textAlign: 'center', mt: 1 }}
+          >
+            {rangeFilterTooltipText}
+          </Typography>
+          {chartControlBox}
+        </>
+      );
+    }
+
+    if (chartControl.controlType === "ChartRangeFilter") {
+      return (
+        <Tooltip
+          title={rangeFilterTooltipText}
+          placement="bottom"
+          arrow
+          open={tooltipOpen}
+          onClose={() => setTooltipOpen(false)}
+        >
+          {chartControlBox}
+        </Tooltip>
+      );
+    }
+
+    return chartControlBox;
   };
 
   const renderChart = () => {
