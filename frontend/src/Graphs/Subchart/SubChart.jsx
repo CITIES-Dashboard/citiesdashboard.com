@@ -4,7 +4,7 @@ import { useState, useEffect, useContext } from 'react';
 
 import { GoogleContext } from '../../ContextProviders/GoogleContext';
 
-import { Box, Stack } from '@mui/material/';
+import { Box, Stack, Tooltip } from '@mui/material/';
 
 import { useTheme } from '@mui/material/styles';
 import HeatMap from '../HeatMap';
@@ -363,13 +363,23 @@ export default function SubChart(props) {
     }
   }, [google]);
 
-  const renderChart = () => {
-    if (hasChartControl) {
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+  const [tooltipClosed, setTooltipClosed] = useState(false);
+
+  const handleControlBoxClick = () => {
+    setTooltipOpen(false);
+    setTooltipClosed(true);
+  };
+
+  const renderChartControlBox = () => {
+    if (chartControl.controlType === "ChartRangeFilter") {
       return (
-        <Stack
-          id={`dashboard-${chartID}`}
-          direction={ChartControlType[chartControl.controlType]?.stackDirection || 'column-reverse'}
-          sx={{ height: '100%' }}
+        <Tooltip
+          title="Use the sliders to interact with the graph"
+          placement="bottom"
+          arrow
+          open={tooltipOpen}
+          onClose={() => setTooltipOpen(false)}
         >
           <Box
             id={`control-${chartID}`}
@@ -378,13 +388,41 @@ export default function SubChart(props) {
               opacity: 0.8,
               filter: 'saturate(0.3)'
             }}
+            onClick={handleControlBoxClick}
+            onMouseEnter={() => !tooltipClosed && setTooltipOpen(true)}
           />
+        </Tooltip>
+      );
+    }
+    return (
+      <Box
+        id={`control-${chartID}`}
+        sx={{
+          height: `calc(${height} / 8)`,
+          opacity: 0.8,
+          filter: 'saturate(0.3)'
+        }}
+        onClick={handleControlBoxClick}
+        onMouseEnter={() => !tooltipClosed && setTooltipOpen(true)}
+      />
+    );
+  };
+
+  const renderChart = () => {
+    if (hasChartControl) {
+      return (
+        <Stack
+          id={`dashboard-${chartID}`}
+          direction={ChartControlType[chartControl.controlType]?.stackDirection || 'column-reverse'}
+          sx={{ height: '100%' }}
+        >
+          {renderChartControlBox()}
           <Box id={chartID} sx={{ height: height, maxHeight: maxHeight }} />
         </Stack>
-      )
+      );
     }
-    else return <Box id={chartID} sx={{ height: height, maxHeight: maxHeight }} />;
-  }
+    return <Box id={chartID} sx={{ height: height, maxHeight: maxHeight }} />;
+  };
 
   const onChartReady = () => {
     if (chartData.chartType === 'Calendar') {
