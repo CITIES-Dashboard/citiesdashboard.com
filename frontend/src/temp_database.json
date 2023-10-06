@@ -36,7 +36,7 @@
             "gid": 184715989,
             "subchartTitle": "Hourly (Last 30 Days)",
             "query": "SELECT A, E, F, G, H, I, J, B, C, D",
-            "subchartSubtitle": "<b>Adjust the slider to zoom in.</b><br><br>Explore the <b>latest</b> hourly average AQI over the past month to see the differences in the air quality between different locations on the NYUAD campus.",
+            "subchartSubtitle": "Explore the <b>latest</b> hourly average AQI over the past month to see the differences in the air quality between different locations on the NYUAD campus.",
             "options": {
               "hAxis": {
                 "title": "Date Time",
@@ -931,7 +931,7 @@
         "subcharts": [
           {
             "subchartTitle": "Total (3 meals)",
-            "subchartSubtitle": "<b>Adjust the slider to zoom in.</b><br><br>From this visualization of average daily food waste by month, it is evident that the absolute amount of food waste is on the rise. This might be due to several factors:<ul><li>The loosening of COVID restrictions in 2022, which allowed more people to come back to campus</li><li>An absolute increase in the number of people eating at D2 as the student population increases year-by-year</li><li>Operational changes during the hand-over period between the catering providers (ADNH: prior to July 2022, RCS: after July 2022)</li></ul>",
+            "subchartSubtitle": "From this visualization of average daily food waste by month, it is evident that the absolute amount of food waste is on the rise. This might be due to several factors:<ul><li>The loosening of COVID restrictions in 2022, which allowed more people to come back to campus</li><li>An absolute increase in the number of people eating at D2 as the student population increases year-by-year</li><li>Operational changes during the hand-over period between the catering providers (ADNH: prior to July 2022, RCS: after July 2022)</li></ul>",
             "query": "SELECT C, N, O, P, T, U WHERE A IS NOT NULL",
             "columns": [
               0,
