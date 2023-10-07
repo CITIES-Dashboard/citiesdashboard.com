@@ -17,6 +17,8 @@ import GoogleChartStyleWrapper from './GoogleChartStyleWrapper';
 import LoadingAnimation from '../../Components/LoadingAnimation';
 
 import ChartSubstituteComponentLoader from '../ChartSubstituteComponents/ChartSubstituteComponentLoader';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
 
 export default function SubChart(props) {
   // Props
@@ -372,24 +374,36 @@ export default function SubChart(props) {
   };
 
   const renderChartControlBox = () => {
+    const isPortraitMedia = useMediaQuery('(orientation: portrait)'); // Detect orientation changes
+    const shouldShowTooltip = !tooltipClosed && !isPortraitMedia;
     const rangeFilterTooltipText = 'Use the sliders to interact with the graph';
-
+  
     const chartControlBox = (
       <Box
         id={`control-${chartID}`}
         sx={{
           height: `calc(${height} / 8)`,
+          mt: 1,
           opacity: 0.8,
           filter: 'saturate(0.3)'
         }}
+        // hide tooltip on click or drag
         onClick={handleControlBoxClick}
-        onMouseEnter={() => !tooltipClosed && setTooltipOpen(true)}
+        // show tooltip on hover if it hasn't been closed
+        onMouseEnter={() => shouldShowTooltip && setTooltipOpen(true)}
       />
     );
-
-    if (isPortrait) {
-      return (
-        <>
+  
+    // If the control type isn't "ChartRangeFilter"
+    // render the box containing chart control(s) without any Tooltip or Typography
+    if (chartControl.controlType !== "ChartRangeFilter") {
+      return chartControlBox;
+    }
+  
+    // For "ChartRangeFilter", conditionally render the Tooltip and Typography based on orientation
+    return (
+      <>
+        {isPortraitMedia && (
           <Typography
             variant="caption"
             color={theme.palette.text.secondary}
@@ -397,13 +411,7 @@ export default function SubChart(props) {
           >
             {rangeFilterTooltipText}
           </Typography>
-          {chartControlBox}
-        </>
-      );
-    }
-
-    if (chartControl.controlType === "ChartRangeFilter") {
-      return (
+        )}
         <Tooltip
           title={rangeFilterTooltipText}
           placement="bottom"
@@ -413,11 +421,9 @@ export default function SubChart(props) {
         >
           {chartControlBox}
         </Tooltip>
-      );
-    }
-
-    return chartControlBox;
-  };
+      </>
+    );
+  };  
 
   const renderChart = () => {
     if (hasChartControl) {
