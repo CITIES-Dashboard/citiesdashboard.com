@@ -17,7 +17,8 @@ import GoogleChartStyleWrapper from './GoogleChartStyleWrapper';
 import LoadingAnimation from '../../Components/LoadingAnimation';
 
 import ChartSubstituteComponentLoader from '../ChartSubstituteComponents/ChartSubstituteComponentLoader';
-import useMediaQuery from '@mui/material/useMediaQuery';
+
+import { isMobile } from 'react-device-detect';
 
 
 export default function SubChart(props) {
@@ -374,10 +375,9 @@ export default function SubChart(props) {
   };
 
   const renderChartControlBox = () => {
-    const isPortraitMedia = useMediaQuery('(orientation: portrait)'); // Detect orientation changes
-    const shouldShowTooltip = !tooltipClosed && !isPortraitMedia;
+    const shouldShowTooltip = !tooltipClosed && !isMobile; // No tooltip on mobile devices
     const rangeFilterTooltipText = 'Use the sliders to interact with the graph';
-  
+
     const chartControlBox = (
       <Box
         id={`control-${chartID}`}
@@ -393,17 +393,17 @@ export default function SubChart(props) {
         onMouseEnter={() => shouldShowTooltip && setTooltipOpen(true)}
       />
     );
-  
+
     // If the control type isn't "ChartRangeFilter"
     // render the box containing chart control(s) without any Tooltip or Typography
     if (chartControl.controlType !== "ChartRangeFilter") {
       return chartControlBox;
     }
-  
-    // For "ChartRangeFilter", conditionally render the Tooltip and Typography based on orientation
+
+    // For "ChartRangeFilter", conditionally render the Tooltip and Typography based on device type
     return (
       <>
-        {isPortraitMedia && (
+        {isMobile && (
           <Typography
             variant="caption"
             color={theme.palette.text.secondary}
@@ -423,7 +423,8 @@ export default function SubChart(props) {
         </Tooltip>
       </>
     );
-  };  
+  };
+
 
   const renderChart = () => {
     if (hasChartControl) {
