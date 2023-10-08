@@ -403,7 +403,7 @@ export default function SubChart(props) {
     // For "ChartRangeFilter", conditionally render the Tooltip and Typography based on device type
     return (
       <>
-        {isMobile && (
+        {isMobile && !isFirstRender && (
           <Typography
             variant="caption"
             color={theme.palette.text.secondary}
