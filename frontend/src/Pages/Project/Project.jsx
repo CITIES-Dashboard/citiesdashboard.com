@@ -103,7 +103,7 @@ const Project = ({ themePreference }) => {
       {loading && (
         <Box width="100%">
           {
-            project.id === 'air-quality' && <AirQualityIndexLegendQuickGlance />
+            project.id === 'air-quality' && <AirQualityIndexLegendQuickGlance themePreference={themePreference} />
           }
 
           <FullWidthBox backgroundColor='customAlternateBackground'>
