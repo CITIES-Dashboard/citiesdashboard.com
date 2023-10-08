@@ -490,93 +490,53 @@
         "gid": 337720664,
         "chartType": "ComboChart",
         "headers": 1,
-        "subcharts": [
+        "query": "SELECT A, B, C, D, E, F, V, W, X, Y, Z",
+        "columns": [
+          0,
+          1,
           {
-            "subchartTitle": "Absolute Numbers",
-            "query": "SELECT A, B, C, D, E, F, V, W, X, Y, Z",
-            "columns": [
-              0,
-              1,
-              {
-                "role": "tooltip",
-                "type": "string",
-                "properties": {
-                  "html": true
-                },
-                "sourceColumn": 6
-              },
-              2,
-              {
-                "role": "tooltip",
-                "type": "string",
-                "properties": {
-                  "html": true
-                },
-                "sourceColumn": 7
-              },
-              3,
-              {
-                "role": "tooltip",
-                "type": "string",
-                "properties": {
-                  "html": true
-                },
-                "sourceColumn": 8
-              },
-              4,
-              {
-                "role": "tooltip",
-                "type": "string",
-                "properties": {
-                  "html": true
-                },
-                "sourceColumn": 9
-              },
-              5,
-              {
-                "role": "tooltip",
-                "type": "string",
-                "properties": {
-                  "html": true
-                },
-                "sourceColumn": 10
-              }
-            ],
-            "options": {
-              "vAxis": {
-                "title": "Number of Unique FABS Memberships"
-              },
-              "seriesType": "bars",
-              "series": {
-                "4": {
-                  "type": "line",
-                  "lineWidth": 3,
-                  "pointSize": 5
-                }
-              }
-            }
+            "role": "tooltip",
+            "type": "string",
+            "properties": {
+              "html": true
+            },
+            "sourceColumn": 6
           },
+          2,
           {
-            "subchartTitle": "Year-over-Year Change",
-            "query": "SELECT A, O, P, Q, R, S",
-            "options": {
-              "vAxis": {
-                "title": "YoY Change (%)",
-                "format": "#%",
-                "viewWindow": {
-                  "min": -1
-                }
-              },
-              "seriesType": "line",
-              "pointSize": 3,
-              "lineWidth": 1.5,
-              "series": {
-                "4": {
-                  "lineWidth": 3,
-                  "pointSize": 6
-                }
-              }
-            }
+            "role": "tooltip",
+            "type": "string",
+            "properties": {
+              "html": true
+            },
+            "sourceColumn": 7
+          },
+          3,
+          {
+            "role": "tooltip",
+            "type": "string",
+            "properties": {
+              "html": true
+            },
+            "sourceColumn": 8
+          },
+          4,
+          {
+            "role": "tooltip",
+            "type": "string",
+            "properties": {
+              "html": true
+            },
+            "sourceColumn": 9
+          },
+          5,
+          {
+            "role": "tooltip",
+            "type": "string",
+            "properties": {
+              "html": true
+            },
+            "sourceColumn": 10
           }
         ],
         "options": {
@@ -587,6 +547,17 @@
           "curveType": "none",
           "hAxis": {
             "title": "Academic Year (Aug - Sep next year)"
+          },
+          "vAxis": {
+            "title": "Number of Unique FABS Memberships"
+          },
+          "seriesType": "bars",
+          "series": {
+            "4": {
+              "type": "line",
+              "lineWidth": 3,
+              "pointSize": 5
+            }
           }
         }
       },
@@ -636,7 +607,7 @@
     "id": "athletic-facilities-check-in",
     "title": "Athletic Facilities Check-in",
     "sheetId": "1iomqWbAsG75KBxiXPn76DBVGTes1PUnmB5tA0bgG5Jw",
-    "description": "This dataset visualizes the number of check-ins throughout different Athletic facilities on campus, such as the fitness center, women's-only gym, faculty pool, 50m pool, 400m track, and indoor track. This dataset can serve as a proxy for estimating the community's fitness level and physical activity. Temporal data visualizations can help the community avoid peak times in indoor spaces and spread exercises evenly throughout the day or the week.<br><br><small><b>Note: </b> We are working hard to collect 2023's data. Stay tuned!</small>",
+    "description": "This dataset visualizes the number of check-ins throughout different Athletic facilities on campus, such as the fitness center, women's-only gym, faculty pool, 50m pool, 400m track, and indoor track. This dataset can serve as a proxy for estimating the community's fitness level and physical activity. Temporal data visualizations can help the community avoid peak times in indoor spaces and spread exercises evenly throughout the day or the week.",
     "owners": [
       "Department of Athletics"
     ],
@@ -656,9 +627,9 @@
       {
         "subcharts": [
           {
-            "subchartTitle": "All time average (2020-2022)",
+            "subchartTitle": "All time average (2020-2023)",
             "subchartSubtitle": "As the typical workday draws to a close at around <b>5-6pm</b> for students, faculty, and staff, this time window is the busiest period for fitness activities. There is another relatively smaller peak in the morning from 8-9am; however, its magnitude doesn't usually surpass half of the afternoon rush's. For those who prefer a quieter workout, aim for <b>early-morning or midday</b> time slots where the occupancy rate is only a quarter of the busiest time.",
-            "query": "SELECT A, F, H, I",
+            "query": "SELECT A, G, I, J",
             "columns": [
               0,
               1,
@@ -687,7 +658,7 @@
           {
             "subchartTitle": "By year",
             "subchartSubtitle": "Due to COVID-19 restrictions, there was a limit on how many people could be in the same facilities during 2020-2022. Take the fitness center, for example, the cap was 15 people in 2020, which was gradually loosened to 25 people in 2022.",
-            "query": "SELECT A, B, C, D",
+            "query": "SELECT A, B, C, D, E",
             "options": {
               "seriesType": "line"
             }
@@ -710,7 +681,7 @@
       },
       {
         "title": "Facilities Check-in Per Week Day, Normalized to the Max Value of Each Year",
-        "subtitle": "While the number of check-ins exhibits a clear diurnal variation, it remains more stable throughout the weekdays than on the weekends. The second day of the weekend and the first work day of the week have historically been off-peak days, where attendance is around 10-30% lower than the busiest day. Interestingly, this pattern still holds even after the UAE changed its weekend days on January 1, 2022 (from Fri-Sat to Sat-Sun). 2021's off-peak days are Sat and Sun, whereas 2022's off-peak days are Sun and Mon.",
+        "subtitle": "While the number of check-ins exhibits a clear diurnal variation, it remains more stable throughout the weekdays than on the weekends. The second day of the weekend and the first work day of the week have historically been off-peak days, where attendance is around 10-30% lower than the busiest day. Interestingly, this pattern still holds even after the UAE changed its weekend days on January 1, 2022 (from Fri-Sat to Sat-Sun). 2021's off-peak days are Sat and Sun, whereas 2022's and 2023's off-peak days are Sun and Mon.",
         "gid": 654076094,
         "headers": 1,
         "columns": [
@@ -782,7 +753,7 @@
       },
       {
         "title": "Total Monthly Facilities Check-in, Historical",
-        "subtitle": "This visualization shows how much fitness activity has increased since the introduction of FABS. This can be attributed to the gradual relaxation of COVID-19 restrictions and the increase in on-campus residents over the period of 2020-2022.",
+        "subtitle": "This visualization shows how much fitness activity has increased since the introduction of FABS. This can be attributed to the gradual relaxation of COVID-19 restrictions and the increase in on-campus residents over the period of 2020-2023.",
         "gid": 1045014031,
         "headers": 1,
         "columns": [
@@ -804,6 +775,12 @@
             "role": "annotation",
             "type": "string",
             "sourceColumn": 6
+          },
+          7,
+          {
+            "role": "annotation",
+            "type": "string",
+            "sourceColumn": 8
           }
         ],
         "options": {
@@ -826,6 +803,10 @@
           "height": "620px",
           "subcharts": [
             {
+              "subchartTitle": "2023",
+              "range": "AH2:AQ21"
+            },
+            {
               "subchartTitle": "2022",
               "range": "W2:AF21"
             },
@@ -844,6 +825,10 @@
           "maxWidth": "580px",
           "height": "350px",
           "subcharts": [
+            {
+              "subchartTitle": "2023",
+              "range": "A41:S51"
+            },
             {
               "subchartTitle": "2022",
               "range": "A28:S38"
@@ -870,6 +855,10 @@
           "height": "500px",
           "subcharts": [
             {
+              "subchartTitle": "2023",
+              "range": "AH2:AQ21"
+            },
+            {
               "subchartTitle": "2022",
               "range": "W2:AF17"
             },
@@ -888,6 +877,10 @@
           "maxWidth": "480px",
           "height": "350px",
           "subcharts": [
+            {
+              "subchartTitle": "2023",
+              "range": "A41:S51"
+            },
             {
               "subchartTitle": "2022",
               "range": "A28:O38"
