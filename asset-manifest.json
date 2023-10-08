@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/static/css/main.ccadb9c5.css",
-    "main.js": "/static/js/main.9417fd1d.js",
+    "main.js": "/static/js/main.8bb133e7.js",
     "static/js/885.6cfc3f14.chunk.js": "/static/js/885.6cfc3f14.chunk.js",
     "static/js/185.76faa81f.chunk.js": "/static/js/185.76faa81f.chunk.js",
     "static/js/712.1bafa0b9.chunk.js": "/static/js/712.1bafa0b9.chunk.js",
-    "static/js/104.f622d632.chunk.js": "/static/js/104.f622d632.chunk.js",
+    "static/js/443.0b545bc2.chunk.js": "/static/js/443.0b545bc2.chunk.js",
     "static/media/cities-logo.png": "/static/media/cities-logo.6e8b8fce882b8a120203.png",
     "index.html": "/index.html",
     "main.ccadb9c5.css.map": "/static/css/main.ccadb9c5.css.map",
-    "main.9417fd1d.js.map": "/static/js/main.9417fd1d.js.map",
+    "main.8bb133e7.js.map": "/static/js/main.8bb133e7.js.map",
     "885.6cfc3f14.chunk.js.map": "/static/js/885.6cfc3f14.chunk.js.map",
     "185.76faa81f.chunk.js.map": "/static/js/185.76faa81f.chunk.js.map",
     "712.1bafa0b9.chunk.js.map": "/static/js/712.1bafa0b9.chunk.js.map",
-    "104.f622d632.chunk.js.map": "/static/js/104.f622d632.chunk.js.map"
+    "443.0b545bc2.chunk.js.map": "/static/js/443.0b545bc2.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.ccadb9c5.css",
-    "static/js/main.9417fd1d.js"
+    "static/js/main.8bb133e7.js"
   ]
 }
