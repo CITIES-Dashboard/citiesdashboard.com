@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import { useState, useEffect, useContext } from 'react';
+import { useState, useRef, useEffect, useContext, useMemo, useCallback, memo } from 'react';
 
 import { GoogleContext } from '../../ContextProviders/GoogleContext';
 
@@ -21,7 +21,7 @@ import ChartSubstituteComponentLoader from '../ChartSubstituteComponents/ChartSu
 import { isMobile } from 'react-device-detect';
 
 
-export default function SubChart(props) {
+function SubChart(props) {
   // Props
   const { chartData, subchartIndex, windowSize, isPortrait, isHomepage, height, maxHeight } = props;
 
@@ -32,7 +32,10 @@ export default function SubChart(props) {
   }
 
   // Formulate the className
-  const className = chartData.customClassName ? `${chartData.chartType} ${chartData.customClassName}` : chartData.chartType;
+  const className = useMemo(() => {
+    return chartData.customClassName ? `${chartData.chartType} ${chartData.customClassName}` : chartData.chartType;
+  }, [chartData.customClassName, chartData.chartType]);
+
 
   // Early return for 'HeatMap' chartType
   if (chartData.chartType === 'HeatMap') {
@@ -83,21 +86,24 @@ export default function SubChart(props) {
   const [chartTotalHeight, setChartTotalHeight] = useState(200);
 
   // Get the options object for chart
-  let options = returnGenericOptions({ ...props, theme });
+  let options = useMemo(() => {
+    let opts = returnGenericOptions({ ...props, theme });
+    if (chartData.chartType === 'Calendar') {
+      return returnCalendarChartOptions(opts);
+    }
+    return opts;
+  }, [props, theme, chartData.chartType]);
+
   if (chartData.chartType === 'Calendar') options = returnCalendarChartOptions(options);
 
   // Properties for chart control (if existed)
-  let hasChartControl = false;
-  let chartControlOptions;
-  // Only show the chart control if:
-  // It exists in the database (either for all subcharts or just for a particular subchart)
-  // And if the chart is currently not shown on homePage
-  let chartControl = chartData.control || chartData.subcharts?.[subchartIndex].control;
-  if (chartControl && (isHomepage !== true)) {
-    hasChartControl = true;
+  const chartControl = chartData.control || chartData.subcharts?.[subchartIndex].control;
 
-    // Get the options for chartControl if hasChartControl
-    chartControlOptions = {
+  // Memoize the computation of chartControlOptions
+  const chartControlOptions = useMemo(() => {
+    if (!chartControl || isHomepage) return null;
+
+    return {
       ...chartControl.options,
       ui: returnChartControlUI({
         chartControl,
@@ -108,48 +114,49 @@ export default function SubChart(props) {
         isPortrait
       })
     };
+  }, [chartControl, chartData, options, subchartIndex, theme, isPortrait, isHomepage]);
 
-    // Swap touch events for mouse events on ChartRangeControl
-    // as it doesn't support touch events on mobile
-    if (chartControl.controlType === 'ChartRangeFilter') {
-      useEffect(() => {
-        const cleanupTouchEventListener = addTouchEventListenerForChartControl({ controlWrapper, chartID });
-        return cleanupTouchEventListener;
-      }, [controlWrapper]);
+  // Only show the chart control if:
+  // It exists in the database (either for all subcharts or just for a particular subchart)
+  // And if the chart is currently not shown on homePage
+  const hasChartControl = Boolean(chartControl && !isHomepage);
+
+  // Separate useEffect for touch event logic
+  useEffect(() => {
+    if (chartControl?.controlType === 'ChartRangeFilter') {
+      const cleanupTouchEventListener = addTouchEventListenerForChartControl({ controlWrapper, chartID });
+      return cleanupTouchEventListener;
     }
-  }
+  }, [chartControl, controlWrapper, chartID]);
 
   // Properties for selecting (showing or hiding) the serie(s)
   const seriesSelector = options.seriesSelector || false;
 
   // Set new options prop and re-render the chart if theme or isPortrait changes
   useEffect(() => {
-    if (seriesSelector) handleSeriesSelection(dataColumns); // this function set new options, too
-    else {
+    if (!seriesSelector) {
       chartWrapper?.setOptions({
         ...options,
         ...(chartData.chartType === 'Calendar' && { height: chartTotalHeight })
       });
-
       chartWrapper?.draw();
+
       if (hasChartControl) {
         controlWrapper?.setOptions(chartControlOptions);
         controlWrapper?.draw();
       }
+    } else {
+      handleSeriesSelection(dataColumns);
+    }
+
+    // Set new initialColumnsColors if the theme changes
+    // This only applies to when seriesSelector.method == "setViewColumn"
+    if (dataColumns && seriesSelector?.method === "setViewColumn") {
+      setInitialColumnsColors(dataColumns);
     }
   }, [theme, isPortrait, windowSize, chartTotalHeight]);
 
-  // Set new initialColumnsColors if the theme changes
-  // This only applies to when seriesSelector.method == "setViewColumn"
-  useEffect(() => {
-    if (!dataColumns) return;
-    if (seriesSelector && seriesSelector.method == "setViewColumn") {
-      setInitialColumnsColors({ dataColumns: dataColumns });
-      handleSeriesSelection(dataColumns);
-    }
-  }, [theme]);
-
-  const getInitialColumns = ({ chartWrapper, dataTable, seriesSelector }) => {
+  const getInitialColumns = useCallback(({ chartWrapper, dataTable, seriesSelector }) => {
     // Update the initial DataView's columns (often, all of the series are displayed initially)
     var initialView = chartWrapper.getView();
     // If (optional) columns is not specified in database
@@ -204,22 +211,23 @@ export default function SubChart(props) {
       return col.role === 'data' && options.series?.[col.seriesIndex]?.visibleInLegend !== false;
     });
 
-    if (seriesSelector.method === "setViewColumn") setInitialColumnsColors({ dataColumns: dataColumns });
+    if (dataColumns && seriesSelector.method === "setViewColumn") setInitialColumnsColors({ dataColumns: dataColumns });
 
     setDataColumns(dataColumns);
     return dataColumns;
-  };
+  }, [google, options, seriesSelector]);
 
-  const setInitialColumnsColors = ({ dataColumns }) => {
-    dataColumns.forEach((col) => {
+  // Utility function for setting colors to dataColumns
+  const setInitialColumnsColors = useCallback(({ dataColumns }) => {
+    dataColumns?.forEach((col) => {
       // Assign inherit color to this data column
       col.color = options.colors[col.seriesIndex % options.colors.length];
       // Assign other inherit attributes from its serie object (if existed)
       col.serieAttribute = options.series?.[col.seriesIndex];
     });
-  }
+  }, [options]);
 
-  const getInitialVAxisRange = ({ dataTable, allInitialColumns }) => {
+  const getInitialVAxisRange = useCallback(({ dataTable, allInitialColumns }) => {
     let vAxisMin, vAxisMax;
     allInitialColumns.forEach((col, index) => {
       if (index === 0) return; // the first column is the domain (hAxis)
@@ -228,9 +236,9 @@ export default function SubChart(props) {
       if (!isNaN(range.max) && range.max) vAxisMax = vAxisMax ? Math.max(vAxisMax, range.max) : range.max;
     });
     return { min: vAxisMin, max: vAxisMax };
-  }
+  }, []);
 
-  const handleSeriesSelection = (newDataColumns, _chartWrapper = chartWrapper) => {
+  const handleSeriesSelection = useCallback((newDataColumns, _chartWrapper = chartWrapper) => {
     if (!allInitialColumns) return;
 
     setDataColumns(newDataColumns);
@@ -304,7 +312,7 @@ export default function SubChart(props) {
     if (hasChartControl) {
       controlWrapper?.draw();
     }
-  };
+  }, [allInitialColumns, options, seriesSelector, chartWrapper, controlWrapper, initialVAxisRange, hasChartControl]);
 
   // Call this function to fetch the data and draw the initial chart
   useEffect(() => {
@@ -369,38 +377,35 @@ export default function SubChart(props) {
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [tooltipClosed, setTooltipClosed] = useState(false);
 
-  const handleControlBoxClick = () => {
+  const handleControlBoxClick = useCallback(() => {
     setTooltipOpen(false);
     setTooltipClosed(true);
-  };
+  }, []);
+
+  const shouldShowTooltip = useMemo(() => !tooltipClosed && !isMobile, [tooltipClosed, isMobile]);
+  const rangeFilterTooltipText = 'Use the sliders to interact with the graph';
+
+  const chartControlBox = useMemo(() => (
+    <Box
+      id={`control-${chartID}`}
+      sx={{
+        height: `calc(${height} / 8)`,
+        mt: 1,
+        opacity: 0.8,
+        filter: 'saturate(0.3)'
+      }}
+      // Disable tooltip on click or drag
+      onClick={handleControlBoxClick}
+      // Show tooltip on hover if it hasn't been closed yet
+      onMouseEnter={() => shouldShowTooltip && setTooltipOpen(true)}
+    />
+  ), [chartID, height, handleControlBoxClick, shouldShowTooltip]);
 
   const renderChartControlBox = () => {
-    const shouldShowTooltip = !tooltipClosed && !isMobile; // No tooltip on mobile devices
-    const rangeFilterTooltipText = 'Use the sliders to interact with the graph';
-
-    const chartControlBox = (
-      <Box
-        id={`control-${chartID}`}
-        sx={{
-          height: `calc(${height} / 8)`,
-          mt: 1,
-          opacity: 0.8,
-          filter: 'saturate(0.3)'
-        }}
-        // hide tooltip on click or drag
-        onClick={handleControlBoxClick}
-        // show tooltip on hover if it hasn't been closed
-        onMouseEnter={() => shouldShowTooltip && setTooltipOpen(true)}
-      />
-    );
-
-    // If the control type isn't "ChartRangeFilter"
-    // render the box containing chart control(s) without any Tooltip or Typography
     if (chartControl.controlType !== "ChartRangeFilter") {
       return chartControlBox;
     }
 
-    // For "ChartRangeFilter", conditionally render the Tooltip and Typography based on device type
     return (
       <>
         {isMobile && !isFirstRender && (
@@ -425,7 +430,6 @@ export default function SubChart(props) {
     );
   };
 
-
   const renderChart = () => {
     if (hasChartControl) {
       return (
@@ -442,7 +446,15 @@ export default function SubChart(props) {
     return <Box id={chartID} sx={{ height: height, maxHeight: maxHeight }} />;
   };
 
+  const isMounted = useRef(true);
+
+  useEffect(() => {
+    isMounted.current = true;
+    return () => isMounted.current = false;
+  }, []);
+
   const onChartReady = () => {
+    if (!isMounted.current) return;
     if (chartData.chartType === 'Calendar') {
       // querySelector is used to select the first 'g' element in the svg
       // this is to get the height of the non-responsive element
@@ -488,3 +500,5 @@ export default function SubChart(props) {
     </GoogleChartStyleWrapper>
   );
 }
+
+export default memo(SubChart);
