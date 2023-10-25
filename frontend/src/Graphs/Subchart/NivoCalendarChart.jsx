@@ -1,14 +1,13 @@
 /* eslint-disable */
 
 import { ResponsiveCalendar } from '@nivo/calendar';
-import { BasicTooltip } from '@nivo/tooltip';
 import { useTheme } from '@mui/material/styles';
-import Chip from '@mui/material/Chip';
-import Typography from '@mui/material/Typography';
+import { Chip, Typography } from '@mui/material';
 
 const CalendarChart = ({ data }) => {
     const theme = useTheme();
 
+    // Function to extract tooltip text from HTML tooltip
     const extractTooltipText = (tooltip) => {
         const parser = new DOMParser();
         const doc = parser.parseFromString(tooltip, 'text/html');
