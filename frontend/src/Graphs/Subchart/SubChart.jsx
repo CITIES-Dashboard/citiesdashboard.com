@@ -20,6 +20,8 @@ import ChartSubstituteComponentLoader from '../ChartSubstituteComponents/ChartSu
 
 import { isMobile } from 'react-device-detect';
 
+import { transformDataForNivo } from '../GoogleChartHelper'
+import CalendarChart from './NivoCalendarChart';
 
 function SubChart(props) {
   // Props
@@ -61,6 +63,47 @@ function SubChart(props) {
 
   // Use GoogleContext for loading and manipulating the Google Charts
   const [google, _] = useContext(GoogleContext);
+
+  // State to store transformed data for CalendarChart
+  const [calendarData, setCalendarData] = useState(null);
+
+  // Early exit for 'Calendar' chartType
+  if (chartData.chartType === 'Calendar') {
+    useEffect(() => {
+      if (!google) return;
+      fetchDataFromSheet({ chartData: chartData, subchartIndex: subchartIndex })
+        .then(response => {
+          const rawData = response.getDataTable();
+          const dataColumn = chartData.columns ? chartData.columns[1] : 1 
+          || chartData.subcharts[subchartIndex].columns ? chartData.subcharts[subchartIndex].columns[1] : 1;
+          const transformedData = transformDataForNivo(rawData, dataColumn);
+          setCalendarData(transformedData);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }, [google]);
+
+    if (!calendarData) {
+      return (
+        <Box sx={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+          <LoadingAnimation />
+        </Box>
+      )
+    }
+
+    return (
+      <GoogleChartStyleWrapper
+        isPortrait={isPortrait}
+        className={className}
+        position="relative"
+        height="500px"
+        minHeight={chartData.chartType === 'Calendar' && '200px'}
+      >
+        <CalendarChart data={calendarData} />
+      </GoogleChartStyleWrapper>
+    );
+  }
 
   // States of the Google Charts
   const [dataTable, setDataTable] = useState();

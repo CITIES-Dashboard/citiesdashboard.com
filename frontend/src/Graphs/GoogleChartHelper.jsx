@@ -44,6 +44,39 @@ export const fetchDataFromSheet = ({ chartData, subchartIndex }) => {
   });
 };
 
+export const transformDataForNivo = (dataTable, dataColumn = 1) => {
+  const data = JSON.parse(dataTable.toJSON())
+  const transformed = [];
+
+  const parseDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const formattedDate = `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
+    return formattedDate;
+  }
+
+  data.rows.forEach(row => {
+    // Get the date string from the first column 
+    const dateString = row.c[0].f;
+    // Parse and convert the date string to a 'YYYY-MM-DD' format
+    const formattedDate = parseDate(dateString);
+    // Use the value from the second column
+    const value = row.c[dataColumn]?.v;
+
+    // If the date string and value are both valid, push them into the result array
+    if (dateString && value !== undefined && value !== null) {
+      transformed.push({
+        day: formattedDate,
+        value: value
+      });
+    }
+  });
+
+  return transformed;
+};
+
 // Function to generate a random ID for the google chart container
 export const generateRandomID = () => {
   return Math.random().toString(36).substr(2, 9); // Generates a random string of length 9
