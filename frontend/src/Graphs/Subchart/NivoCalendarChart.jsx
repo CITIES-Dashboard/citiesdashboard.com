@@ -11,7 +11,7 @@ const CalendarChart = ({ data }) => {
             data={data}
             from="2021-01-01"
             to="2023-12-31"
-            emptyColor = {theme.palette.mode === 'dark' ? '#2b2b2b' : '#e8e8e8'}
+            emptyColor = {theme.palette.mode === 'dark' ? '#2b2b2b' : '#dfdbdb'}
             theme={{
                 textColor: theme.palette.text.primary,
                 fontSize: 11,
