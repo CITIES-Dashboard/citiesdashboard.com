@@ -74,9 +74,23 @@ function SubChart(props) {
       fetchDataFromSheet({ chartData: chartData, subchartIndex: subchartIndex })
         .then(response => {
           const rawData = response.getDataTable();
-          const dataColumn = chartData.columns ? chartData.columns[1] : 1 
-          || chartData.subcharts[subchartIndex].columns ? chartData.subcharts[subchartIndex].columns[1] : 1;
-          const transformedData = transformDataForNivo(rawData, dataColumn);
+          const dataColumn = chartData.columns ? chartData.columns[1] : 1
+            || chartData.subcharts[subchartIndex].columns ? chartData.subcharts[subchartIndex].columns[1] : 1;
+
+          const getTooltipColumn = (chartData, subchartIndex) => {
+            // Search in top-level columns
+            let tooltipColumn = chartData.columns && chartData.columns.find(col => typeof col === 'object' && col.role === 'tooltip');
+
+            // If not found, search in subcharts
+            if (!tooltipColumn && chartData.subcharts && chartData.subcharts[subchartIndex]) {
+              tooltipColumn = chartData.subcharts[subchartIndex].columns.find(col => typeof col === 'object' && col.role === 'tooltip');
+            }
+
+            return tooltipColumn;
+          }
+
+          const tooltipColumn = getTooltipColumn(chartData, subchartIndex).sourceColumn;
+          const transformedData = transformDataForNivo(rawData, dataColumn, tooltipColumn);
           setCalendarData(transformedData);
         })
         .catch(error => {

@@ -1,17 +1,26 @@
 /* eslint-disable */
 
-import { ResponsiveCalendar } from '@nivo/calendar'
+import { ResponsiveCalendar } from '@nivo/calendar';
+import { BasicTooltip } from '@nivo/tooltip';
 import { useTheme } from '@mui/material/styles';
+import Chip from '@mui/material/Chip';
+import Typography from '@mui/material/Typography';
 
 const CalendarChart = ({ data }) => {
     const theme = useTheme();
+
+    const extractTooltipText = (tooltip) => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(tooltip, 'text/html');
+        return doc.body.innerHTML;
+    };
 
     return (
         <ResponsiveCalendar
             data={data}
             from="2021-01-01"
             to="2023-12-31"
-            emptyColor = {theme.palette.mode === 'dark' ? '#2b2b2b' : '#dfdbdb'}
+            emptyColor={theme.palette.mode === 'dark' ? '#2b2b2b' : '#dfdbdb'}
             theme={{
                 textColor: theme.palette.text.primary,
                 fontSize: 11,
@@ -43,6 +52,21 @@ const CalendarChart = ({ data }) => {
             monthBorderColor="#ffffff"
             dayBorderWidth={2}
             dayBorderColor="#ffffff"
+            tooltip={({ day, value, color }) => {
+                const tooltipData = data.find(item => item.day === day);
+                const tooltipText = tooltipData ? extractTooltipText(tooltipData.tooltip) : '';
+                return (
+                    <div style={{
+                        padding: '12px',
+                        background: theme.palette.background.paper,
+                        border: `1px solid ${theme.palette.divider}`,
+                        color: theme.palette.text.primary
+                    }}>
+                        <Chip style={{ backgroundColor: color, marginRight: '8px', height: '14px', width: '14px', borderRadius: '50%' }} />
+                        <Typography variant="body2" component="span" dangerouslySetInnerHTML={{ __html: tooltipText }} />
+                    </div>
+                );
+            }}
         />
     );
 };

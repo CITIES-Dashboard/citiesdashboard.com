@@ -44,7 +44,7 @@ export const fetchDataFromSheet = ({ chartData, subchartIndex }) => {
   });
 };
 
-export const transformDataForNivo = (dataTable, dataColumn = 1) => {
+export const transformDataForNivo = (dataTable, dataColumn, tooltipColumn) => {
   const data = JSON.parse(dataTable.toJSON())
   const transformed = [];
 
@@ -62,14 +62,17 @@ export const transformDataForNivo = (dataTable, dataColumn = 1) => {
     const dateString = row.c[0].f;
     // Parse and convert the date string to a 'YYYY-MM-DD' format
     const formattedDate = parseDate(dateString);
-    // Use the value from the second column
+    // Get the data from the appropriate column
     const value = row.c[dataColumn]?.v;
+    // Get the tooltip from the appropriate column
+    const tooltip = row.c[tooltipColumn]?.v;
 
     // If the date string and value are both valid, push them into the result array
     if (dateString && value !== undefined && value !== null) {
       transformed.push({
         day: formattedDate,
-        value: value
+        value: value,
+        tooltip: tooltip
       });
     }
   });
