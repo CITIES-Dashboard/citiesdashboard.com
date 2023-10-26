@@ -4,7 +4,7 @@ import { ResponsiveCalendar } from '@nivo/calendar';
 import { useTheme } from '@mui/material/styles';
 import { Chip, Typography } from '@mui/material';
 
-const CalendarChart = ({ data }) => {
+const CalendarChart = ({ data, isPortrait }) => {
     const theme = useTheme();
 
     // Function to extract tooltip text from HTML tooltip
@@ -46,7 +46,10 @@ const CalendarChart = ({ data }) => {
                 },
             }}
             colors={['#61cdbb', '#97e3d5', '#e8c1a0', '#f47560']}
-            margin={{ top: 40, right: 40, bottom: 40, left: 40 }}
+            margin={isPortrait
+                ? { top: 10, right: 10, bottom: 10, left: 10 }
+                : { top: 40, right: 40, bottom: 40, left: 40 }
+            }
             yearSpacing={40}
             monthBorderColor="#ffffff"
             dayBorderWidth={2}

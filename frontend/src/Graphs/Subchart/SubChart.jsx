@@ -21,6 +21,7 @@ import ChartSubstituteComponentLoader from '../ChartSubstituteComponents/ChartSu
 import { isMobile } from 'react-device-detect';
 
 import { transformDataForNivo } from '../GoogleChartHelper'
+
 import CalendarChart from './NivoCalendarChart';
 
 function SubChart(props) {
@@ -111,10 +112,9 @@ function SubChart(props) {
         isPortrait={isPortrait}
         className={className}
         position="relative"
-        height="500px"
-        minHeight={chartData.chartType === 'Calendar' && '200px'}
+        height={isPortrait ? '300px' : '500px'}
       >
-        <CalendarChart data={calendarData} />
+        <CalendarChart data={calendarData} isPortrait={isPortrait} />
       </GoogleChartStyleWrapper>
     );
   }
