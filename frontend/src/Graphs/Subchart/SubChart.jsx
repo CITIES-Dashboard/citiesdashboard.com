@@ -112,7 +112,8 @@ function SubChart(props) {
         isPortrait={isPortrait}
         className={className}
         position="relative"
-        height={isPortrait ? '300px' : '500px'}
+        minWidth="700px"
+        height={isPortrait ? '400px' : '500px'}
       >
         <CalendarChart data={calendarData} isPortrait={isPortrait} />
       </GoogleChartStyleWrapper>

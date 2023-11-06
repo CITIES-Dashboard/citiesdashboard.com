@@ -47,7 +47,7 @@ const CalendarChart = ({ data, isPortrait }) => {
             }}
             colors={['#61cdbb', '#97e3d5', '#e8c1a0', '#f47560']}
             margin={isPortrait
-                ? { top: 10, right: 10, bottom: 10, left: 10 }
+                ? { top: 30, right: 10, bottom: 10, left: 20 }
                 : { top: 40, right: 40, bottom: 40, left: 40 }
             }
             yearSpacing={40}

@@ -167,7 +167,8 @@ function ChartComponent({ chartData: passedChartData, chartHeight: passedChartHe
                   position: (index === 0) ? '' : 'absolute',
                   opacity: indexValue === index ? '1' : '0',
                   pointerEvents: indexValue === index ? 'auto' : 'none',
-                  top: (index === 0) ? '' : 0
+                  top: (index === 0) ? '' : 0,
+                  overflow: isPortrait && 'auto',
                 }}
               >
                 <SubChart
