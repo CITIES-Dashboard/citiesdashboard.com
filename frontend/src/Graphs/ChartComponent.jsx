@@ -155,7 +155,14 @@ function ChartComponent({ chartData: passedChartData, chartHeight: passedChartHe
               />
             ))}
           </StyledTabs>
-          <Box position="relative">
+          <Box
+            position="relative"
+            sx={{
+              overflowX: isPortrait && 'auto',
+              WebkitOverflowScrolling: isPortrait && 'touch',
+              overflowY: 'hidden',
+            }}
+          >
             {chartData.subcharts.map((__, index) => (
               <Box
                 key={index}
@@ -168,7 +175,6 @@ function ChartComponent({ chartData: passedChartData, chartHeight: passedChartHe
                   opacity: indexValue === index ? '1' : '0',
                   pointerEvents: indexValue === index ? 'auto' : 'none',
                   top: (index === 0) ? '' : 0,
-                  overflow: isPortrait && 'auto',
                 }}
               >
                 <SubChart
