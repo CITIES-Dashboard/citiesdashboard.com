@@ -76,15 +76,22 @@ export const CalendarChart = ({ data, isPortrait, colors }) => {
 export const GradientBox = ({ minValue, maxValue, calendarColors }) => {
     const theme = useTheme();
 
+    // Create a gradient string from all colors in the calendarColors array
+    const gradient = calendarColors.map((color, index, array) => {
+        // Calculate the percentage position for each color
+        const position = (index / (array.length - 1)) * 100;
+        return `${color} ${position}%`;
+    }).join(', ');
+
     const containerStyle = {
-        position: 'relative',
+        position: 'sticky',
         width: 'fit-content',
         marginTop: '1rem',
         left: '74%',
     }
 
     const gradientStyle = {
-        background: `linear-gradient(to right, ${calendarColors[0]}, ${calendarColors[calendarColors.length - 1]})`,
+        background: `linear-gradient(to right, ${gradient})`,
         color: theme.palette.text.primary,
         border: `1.5px solid ${theme.palette.text.primary}`,
         minWidth: '150px',
