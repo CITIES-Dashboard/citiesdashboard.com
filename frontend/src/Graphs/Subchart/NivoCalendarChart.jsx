@@ -2,9 +2,9 @@
 
 import { ResponsiveCalendar } from '@nivo/calendar';
 import { useTheme } from '@mui/material/styles';
-import { Chip, Typography } from '@mui/material';
+import { Box, Chip, Typography } from '@mui/material';
 
-const CalendarChart = ({ data, isPortrait }) => {
+export const CalendarChart = ({ data, isPortrait, colors }) => {
     const theme = useTheme();
 
     // Function to extract tooltip text from HTML tooltip
@@ -45,7 +45,7 @@ const CalendarChart = ({ data, isPortrait }) => {
                     },
                 },
             }}
-            colors={['#61cdbb', '#97e3d5', '#e8c1a0', '#f47560']}
+            colors={colors}
             margin={isPortrait
                 ? { top: 30, right: 10, bottom: 10, left: 20 }
                 : { top: 40, right: 40, bottom: 40, left: 40 }
@@ -73,4 +73,39 @@ const CalendarChart = ({ data, isPortrait }) => {
     );
 };
 
-export default CalendarChart;
+export const GradientBox = ({ minValue, maxValue, calendarColors }) => {
+    const theme = useTheme();
+
+    const containerStyle = {
+        position: 'relative',
+        width: 'fit-content',
+        marginTop: '1rem',
+        left: '74%',
+    }
+
+    const gradientStyle = {
+        background: `linear-gradient(to right, ${calendarColors[0]}, ${calendarColors[calendarColors.length - 1]})`,
+        color: theme.palette.text.primary,
+        border: `1.5px solid ${theme.palette.text.primary}`,
+        minWidth: '150px',
+        height: '1.1rem',
+        maxHeight: '1.25rem',
+        display: 'flex',
+        justifyContent: 'space-between',
+    };
+
+    const labelStyle = {
+        position: 'relative',
+        top: '-1.15rem',
+        fontSize: '0.8rem',
+    };
+
+    return (
+        <Box style={containerStyle}>
+            <Box style={gradientStyle}>
+                <span style={labelStyle}>{minValue}</span>
+                <span style={labelStyle}>{maxValue}</span>
+            </Box>
+        </Box>
+    );
+};

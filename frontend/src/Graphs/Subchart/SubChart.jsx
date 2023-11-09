@@ -22,7 +22,7 @@ import { isMobile } from 'react-device-detect';
 
 import { transformDataForNivo } from '../GoogleChartHelper'
 
-import CalendarChart from './NivoCalendarChart';
+import { CalendarChart, GradientBox } from './NivoCalendarChart';
 
 function SubChart(props) {
   // Props
@@ -67,6 +67,9 @@ function SubChart(props) {
 
   // State to store transformed data for CalendarChart
   const [calendarData, setCalendarData] = useState(null);
+  const [calendarColors, setCalendarColors] = useState(['#61cdbb', '#97e3d5', '#e8c1a0', '#f47560']);
+  const [minValue, setMinValue] = useState(null);
+  const [maxValue, setMaxValue] = useState(null);
 
   // Early exit for 'Calendar' chartType
   if (chartData.chartType === 'Calendar') {
@@ -92,6 +95,15 @@ function SubChart(props) {
 
           const tooltipColumn = getTooltipColumn(chartData, subchartIndex).sourceColumn;
           const transformedData = transformDataForNivo(rawData, dataColumn, tooltipColumn);
+
+          // Calculate and set min and max values from transformedData
+          // used for the "legend"
+          const values = transformedData.map(item => item.value);
+          const min = Math.min(...values);
+          const max = Math.max(...values);
+
+          setMinValue(min);
+          setMaxValue(max);
           setCalendarData(transformedData);
         })
         .catch(error => {
@@ -115,7 +127,12 @@ function SubChart(props) {
         minWidth="700px"
         height={isPortrait ? '400px' : '500px'}
       >
-        <CalendarChart data={calendarData} isPortrait={isPortrait} />
+        <GradientBox
+          minValue={minValue}
+          maxValue={maxValue}
+          calendarColors={calendarColors}
+        />
+        <CalendarChart data={calendarData} isPortrait={isPortrait} colors={calendarColors} />
       </GoogleChartStyleWrapper>
     );
   }
