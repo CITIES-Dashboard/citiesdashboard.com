@@ -131,6 +131,7 @@ function SubChart(props) {
           minValue={minValue}
           maxValue={maxValue}
           calendarColors={calendarColors}
+          isPortrait={isPortrait}
         />
         <CalendarChart data={calendarData} isPortrait={isPortrait} colors={calendarColors} />
       </GoogleChartStyleWrapper>

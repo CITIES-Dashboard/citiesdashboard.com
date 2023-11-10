@@ -73,7 +73,7 @@ export const CalendarChart = ({ data, isPortrait, colors }) => {
     );
 };
 
-export const GradientBox = ({ minValue, maxValue, calendarColors }) => {
+export const GradientBox = ({ minValue, maxValue, calendarColors, isPortrait }) => {
     const theme = useTheme();
 
     // Create a gradient string from all colors in the calendarColors array
@@ -87,7 +87,7 @@ export const GradientBox = ({ minValue, maxValue, calendarColors }) => {
         position: 'sticky',
         width: 'fit-content',
         marginTop: '1rem',
-        left: '74%',
+        left: (isPortrait ? '58%' : '74%'),
     }
 
     const gradientStyle = {
