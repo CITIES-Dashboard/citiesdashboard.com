@@ -77,7 +77,22 @@ export const transformDataForNivo = (dataTable, dataColumn, tooltipColumn) => {
     }
   });
 
-  return transformed;
+  // Get dateRange (from - to)
+  const dateStrings = transformed.map(item => item.day);
+  const dateRange = {
+    min: dateStrings.reduce((min, current) => (current < min ? current : min)),
+    max: dateStrings.reduce((max, current) => (current > max ? current : max))
+  };
+
+  // Get valueRange (min - max)
+  const values = transformed.map(item => item.value);
+  const valueRange = { min: Math.min(...values), max: Math.max(...values) };
+
+  return {
+    data: transformed,
+    dateRange: dateRange,
+    valueRange: valueRange
+  };
 };
 
 // Function to generate a random ID for the google chart container

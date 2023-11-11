@@ -22,7 +22,7 @@ import { isMobile } from 'react-device-detect';
 
 import { transformDataForNivo } from '../GoogleChartHelper'
 
-import { CalendarChart, GradientBox } from './NivoCalendarChart';
+import { CalendarChart } from './NivoCalendarChart';
 
 function SubChart(props) {
   // Props
@@ -64,13 +64,19 @@ function SubChart(props) {
 
   // Use GoogleContext for loading and manipulating the Google Charts
   const [google, _] = useContext(GoogleContext);
+  // Get the current theme
+  const theme = useTheme();
 
+  // Get the options object for chart
+  let options = useMemo(() => {
+    let opts = returnGenericOptions({ ...props, theme });
+    if (chartData.chartType === 'Calendar') {
+      opts = returnCalendarChartOptions(opts);
+    }
+    return opts;
+  }, [props, theme, chartData.chartType]);
   // State to store transformed data for CalendarChart
   const [calendarData, setCalendarData] = useState(null);
-  const [calendarColors, setCalendarColors] = useState(['#61cdbb', '#97e3d5', '#e8c1a0', '#f47560']);
-  const [minValue, setMinValue] = useState(null);
-  const [maxValue, setMaxValue] = useState(null);
-
   // Early exit for 'Calendar' chartType
   if (chartData.chartType === 'Calendar') {
     useEffect(() => {
@@ -95,16 +101,7 @@ function SubChart(props) {
 
           const tooltipColumn = getTooltipColumn(chartData, subchartIndex).sourceColumn;
           const transformedData = transformDataForNivo(rawData, dataColumn, tooltipColumn);
-
-          // Calculate and set min and max values from transformedData
-          // used for the "legend"
-          const values = transformedData.map(item => item.value);
-          const min = Math.min(...values);
-          const max = Math.max(...values);
-
-          setMinValue(min);
-          setMaxValue(max);
-          setCalendarData(transformedData);
+          setCalendarData({ ...transformedData, options: options });
         })
         .catch(error => {
           console.log(error);
@@ -127,13 +124,13 @@ function SubChart(props) {
         minWidth="700px"
         height={isPortrait ? '400px' : '500px'}
       >
-        <GradientBox
-          minValue={minValue}
-          maxValue={maxValue}
-          calendarColors={calendarColors}
+        <CalendarChart
+          data={calendarData.data}
+          dateRange={calendarData.dateRange}
+          valueRange={calendarData.valueRange}
           isPortrait={isPortrait}
+          options={options}
         />
-        <CalendarChart data={calendarData} isPortrait={isPortrait} colors={calendarColors} />
       </GoogleChartStyleWrapper>
     );
   }
@@ -143,9 +140,6 @@ function SubChart(props) {
   const [chartWrapper, setChartWrapper] = useState();
   const [dashboardWrapper, setDashboardWrapper] = useState();
   const [controlWrapper, setControlWrapper] = useState();
-
-  // Get the current theme
-  const theme = useTheme();
 
   // To determine the first time the chart renders to show/hide the LoadingAnimation
   const [isFirstRender, setIsFirstRender] = useState(true);
@@ -160,17 +154,6 @@ function SubChart(props) {
 
   // Calendar chart's properties
   const [chartTotalHeight, setChartTotalHeight] = useState(200);
-
-  // Get the options object for chart
-  let options = useMemo(() => {
-    let opts = returnGenericOptions({ ...props, theme });
-    if (chartData.chartType === 'Calendar') {
-      return returnCalendarChartOptions(opts);
-    }
-    return opts;
-  }, [props, theme, chartData.chartType]);
-
-  if (chartData.chartType === 'Calendar') options = returnCalendarChartOptions(options);
 
   // Properties for chart control (if existed)
   const chartControl = chartData.control || chartData.subcharts?.[subchartIndex].control;
@@ -531,15 +514,6 @@ function SubChart(props) {
 
   const onChartReady = () => {
     if (!isMounted.current) return;
-    if (chartData.chartType === 'Calendar') {
-      // querySelector is used to select the first 'g' element in the svg
-      // this is to get the height of the non-responsive element
-      // to set the CalendarChart's height to make it resonsive
-      const chartDOMContainer = document.getElementById(chartID).querySelector('svg > g:nth-of-type(1)');
-      let renderedHeight = chartDOMContainer.getBBox().height;
-      if (options.legend.position === 'none') renderedHeight += 50;
-      setChartTotalHeight(renderedHeight);
-    }
 
     if (!isFirstRender) return;
     // Hide the circleProgress when chart finishes rendering the first time
