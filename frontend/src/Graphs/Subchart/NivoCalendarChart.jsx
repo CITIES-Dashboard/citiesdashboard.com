@@ -146,7 +146,7 @@ const CustomTooltip = ({ day, color, tooltipText, dateRange, inFirstTwoRowsOfCha
 
 const GradientBox = ({ valueRange, colors, isPortrait }) => {
 
-    if (!(valueRange?.min && valueRange?.max)) return null;
+    if (valueRange?.min === null || valueRange?.max === null) return null;
 
     const theme = useTheme();
 
@@ -167,7 +167,7 @@ const GradientBox = ({ valueRange, colors, isPortrait }) => {
     const gradientStyle = {
         background: `linear-gradient(to right, ${gradient})`,
         color: theme.palette.text.primary,
-        border: `1.5px solid ${theme.palette.text.primary}`,
+        border: `1px solid ${theme.palette.text.primary}`,
         minWidth: '150px',
         height: '1.1rem',
         maxHeight: '1.25rem',
