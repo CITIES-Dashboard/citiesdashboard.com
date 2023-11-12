@@ -178,6 +178,7 @@
         ],
         "options": {
           "colorAxis": {
+            "isGradient": false,
             "colors": "aqi"
           },
           "legend": {
@@ -1075,6 +1076,7 @@
             ],
             "options": {
               "colorAxis": {
+                "isGradient": true,
                 "colors": "default"
               }
             }
@@ -1095,6 +1097,7 @@
             ],
             "options": {
               "colorAxis": {
+                "isGradient": true,
                 "colors": "matchingColor",
                 "colorIndex": 0
               }
@@ -1116,6 +1119,7 @@
             ],
             "options": {
               "colorAxis": {
+                "isGradient": true,
                 "colors": "matchingColor",
                 "colorIndex": 1
               }
@@ -1137,6 +1141,7 @@
             ],
             "options": {
               "colorAxis": {
+                "isGradient": true,
                 "colors": "matchingColor",
                 "colorIndex": 2
               }

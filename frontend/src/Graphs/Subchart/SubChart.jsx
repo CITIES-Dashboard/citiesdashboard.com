@@ -20,6 +20,9 @@ import ChartSubstituteComponentLoader from '../ChartSubstituteComponents/ChartSu
 
 import { isMobile } from 'react-device-detect';
 
+import { transformDataForNivo } from '../GoogleChartHelper'
+
+import { CalendarChart } from './NivoCalendarChart';
 
 function SubChart(props) {
   // Props
@@ -61,15 +64,82 @@ function SubChart(props) {
 
   // Use GoogleContext for loading and manipulating the Google Charts
   const [google, _] = useContext(GoogleContext);
+  // Get the current theme
+  const theme = useTheme();
+
+  // Get the options object for chart
+  let options = useMemo(() => {
+    let opts = returnGenericOptions({ ...props, theme });
+    if (chartData.chartType === 'Calendar') {
+      opts = returnCalendarChartOptions(opts);
+    }
+    return opts;
+  }, [props, theme, chartData.chartType]);
+  // State to store transformed data for CalendarChart
+  const [calendarData, setCalendarData] = useState(null);
+  // Early exit for 'Calendar' chartType
+  if (chartData.chartType === 'Calendar') {
+    useEffect(() => {
+      if (!google) return;
+      fetchDataFromSheet({ chartData: chartData, subchartIndex: subchartIndex })
+        .then(response => {
+          const rawData = response.getDataTable();
+          const dataColumn = chartData.columns ? chartData.columns[1] : 1
+            || chartData.subcharts[subchartIndex].columns ? chartData.subcharts[subchartIndex].columns[1] : 1;
+
+          const getTooltipColumn = (chartData, subchartIndex) => {
+            // Search in top-level columns
+            let tooltipColumn = chartData.columns && chartData.columns.find(col => typeof col === 'object' && col.role === 'tooltip');
+
+            // If not found, search in subcharts
+            if (!tooltipColumn && chartData.subcharts && chartData.subcharts[subchartIndex]) {
+              tooltipColumn = chartData.subcharts[subchartIndex].columns.find(col => typeof col === 'object' && col.role === 'tooltip');
+            }
+
+            return tooltipColumn;
+          }
+
+          const tooltipColumn = getTooltipColumn(chartData, subchartIndex).sourceColumn;
+          const transformedData = transformDataForNivo(rawData, dataColumn, tooltipColumn);
+          setCalendarData({ ...transformedData, options: options });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }, [google]);
+
+    if (!calendarData) {
+      return (
+        <Box sx={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+          <LoadingAnimation />
+        </Box>
+      )
+    }
+
+    return (
+      <GoogleChartStyleWrapper
+        isPortrait={isPortrait}
+        className={className}
+        position="relative"
+        minWidth="700px"
+        height={isPortrait ? '400px' : '500px'}
+      >
+        <CalendarChart
+          data={calendarData.data}
+          dateRange={calendarData.dateRange}
+          valueRange={calendarData.valueRange}
+          isPortrait={isPortrait}
+          options={options}
+        />
+      </GoogleChartStyleWrapper>
+    );
+  }
 
   // States of the Google Charts
   const [dataTable, setDataTable] = useState();
   const [chartWrapper, setChartWrapper] = useState();
   const [dashboardWrapper, setDashboardWrapper] = useState();
   const [controlWrapper, setControlWrapper] = useState();
-
-  // Get the current theme
-  const theme = useTheme();
 
   // To determine the first time the chart renders to show/hide the LoadingAnimation
   const [isFirstRender, setIsFirstRender] = useState(true);
@@ -84,17 +154,6 @@ function SubChart(props) {
 
   // Calendar chart's properties
   const [chartTotalHeight, setChartTotalHeight] = useState(200);
-
-  // Get the options object for chart
-  let options = useMemo(() => {
-    let opts = returnGenericOptions({ ...props, theme });
-    if (chartData.chartType === 'Calendar') {
-      return returnCalendarChartOptions(opts);
-    }
-    return opts;
-  }, [props, theme, chartData.chartType]);
-
-  if (chartData.chartType === 'Calendar') options = returnCalendarChartOptions(options);
 
   // Properties for chart control (if existed)
   const chartControl = chartData.control || chartData.subcharts?.[subchartIndex].control;
@@ -455,15 +514,6 @@ function SubChart(props) {
 
   const onChartReady = () => {
     if (!isMounted.current) return;
-    if (chartData.chartType === 'Calendar') {
-      // querySelector is used to select the first 'g' element in the svg
-      // this is to get the height of the non-responsive element
-      // to set the CalendarChart's height to make it resonsive
-      const chartDOMContainer = document.getElementById(chartID).querySelector('svg > g:nth-of-type(1)');
-      let renderedHeight = chartDOMContainer.getBBox().height;
-      if (options.legend.position === 'none') renderedHeight += 50;
-      setChartTotalHeight(renderedHeight);
-    }
 
     if (!isFirstRender) return;
     // Hide the circleProgress when chart finishes rendering the first time
