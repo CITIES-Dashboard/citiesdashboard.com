@@ -132,7 +132,7 @@ function AirQualityIndexTable(props) {
           </TableBody>
         </StyledTable>
       </Box>
-      {renderAQIchart({ shouldRender: !hideAQIDescription })}
+      {/* {renderAQIchart({ shouldRender: !hideAQIDescription })} */}
     </>
 
   );
