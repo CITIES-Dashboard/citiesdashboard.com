@@ -22,7 +22,7 @@ import { isMobile } from 'react-device-detect';
 
 import { transformDataForNivo } from '../GoogleChartHelper'
 
-import { CalendarChart } from './NivoCalendarChart';
+import { CalendarChart, getCalendarChartMargin, yearSpacing } from './NivoCalendarChart';
 
 function SubChart(props) {
   // Props
@@ -77,6 +77,8 @@ function SubChart(props) {
   }, [props, theme, chartData.chartType]);
   // State to store transformed data for CalendarChart
   const [calendarData, setCalendarData] = useState(null);
+  const [calendarHeight, setCalendarHeight] = useState(200);
+  const [containerWidth, setContainerWidth] = useState(1200); // max width of the chart container
   // Early exit for 'Calendar' chartType
   if (chartData.chartType === 'Calendar') {
     useEffect(() => {
@@ -102,6 +104,26 @@ function SubChart(props) {
           const tooltipColumn = getTooltipColumn(chartData, subchartIndex).sourceColumn;
           const transformedData = transformDataForNivo(rawData, dataColumn, tooltipColumn);
           setCalendarData({ ...transformedData, options: options });
+
+          // Get the number of years the calendar chart has data for
+          const startYear = new Date(transformedData.dateRange.min).getFullYear();
+          const endYear = new Date(transformedData.dateRange.max).getFullYear();
+          const numberOfYear = endYear - startYear + 1;
+
+          // Calculate the size of each cell
+          const cellSize = Math.min(containerWidth / 60, 20); // max cell size of 20
+          const yearHeight = cellSize * 7; // Height for one year
+
+          const calendarChartMargin = getCalendarChartMargin(isPortrait);
+
+          // Calculate the total height based on the number of years and margins
+          let totalHeight;
+          if (numberOfYear === 1) {
+            totalHeight = yearHeight + yearSpacing + calendarChartMargin.top + calendarChartMargin.bottom
+          } else {
+            totalHeight = numberOfYear * (yearHeight + yearSpacing) + calendarChartMargin.top + calendarChartMargin.bottom;
+          }
+          setCalendarHeight(totalHeight);
         })
         .catch(error => {
           console.log(error);
@@ -122,7 +144,9 @@ function SubChart(props) {
         className={className}
         position="relative"
         minWidth="700px"
-        height={isPortrait ? '400px' : '500px'}
+        height={calendarHeight + 'px'}
+        minHeight={isPortrait ? '200px' : calendarHeight + 'px'}
+        maxHeight={isPortrait && '400px'}
       >
         <CalendarChart
           data={calendarData.data}
