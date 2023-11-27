@@ -168,7 +168,7 @@ const GradientBox = ({ valueRange, colors, isPortrait }) => {
         position: 'sticky',
         width: 'fit-content',
         marginTop: '1rem',
-        left: (isPortrait ? '58%' : '74%'),
+        left: (isPortrait ? 'calc(80dvw - 7rem)' : 'calc(80% + 1rem)'),
     }
 
     const gradientStyle = {
