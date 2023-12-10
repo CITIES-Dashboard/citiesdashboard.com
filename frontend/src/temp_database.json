@@ -217,7 +217,6 @@
             "subchartSubtitle": "Meanwhile, the air quality inside the Dining Hall D2 varies throughout the year, often getting worse during the academic year compared to the summer due to heightened cooking activities."
           }
         ],
-        "subtitle": "",
         "headers": 1,
         "chartType": "ColumnChart",
         "options": {
