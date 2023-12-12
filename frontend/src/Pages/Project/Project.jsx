@@ -57,7 +57,7 @@ const CustomChip = (props) => {
 const Project = ({ themePreference }) => {
   const [_, setCurrentPage, chartsTitlesList, setChartsTitlesList] = useContext(LinkContext);
 
-  let { id } = useParams();
+  const { id } = useParams();
   const [project, setProject] = useState({});
   const [loading, setLoading] = useState(false);
   const [tab, setTab] = useContext(TabContext);
