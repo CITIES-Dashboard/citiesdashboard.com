@@ -167,7 +167,7 @@ const Project = ({ themePreference }) => {
                   <Grid item>
                     <CustomChip
                       icon={<CommentIcon />}
-                      label={`${commentCount} Comment${commentCounts[project.id] > 1 ? "s" : ""}`}
+                      label={`${commentCount} Comment${commentCount > 1 ? "s" : ""}`}
                       tooltipTitle="Number of Comments"
                       onClick={() => {
                         scrollToSection(jsonData.commentSection.id);
