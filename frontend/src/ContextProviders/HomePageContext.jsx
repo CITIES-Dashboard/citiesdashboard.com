@@ -13,6 +13,24 @@ export function HomePageProvider({ children }) {
   // state to store data
   const [data, setData] = useState({});
 
+  const returnTeaserChartForHomepage = (item) => {
+    if (!item.embeddedWebsite) {
+      return (item.isActive
+        ? (
+          <ChartComponent
+            chartData={{
+              sheetId: item.sheetId,
+              ...item.charts[0],
+            }}
+            chartHeight="100%"
+            isHomepage
+          />
+        ) : <ComingSoonBanner />
+      );
+    }
+    return null;
+  };
+
   useEffect(() => {
     const homeData = {};
     // loop through temp_database.json
@@ -22,19 +40,10 @@ export function HomePageProvider({ children }) {
         id: item.id,
         title: item.title,
         owners: item.owners,
-        chartCounts: item.charts?.length,
-        graph: (item.isActive
-          ? (
-            <ChartComponent
-              chartData={{
-                sheetId: item.sheetId,
-                ...item.charts[item.homepageChartIndex || 0],
-              }}
-              chartHeight="100%"
-              isHomepage
-            />
-          ) : <ComingSoonBanner />
-        ),
+        chartCounts: item.chartCounts || item.charts?.length,
+        chart: returnTeaserChartForHomepage(item),
+        embeddedWebsite: item.embeddedWebsite,
+        externalWebsite: item.externalWebsite
       };
 
       setData(homeData);

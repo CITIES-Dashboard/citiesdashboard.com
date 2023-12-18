@@ -1,7 +1,10 @@
+// disable eslint for this file
+/* eslint-disable */
+
 import { useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Box, Grid, Stack, Typography, Container, Card, CardContent, CardMedia, CardActionArea, Divider, Tooltip } from '@mui/material';
+import { Box, Grid, Stack, Typography, Container, Card, CardContent, CardMedia, CardActionArea, Divider, Tooltip, Chip } from '@mui/material';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import CommentIcon from '@mui/icons-material/Comment';
 import { LinkContext } from '../../ContextProviders/LinkContext';
@@ -18,6 +21,8 @@ import GetInTouch from './GetInTouch';
 import jsonData from '../../section_data.json';
 
 import * as Tracking from '../../Utils/Tracking';
+
+import LaunchIcon from '@mui/icons-material/Launch';
 
 function Home({ themePreference, title }) {
   // Update the page's title
@@ -36,6 +41,32 @@ function Home({ themePreference, title }) {
     setCurrentPage('home');
     setChartsTitlesList([]);
   }, [setCurrentPage, setChartsTitlesList]);
+
+  const renderTeaserChartOrEmbeddedWebsite = (project) => {
+    if (project.chart) return project.chart;
+    else if (project.embeddedWebsite) {
+      return (
+        <>
+          <Chip
+            sx={{ position: 'absolute', top: '0.5rem', right: '0.5rem' }}
+            size="small"
+            label="EXTERNAL SITE"
+            icon={<LaunchIcon />}
+            color="primary"
+          />
+          <iframe
+            src={`${project.embeddedWebsite}?themePreference=${themePreference}`}
+            title="CITIESair"
+            style={{
+              width: '100%',
+              height: '98%',
+              border: 'none'
+            }}
+          />
+        </>
+      )
+    }
+  }
 
   return (
     <Box width="100%">
@@ -59,25 +90,36 @@ function Home({ themePreference, title }) {
               <Grid key={index} item xs={12} sm={9} md={6} lg={4}>
                 <Card elevation={2}>
                   <CardActionArea
-                    component={Link}
-                    to={`/project/${project.id}`}
+                    component={project.externalWebsite ? 'a' : Link}
+                    href={project.externalWebsite && project.externalWebsite}
+                    to={project.externalWebsite ? null : `/project/${project.id}`}
+                    target={project.externalWebsite ? '_blank' : ''}
+                    rel={project.externalWebsite ? 'noopener noreferrer' : ''}
                     disabled={!project.isActive}
                     onClick={() => {
-                      Tracking.sendEventAnalytics(
-                        Tracking.Events.internalNavigation,
-                        {
-                          destination_id: `/project/${project.id}`,
-                          destination_label: project.id,
-                          origin_id: 'home'
-                        }
-                      );
+                      project.externalWebsite
+                        ? Tracking.sendEventAnalytics(
+                          Tracking.Events.internalNavigation,
+                          {
+                            destination_id: `/project/${project.id}`,
+                            destination_label: project.id,
+                            origin_id: 'home'
+                          }
+                        )
+                        : Tracking.sendEventAnalytics(
+                          Tracking.Events.externalNavigation,
+                          {
+                            destination_link: project.externalWebsite,
+                            origin_id: 'home'
+                          }
+                        )
                     }}
                   >
                     <CardMedia
                       height="auto"
                       sx={{ aspectRatio: '4/3', pointerEvents: 'none' }}
                     >
-                      {project.graph}
+                      {renderTeaserChartOrEmbeddedWebsite(project)}
                     </CardMedia>
 
                     <Divider />
@@ -91,6 +133,10 @@ function Home({ themePreference, title }) {
                             fontWeight="500"
                           >
                             {project.title}
+                            {
+                              project.embeddedWebsite &&
+                              <LaunchIcon sx={{ fontSize: '1rem', ml: 0.5 }} />
+                            }
                           </Typography>
                           <Typography
                             component="div"

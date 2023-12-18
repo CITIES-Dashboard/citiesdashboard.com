@@ -3,23 +3,12 @@
     "isActive": true,
     "id": "air-quality",
     "title": "Air Quality",
-    "sheetId": "157f6vu47RBEvnBnW24jGI7cz-ov1aSBUFPdkb5sDKDc",
-    "description": "CITIESair is a network of air quality sensors that monitors the concentration of particulate matter PM2.5 at NYUAD and several schools in Abu Dhabi. The air quality network at NYUAD consists of three stations: an outdoor station between the A1 and A2 buildings, two indoor stations in the Campus Center (C2), and East Dining Hall (D2), respectively. <br><br> Real-time air quality data is displayed on banners on NYUAD's Student Portal and Intranet, <a href='https://citiesair.com/'>CITIESair website</a>, <a href='https://www.iqair.com/united-arab-emirates/abu-dhabi/cities@nyuad'>IQAir website</a> (only outdoor station), as well as dedicated physical air quality screens in C2 and D2. <br><br> <small><b>Note: </b>CITIESair was originally a part of a student <a href='http://dlib.nyu.edu/findingaids/html/nyuad/ad_mc_004/dscaspace_76b01eb87c7a80289e06bbdd3f316aa9.html'>Capstone project (NYUADAir)</a> in Spring 2021. It publicized, for the first time, air quality data around the NYUAD campus to the community. Recognizing the potential of this project, and to further raise awareness and encourage sustainable behaviors within and beyond the university community, CITIES decided to scale it up by equipping the network with higher-grade sensors and transferring technology to other schools in Abu Dhabi.</small>",
     "owners": [
-      "CITIESair"
+      "CITIESair - https://citiesair.com"
     ],
-    "contact": "cities.nyuad@nyu.edu",
-    "rawDataTables": [
-      {
-        "gid": 584789045,
-        "query": "SELECT A, B, C, D, G, H , I, L, M, N"
-      },
-      {
-        "gid": 19993990,
-        "query": "SELECT A, B, C, D, G, H , I, L, M, N"
-      }
-    ],
-    "homepageChartIndex": 1,
+    "chartCounts": 6,
+    "embeddedWebsite": "http://localhost:3001/nyuadmap",
+    "externalWebsite": "http://localhost:3001/dashboard/nyuad?source=cities-dashboard",
     "charts": [
       {
         "title": "An Introduction of the US Air Quality Index (AQI)",

@@ -1,5 +1,6 @@
 export const Events = {
   internalNavigation: 'internal_navigation',
+  externalNavigation: 'external_navigation',
   themeChange: 'theme_change',
   rawDatasetButtonClicked: 'raw_dataset_button_clicked',
   rawDatasetDownloaded: 'raw_dataset_downloaded',
