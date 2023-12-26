@@ -849,40 +849,6 @@
     ]
   },
   {
-    "isActive": true,
-    "id": "printing-and-copying",
-    "title": "Printing & Copying",
-    "sheetId": "1O1X73cSXO1lQuiQ1lj7d9QdE3KgdIufFlurmAPeI1ek",
-    "description": "This dataset visualizes printing and copying activities at NYUAD. It tracks the usage of black and white (B/W) and color prints across various paper sizes like A3 and A4, segmented by different departments and user categories. Past efforts to visualize similar data have encouraged resource awareness within the NYUAD community. This digital representation, free from the spatial limitations of physical displays, offers a detailed breakdown including time trends, departmental comparisons, and user-specific statistics.<br><br>Currently, the dataset captures the absolute volume of printing and copying. Future integrations aim to include contextual data like departmental headcounts and activity levels, enriching the dataset with per-capita usage insights and efficiency metrics.",
-    "owners": [
-      "NYUAD IT"
-    ],
-    "contact": "nyuad.it.servicemanagement-group@nyu.edu",
-    "rawDataTables": [
-      {
-        "gid": 1304606517,
-        "query": "SELECT C, D, E, F, G, N, O, P, Q, V"
-      }
-    ],
-    "charts": [
-      {
-        "title": "Pages Used by User Category by Month",
-        "headers": 1,
-        "chartType": "ColumnChart",
-        "gid": 964503402,
-        "query": "SELECT A, B, C, D, E"
-      },
-      {
-        "title": "Total Page Usage by User Category",
-        "headers": 1,
-        "chartType": "NivoHeatMap",
-        "nivo": true,
-        "gid": 1635689114,
-        "query": "SELECT A, B, C, D, E, F, G, H, I"
-      }
-    ]
-  },
-  {
     "isActive": false,
     "id": "noise-pollution",
     "title": "Noise Pollution",

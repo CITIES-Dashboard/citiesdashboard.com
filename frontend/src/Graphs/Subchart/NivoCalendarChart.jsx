@@ -72,9 +72,8 @@ export const CalendarChart = (props) => {
                 to={dateRange?.max}
                 emptyColor={'transparent'}
                 theme={{
-                    text: {
-                        fill: theme.palette.text.secondary,
-                    },
+                    textColor: theme.palette.text.secondary,
+                    fontSize: '0.75rem',
                     tooltip: {
                         container: {
                             background: theme.palette.mode === 'dark' ? '#2b2b2b' : '#fff',

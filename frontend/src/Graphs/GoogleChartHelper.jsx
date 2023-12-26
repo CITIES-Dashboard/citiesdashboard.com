@@ -95,23 +95,6 @@ export const transformDataForNivo = (dataTable, dataColumn, tooltipColumn) => {
   };
 };
 
-export const convertToNivoHeatMapData = (googleSheetsData) => {
-  const dataTable = JSON.parse(googleSheetsData.toJSON());
-  const cols = dataTable.cols.map(col => col.label).slice(1); // Exclude the first column
-  const rows = dataTable.rows;
-
-  return rows.map(row => {
-    const total = row.c.slice(1).reduce((acc, cell) => acc + cell.v, 0);
-    const data = cols.map((col, index) => {
-      const value = row.c[index + 1].v; // +1 to offset label column
-      const percentage = total > 0 ? (value / total * 100).toFixed(2) : 0;
-      return { x: col, y: value, percentage: `${percentage}%` };
-    });
-
-    return { id: row.c[0].v, data };
-  });
-}
-
 // Function to generate a random ID for the google chart container
 export const generateRandomID = () => {
   return Math.random().toString(36).substr(2, 9); // Generates a random string of length 9
