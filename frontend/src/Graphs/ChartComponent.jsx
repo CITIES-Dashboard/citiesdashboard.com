@@ -213,7 +213,14 @@ function ChartComponent({ chartData: passedChartData, chartHeight: passedChartHe
   }
 
   return (
-    <ChartStyleWrapper height="100%">
+    <ChartStyleWrapper
+      height="100%"
+      sx={{
+        overflowX: isPortrait && 'auto',
+        WebkitOverflowScrolling: isPortrait && 'touch',
+        overflowY: 'hidden',
+      }}
+    >
       {renderedComponent}
     </ChartStyleWrapper>
   );

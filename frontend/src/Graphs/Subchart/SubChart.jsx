@@ -20,9 +20,11 @@ import ChartSubstituteComponentLoader from '../ChartSubstituteComponents/ChartSu
 
 import { isMobile } from 'react-device-detect';
 
-import { transformDataForNivo } from '../GoogleChartHelper'
+import { transformDataForNivo, convertToNivoHeatMapData } from '../GoogleChartHelper'
 
 import { CalendarChart, getCalendarChartMargin, yearSpacing } from './NivoCalendarChart';
+
+import { NivoHeatMap } from './NivoHeatMap';
 
 function SubChart(props) {
   // Props
@@ -158,6 +160,47 @@ function SubChart(props) {
       </GoogleChartStyleWrapper>
     );
   }
+
+  const [NivoHeatMapData, setNivoHeatMapData] = useState(null);
+  const [NivoHeatMapWidth, setNivoHeatMapWidth] = useState(900);
+  // Early return for 'NivoHeatMap' chartType
+  if (chartData.chartType === 'NivoHeatMap') {
+    useEffect(() => {
+      if (!google) return;
+      fetchDataFromSheet({ chartData: chartData, subchartIndex: subchartIndex })
+        .then(response => {
+          const rawData = response.getDataTable();
+          const heatMapData = convertToNivoHeatMapData(rawData);
+          setNivoHeatMapData(heatMapData);
+        }
+        )
+        .catch(error => {
+          console.log(error);
+        });
+    }, [google]);
+
+    if (!NivoHeatMapData) {
+      return (
+        <Box sx={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+          <LoadingAnimation />
+        </Box>
+      )
+    }
+
+    return (
+      <GoogleChartStyleWrapper
+        isPortrait={isPortrait}
+        className={className}
+        position="relative"
+        minWidth={NivoHeatMapWidth + 'px'}
+        height="500px"
+      >
+        <NivoHeatMap data={NivoHeatMapData} width={NivoHeatMapWidth} />
+      </GoogleChartStyleWrapper>
+    );
+  }
+
+
 
   // States of the Google Charts
   const [dataTable, setDataTable] = useState();
