@@ -195,7 +195,11 @@ function SubChart(props) {
         minWidth={NivoHeatMapWidth + 'px'}
         height="500px"
       >
-        <NivoHeatMap data={NivoHeatMapData} width={NivoHeatMapWidth} />
+        <NivoHeatMap
+          data={NivoHeatMapData}
+          width={NivoHeatMapWidth}
+          isPortrait={isPortrait}
+        />
       </GoogleChartStyleWrapper>
     );
   }
