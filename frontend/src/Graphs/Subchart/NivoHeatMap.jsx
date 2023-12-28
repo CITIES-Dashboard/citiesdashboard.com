@@ -1,4 +1,5 @@
 /* eslint-disable */
+import { useEffect, useState } from 'react';
 import { ResponsiveHeatMap } from '@nivo/heatmap';
 import { useTheme } from '@mui/material/styles';
 import { Box, Chip } from '@mui/material';
@@ -19,8 +20,29 @@ const HeatMapTooltip = ({ node }) => {
     );
 };
 
+const findRangeOfYValues = (data) => {
+    let allYValues = data.flatMap(group => group.data.map(item => item.y));
+    let minValue = Math.min(...allYValues);
+    let maxValue = Math.max(...allYValues);
+    return { minValue, maxValue };
+};
+
 export const NivoHeatMap = ({ data, width, isPortrait, options }) => {
     const theme = useTheme();
+    const [yValueRange, setYValueRange] = useState({ minValue: null, maxValue: null });
+
+    useEffect(() => {
+        // Calculate the range of y values when data changes
+        const range = findRangeOfYValues(data);
+        setYValueRange(range);
+    }, [data]); // Dependency array: Recalculate when 'data' changes
+
+    if (yValueRange.minValue === null || yValueRange.maxValue === null) {
+        return null;
+    }
+
+    // Calculate the midpoint of the range
+    const midPoint = (yValueRange.minValue + yValueRange.maxValue) / 2;
 
     return (
         <ResponsiveHeatMap
@@ -29,26 +51,37 @@ export const NivoHeatMap = ({ data, width, isPortrait, options }) => {
             forceSquare={true}
             margin={
                 isPortrait
-                    ? { top: 100, right: 125, bottom: 0, left: 125 }
+                    ? { top: 100, right: 125, bottom: 50, left: 125 }
                     : { top: 100, right: 90, bottom: 60, left: 90 }
             }
-            borderWidth={1}
-            borderColor={theme.palette.customBackground}
 
-            // Custom theming for Dark mode
-            opacity={theme.palette.mode === 'dark' ? 0.7 : 1}
-            activeOpacity={theme.palette.mode === 'dark' ? 0.7 : 1}
+            // borderWidth={1}
+            // borderColor={theme.palette.customBackground}
+
+            // // Custom theming for Dark mode
+            // opacity={theme.palette.mode === 'dark' ? 0.7 : 1}
+            // activeOpacity={theme.palette.mode === 'dark' ? 0.7 : 1}
 
             // --- Labels ---
-            // Display both absolute and percentage values in the label
-            label={({ data }) => (
-                <tspan>
-                    {data.y}
-                    <tspan x="0" dy="1.2em">
-                        ({data.percentage})
+            // Display both absolute and percentage values in cell labels
+            label={({ data }) => {
+                // Use a light label color if y value is greater than 50% of graph range
+                // This is done to improve graph readability
+                let fontColor = data.y > midPoint && '#cfd8dc';
+
+                return (
+                    <tspan fill={fontColor}>
+                        {data.y}
+                        <tspan
+                            x="0"
+                            dy="1.2em"
+                            fill={fontColor}
+                        >
+                            ({data.percentage})
+                        </tspan>
                     </tspan>
-                </tspan>
-            )}
+                )
+            }}
 
             // --- Chart Color Scheme ---
             colors={{
