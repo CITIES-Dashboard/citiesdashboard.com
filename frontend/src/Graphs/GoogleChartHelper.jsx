@@ -104,7 +104,7 @@ export const convertToNivoHeatMapData = (googleSheetsData) => {
     const total = row.c.slice(1).reduce((acc, cell) => acc + cell.v, 0);
     const data = cols.map((col, index) => {
       const value = row.c[index + 1].v; // +1 to offset label column
-      const percentage = total > 0 ? (value / total * 100).toFixed(2) : 0;
+      const percentage = total > 0 ? (value / total * 100).toFixed(1) : 0;
       return { x: col, y: value, percentage: `${percentage}%` };
     });
 
@@ -160,6 +160,10 @@ export const returnGenericOptions = (props) => {
   options = {
     ...options,
     ...chartData.options,
+    nivoHeatMap: {
+      ...chartData.options?.nivoHeatMap,
+      ...options.nivoHeatMap
+    },
     theme: 'material',
     curveType: options.curveType || chartData.options?.curveType || 'function',
     crosshair: { orientation: 'both', trigger: 'focus', opacity: 0.5 },

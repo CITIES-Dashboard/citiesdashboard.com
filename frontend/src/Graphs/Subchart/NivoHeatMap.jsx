@@ -19,17 +19,21 @@ const HeatMapTooltip = ({ node }) => {
     );
 };
 
-export const NivoHeatMap = ({ data, width, isPortrait }) => {
+export const NivoHeatMap = ({ data, width, isPortrait, options }) => {
     const theme = useTheme();
+
     return (
         <ResponsiveHeatMap
             data={data}
+            {...options?.nivoHeatMap}
             forceSquare={true}
             margin={
                 isPortrait
-                    ? { top: 0, right: 125, bottom: 0, left: 125 }
-                    : { top: 60, right: 90, bottom: 60, left: 90 }
+                    ? { top: 100, right: 125, bottom: 0, left: 125 }
+                    : { top: 100, right: 90, bottom: 60, left: 90 }
             }
+            borderWidth={1}
+            borderColor={theme.palette.customBackground}
 
             // --- Labels ---
             // Display both absolute and percentage values in the label
@@ -41,31 +45,25 @@ export const NivoHeatMap = ({ data, width, isPortrait }) => {
                     </tspan>
                 </tspan>
             )}
-            // Label text styling
-            labelTextColor={{
-                from: 'color',
-                modifiers: [['darker', 3]]
-            }}
 
             // --- Chart Color Scheme ---
             colors={{
-                type: 'sequential',
-                scheme: 'cool',
+                type: 'diverging',
+                scheme: 'purples',
+                divergeAt: 0.3
             }}
-            emptyColor="#555555"
+
+            emptyColor={theme.palette.background.default}
             theme={{
                 text: {
-                    fill: theme.palette.text.secondary,
+                    fill: theme.palette.text.primary,
                 }
             }}
 
             // --- Axes + Legends ---
-            // Display the Y axis on the right side of the chart
-            axisRight={{
-                orient: 'right',
-            }}
             legends={[
                 {
+                    title: options?.nivoHeatMap?.legends?.[0].title,
                     anchor: 'bottom',
                     translateX: 0,
                     translateY: 35,
@@ -77,10 +75,16 @@ export const NivoHeatMap = ({ data, width, isPortrait }) => {
                     tickFormat: '>-.2s',
                 }
             ]}
+            axisTop={{
+                orient: "left",
+                tickRotation: -90
+            }}
+            axisRight={isPortrait === true || null}
 
             // --- Tooltip ---
             // Use custom tooltip component
             tooltip={node => <HeatMapTooltip node={node} />}
+            animate={false}
         />
     );
 };

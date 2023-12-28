@@ -199,6 +199,7 @@ function SubChart(props) {
           data={NivoHeatMapData}
           width={NivoHeatMapWidth}
           isPortrait={isPortrait}
+          options={options}
         />
       </GoogleChartStyleWrapper>
     );

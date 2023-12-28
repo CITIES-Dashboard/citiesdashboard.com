@@ -857,7 +857,7 @@
     "owners": [
       "NYUAD IT"
     ],
-    "contact": "nyuad.it.servicemanagement-group@nyu.edu",
+    "contact": "nyuad.it@nyu.edu",
     "rawDataTables": [
       {
         "gid": 1304606517,
@@ -877,8 +877,37 @@
         "headers": 1,
         "chartType": "NivoHeatMap",
         "nivo": true,
-        "gid": 1635689114,
-        "query": "SELECT A, B, C, D, E, F, G, H, I"
+        "subcharts": [
+          {
+            "subchartTitle": "Grouped by User Category",
+            "gid": 1635689114,
+            "options": {
+              "nivoHeatMap": {
+                "yInnerPadding": 0.05,
+                "hoverTarget": "row"
+              }
+            }
+          },
+          {
+            "subchartTitle": "Grouped by Page Type",
+            "gid": 147001565,
+            "options": {
+              "nivoHeatMap": {
+                "xInnerPadding": 0.05,
+                "hoverTarget": "column"
+              }
+            }
+          }
+        ],
+        "options": {
+          "nivoHeatMap": {
+            "legends": [
+              {
+                "title": "Number of Pages"
+              }
+            ]
+          }
+        }
       }
     ]
   },
