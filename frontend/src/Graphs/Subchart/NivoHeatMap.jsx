@@ -35,6 +35,10 @@ export const NivoHeatMap = ({ data, width, isPortrait, options }) => {
             borderWidth={1}
             borderColor={theme.palette.customBackground}
 
+            // Custom theming for Dark mode
+            opacity={theme.palette.mode === 'dark' ? 0.7 : null}
+            activeOpacity={theme.palette.mode === 'dark' ? 0.7 : null}
+
             // --- Labels ---
             // Display both absolute and percentage values in the label
             label={({ data }) => (
