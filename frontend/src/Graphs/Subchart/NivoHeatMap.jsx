@@ -4,18 +4,32 @@ import { ResponsiveHeatMap } from '@nivo/heatmap';
 import { useTheme } from '@mui/material/styles';
 import { Box, Chip } from '@mui/material';
 
+import parse from 'html-react-parser';
+import { replacePlainHTMLWithMuiComponents } from '../../Utils/Utils';
+
+const addCommasToNumber = (number) => number.toLocaleString();
+
 // Custom Tooltip Component
-const HeatMapTooltip = ({ node }) => {
+const HeatMapTooltip = ({ node, tooltipText, hoverTarget }) => {
+    console.log(node.cell);
     // Getting data required for the tooltip
-    const userCategory = node.cell.serieId;
-    const { percentage, x, y } = node.cell.data;
+    const rowCategory = node.cell.id.split('.')[0];
+    const columnCategory = node.cell.id.split('.')[1];
+    const value = addCommasToNumber(node.cell.data.y);
+    const percentage = hoverTarget === 'row' ? node.cell.data.rowPercentage : node.cell.data.colPercentage;
     const color = node.cell.color;
+
+    // Replacing placeholders with actual values
+    const updatedTooltipText = tooltipText
+        .replace('{y}', value)
+        .replace('{percentage}', percentage)
+        .replace('{rowCategory}', rowCategory)
+        .replace('{columnCategory}', columnCategory);
 
     return (
         <Box className='nivo-tooltip'>
             <Chip sx={{ backgroundColor: color, mr: 0.5, height: '10px', width: '10px', borderRadius: '50%' }} />
-            <span><strong>{x}</strong>: {y}</span>
-            <div>{percentage} of all pages used by {userCategory}</div>
+            {parse(updatedTooltipText, { replace: replacePlainHTMLWithMuiComponents })}
         </Box>
     );
 };
@@ -27,8 +41,10 @@ const findRangeOfYValues = (data) => {
     return { minValue, maxValue };
 };
 
-export const NivoHeatMap = ({ data, width, isPortrait, options }) => {
+export const NivoHeatMap = ({ data, width, isPortrait, options, tooltipTemplate }) => {
     const theme = useTheme();
+
+    // --- Get Range of Data (Currently, for coloring labels for readability) ---
     const [yValueRange, setYValueRange] = useState({ minValue: null, maxValue: null });
 
     useEffect(() => {
@@ -43,6 +59,13 @@ export const NivoHeatMap = ({ data, width, isPortrait, options }) => {
 
     // Calculate the midpoint of the range
     const midPoint = (yValueRange.minValue + yValueRange.maxValue) / 2;
+
+    // --- Get text for tooltip from provided (HTML) tooltip template ---
+    const extractTooltipText = (tooltipTemplate) => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(tooltipTemplate, 'text/html');
+        return doc.body.innerHTML;
+    };
 
     return (
         <ResponsiveHeatMap
@@ -69,15 +92,20 @@ export const NivoHeatMap = ({ data, width, isPortrait, options }) => {
                 // This is done to improve graph readability
                 let fontColor = data.y > midPoint && '#cfd8dc';
 
+                // Display label with the value and the appropriate percentage
                 return (
                     <tspan fill={fontColor}>
-                        {data.y}
+                        {addCommasToNumber(data.y)}
                         <tspan
                             x="0"
                             dy="1.2em"
                             fill={fontColor}
                         >
-                            ({data.percentage})
+                            ({
+                                options?.nivoHeatMap?.hoverTarget === 'row'
+                                    ? data.rowPercentage
+                                    : data.colPercentage
+                            })
                         </tspan>
                     </tspan>
                 )
@@ -120,7 +148,13 @@ export const NivoHeatMap = ({ data, width, isPortrait, options }) => {
 
             // --- Tooltip ---
             // Use custom tooltip component
-            tooltip={node => <HeatMapTooltip node={node} />}
+            tooltip={node => (
+                <HeatMapTooltip
+                    node={node}
+                    tooltipText={extractTooltipText(tooltipTemplate)}
+                    hoverTarget={options?.nivoHeatMap?.hoverTarget}
+                />
+            )}
             animate={false}
         />
     );

@@ -100,17 +100,34 @@ export const convertToNivoHeatMapData = (googleSheetsData) => {
   const cols = dataTable.cols.map(col => col.label).slice(1); // Exclude the first column
   const rows = dataTable.rows;
 
+  // Calculate total for each column
+  const columnTotals = new Array(cols.length).fill(0);
+  rows.forEach(row => {
+    row.c.slice(1).forEach((cell, index) => {
+      columnTotals[index] += cell.v;
+    });
+  });
+
+  // Process each row
   return rows.map(row => {
-    const total = row.c.slice(1).reduce((acc, cell) => acc + cell.v, 0);
+    const rowTotal = row.c.slice(1).reduce((acc, cell) => acc + cell.v, 0);
+
     const data = cols.map((col, index) => {
       const value = row.c[index + 1].v; // +1 to offset label column
-      const percentage = total > 0 ? (value / total * 100).toFixed(1) : 0;
-      return { x: col, y: value, percentage: `${percentage}%` };
+      const rowPercentage = rowTotal > 0 ? (value / rowTotal * 100).toFixed(1) : 0;
+      const colPercentage = columnTotals[index] > 0 ? (value / columnTotals[index] * 100).toFixed(1) : 0;
+
+      return {
+        x: col,
+        y: value,
+        rowPercentage: `${rowPercentage}%`,
+        colPercentage: `${colPercentage}%`
+      };
     });
 
     return { id: row.c[0].v, data };
   });
-}
+};
 
 // Function to generate a random ID for the google chart container
 export const generateRandomID = () => {

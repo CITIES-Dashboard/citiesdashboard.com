@@ -200,6 +200,7 @@ function SubChart(props) {
           width={NivoHeatMapWidth}
           isPortrait={isPortrait}
           options={options}
+          tooltipTemplate={chartData.tooltipFormat || chartData.subcharts[subchartIndex].tooltipFormat}
         />
       </GoogleChartStyleWrapper>
     );

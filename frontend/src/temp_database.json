@@ -881,9 +881,10 @@
           {
             "subchartTitle": "Grouped by User Category",
             "gid": 1635689114,
+            "tooltipFormat": "<span><strong>{columnCategory}</strong>: {y}<br />{percentage} of all pages used by {rowCategory}</span>",
             "options": {
               "nivoHeatMap": {
-                "yInnerPadding": 0.05,
+                "yInnerPadding": 0.02,
                 "hoverTarget": "row"
               }
             }
@@ -891,9 +892,10 @@
           {
             "subchartTitle": "Grouped by Page Type",
             "gid": 147001565,
+            "tooltipFormat": "<span><strong>{rowCategory}</strong>: {y}<br />{percentage} of all {columnCategory} pages used</span>",
             "options": {
               "nivoHeatMap": {
-                "xInnerPadding": 0.05,
+                "xInnerPadding": 0.02,
                 "hoverTarget": "column"
               }
             }
