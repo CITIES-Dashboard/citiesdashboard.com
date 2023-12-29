@@ -11,7 +11,6 @@ const addCommasToNumber = (number) => number.toLocaleString();
 
 // Custom Tooltip Component
 const HeatMapTooltip = ({ node, tooltipText, hoverTarget }) => {
-    console.log(node.cell);
     // Getting data required for the tooltip
     const rowCategory = node.cell.id.split('.')[0];
     const columnCategory = node.cell.id.split('.')[1];
@@ -34,6 +33,7 @@ const HeatMapTooltip = ({ node, tooltipText, hoverTarget }) => {
     );
 };
 
+// Function to find the range of y (numerical) values of the heatmap's data
 const findRangeOfYValues = (data) => {
     let allYValues = data.flatMap(group => group.data.map(item => item.y));
     let minValue = Math.min(...allYValues);
