@@ -16,12 +16,15 @@ const HeatMapTooltip = ({ node, tooltipText, hoverTarget }) => {
     const columnCategory = node.cell.id.split('.')[1];
     const value = addCommasToNumber(node.cell.data.y);
     const percentage = hoverTarget === 'row' ? node.cell.data.rowPercentage : node.cell.data.colPercentage;
+    let rowOrColTotal = hoverTarget === 'row' ? node.cell.data.rowTotal : node.cell.data.colTotal;
+    rowOrColTotal = addCommasToNumber(rowOrColTotal);
     const color = node.cell.color;
 
     // Replacing placeholders with actual values
     const updatedTooltipText = tooltipText
         .replace('{y}', value)
         .replace('{percentage}', percentage)
+        .replace('{rowOrColTotal}', rowOrColTotal)
         .replace('{rowCategory}', rowCategory)
         .replace('{columnCategory}', columnCategory);
 

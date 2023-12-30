@@ -937,7 +937,7 @@
         "subcharts": [
           {
             "subchartTitle": "Grouped by User Category",
-            "tooltipFormat": "<span><strong>{columnCategory}</strong>: {y}<br />{percentage} of all pages used by {rowCategory}</span>",
+            "tooltipFormat": "<span><strong>{columnCategory}</strong>: {y}<br />{percentage} of {rowOrColTotal} pages used by {rowCategory}</span>",
             "options": {
               "nivoHeatMap": {
                 "yInnerPadding": 0.02,
@@ -947,7 +947,7 @@
           },
           {
             "subchartTitle": "Grouped by Page Type",
-            "tooltipFormat": "<span><strong>{rowCategory}</strong>: {y}<br />{percentage} of all {columnCategory} pages used</span>",
+            "tooltipFormat": "<span><strong>{rowCategory}</strong>: {y}<br />{percentage} of {rowOrColTotal} {columnCategory} pages used</span>",
             "options": {
               "nivoHeatMap": {
                 "xInnerPadding": 0.02,

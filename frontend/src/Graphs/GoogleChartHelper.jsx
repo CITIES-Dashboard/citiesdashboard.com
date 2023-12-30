@@ -121,7 +121,9 @@ export const convertToNivoHeatMapData = (googleSheetsData) => {
         x: col,
         y: value,
         rowPercentage: `${rowPercentage}%`,
-        colPercentage: `${colPercentage}%`
+        colPercentage: `${colPercentage}%`,
+        rowTotal: rowTotal,
+        colTotal: columnTotals[index],
       };
     });
 
