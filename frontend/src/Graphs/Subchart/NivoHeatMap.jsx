@@ -94,12 +94,13 @@ export const NivoHeatMap = ({ data, width, isPortrait, options, tooltipTemplate 
 
                 // Display label with the value and the appropriate percentage
                 return (
-                    <tspan fill={fontColor}>
+                    <tspan fill={fontColor} fontSize="0.8rem">
                         {addCommasToNumber(data.y)}
                         <tspan
                             x="0"
-                            dy="1.2em"
+                            dy="1.35em"
                             fill={fontColor}
+                            fontSize="0.65rem"
                         >
                             ({
                                 options?.nivoHeatMap?.hoverTarget === 'row'
