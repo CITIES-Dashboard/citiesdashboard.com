@@ -868,19 +868,75 @@
       {
         "title": "Pages Used by User Category by Month",
         "headers": 1,
-        "chartType": "ColumnChart",
-        "gid": 964503402,
-        "query": "SELECT A, B, C, D, E"
+        "chartType": "ComboChart",
+        "gid": 1705611582,
+        "subcharts": [
+          {
+            "subchartTitle": "Absolute Number",
+            "subchartSubtitle": "placeholder",
+            "options": {
+              "seriesSelector": {
+                "allowMultiple": true,
+                "method": "setViewColumn"
+              },
+              "seriesType": "bars",
+              "series": {
+                "4": {
+                  "type": "line",
+                  "lineWidth": 3,
+                  "pointSize": 5
+                }
+              },
+              "bar": {
+                "groupWidth": "40%"
+              },
+              "vAxis": {
+                "title": "Number of Pages (in Thousands)",
+                "format": "short"
+              }
+            }
+          },
+          {
+            "subchartTitle": "Percentage by User Category",
+            "subchartSubtitle": "placeholder",
+            "columns": [
+              0,
+              1,
+              2,
+              3,
+              4
+            ],
+            "options": {
+              "seriesType": "bars",
+              "bar": {
+                "groupWidth": "40%"
+              },
+              "isStacked": "percent",
+              "vAxis": {
+                "title": "Percentage",
+                "format": "#.#%"
+              }
+            }
+          }
+        ],
+        "options": {
+          "hAxis": {
+            "title": "Month - Year",
+            "minorGridlines": {
+              "count": 0
+            }
+          }
+        }
       },
       {
         "title": "Total Page Usage by User Category",
         "headers": 1,
         "chartType": "NivoHeatMap",
         "nivo": true,
+        "gid": 2096148199,
         "subcharts": [
           {
             "subchartTitle": "Grouped by User Category",
-            "gid": 1635689114,
             "tooltipFormat": "<span><strong>{columnCategory}</strong>: {y}<br />{percentage} of all pages used by {rowCategory}</span>",
             "options": {
               "nivoHeatMap": {
@@ -891,7 +947,6 @@
           },
           {
             "subchartTitle": "Grouped by Page Type",
-            "gid": 147001565,
             "tooltipFormat": "<span><strong>{rowCategory}</strong>: {y}<br />{percentage} of all {columnCategory} pages used</span>",
             "options": {
               "nivoHeatMap": {
