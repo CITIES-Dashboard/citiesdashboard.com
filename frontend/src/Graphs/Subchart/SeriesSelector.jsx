@@ -37,12 +37,25 @@ export default function SeriesSelector(props) {
   const [items, setItems] = useState(itemsFromChart);
   const [selectAll, setSelectAll] = useState(allowMultiple); // default: all is selected if multiSelect is true
 
+  // If allowMultiple is false and there is more than one item, deselect all items except for the first one
+  useEffect(() => {
+    if (!allowMultiple && items.length > 1) {
+      const updatedItems = items.map((item, index) => ({
+        ...item,
+        selected: index === 0 // Select the first item, deselect others
+      }));
+      onSeriesSelection(updatedItems);
+    }
+  }, []);
+
+  // Update items if itemsFromChart changes
   useEffect(() => {
     setItems(itemsFromChart);
   }, [itemsFromChart]);
 
+  // set selectAll if all items are selected
   useEffect(() => {
-    setSelectAll(items.every(item => item.selected)); // set selectAll if all items are selected
+    setSelectAll(items.every(item => item.selected));
   }, [items]);
 
   const handleChange = (event) => {

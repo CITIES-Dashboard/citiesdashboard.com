@@ -317,17 +317,8 @@ function SubChart(props) {
 
       // Set the visibility of data column, 
       if (col.role === 'data') {
-        // initially, all data columns are selected if multiple series are selectable
-        if (seriesSelector?.allowMultiple) {
-          col.selected = true;
-        } else {
-          // else for single serie selector, only first data column is selected
-          if (dataSeriesIndex === 0) {
-            col.selected = true;
-          } else {
-            col.selected = false;
-          }
-        }
+        // initially, all data columns are selected
+        col.selected = true;
         col.seriesIndex = dataSeriesIndex;
         dataSeriesIndex++;
       }
@@ -396,7 +387,7 @@ function SubChart(props) {
     }
     else if (seriesSelector.method === "setViewColumn") {
       let newViewColumns = [];
-      newViewColumns.push(0); // this is the domain column
+      newViewColumns.push(chartData.columns?.[0] || 0); // this is the domain column
       newDataColumns.forEach((dataColumn) => {
         if (dataColumn.selected) {
           newViewColumns.push(dataColumn);
