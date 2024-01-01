@@ -866,14 +866,129 @@
     ],
     "charts": [
       {
-        "title": "Pages Used by User Category by Month",
+        "title": "Pages by User Category by Month",
         "headers": 1,
         "chartType": "ComboChart",
         "gid": 1705611582,
         "subcharts": [
           {
-            "subchartTitle": "Absolute Number",
+            "subchartTitle": "Median and Mean Per User Category",
             "subchartSubtitle": "placeholder",
+            "columns": [
+              0,
+              1,
+              {
+                "role": "interval",
+                "id": "i1",
+                "sourceColumn": 2
+              },
+              {
+                "role": "interval",
+                "id": "i1",
+                "sourceColumn": 3
+              },
+              {
+                "role": "interval",
+                "id": "i2",
+                "sourceColumn": 4
+              },
+              6,
+              {
+                "role": "interval",
+                "id": "i1",
+                "sourceColumn": 7
+              },
+              {
+                "role": "interval",
+                "id": "i1",
+                "sourceColumn": 8
+              },
+              {
+                "role": "interval",
+                "id": "i2",
+                "sourceColumn": 9
+              },
+              11,
+              {
+                "role": "interval",
+                "id": "i1",
+                "sourceColumn": 12
+              },
+              {
+                "role": "interval",
+                "id": "i1",
+                "sourceColumn": 13
+              },
+              {
+                "role": "interval",
+                "id": "i2",
+                "sourceColumn": 14
+              },
+              16,
+              {
+                "role": "interval",
+                "id": "i1",
+                "sourceColumn": 17
+              },
+              {
+                "role": "interval",
+                "id": "i1",
+                "sourceColumn": 18
+              },
+              {
+                "role": "interval",
+                "id": "i2",
+                "sourceColumn": 19
+              },
+              21,
+              {
+                "role": "interval",
+                "id": "i1",
+                "sourceColumn": 22
+              },
+              {
+                "role": "interval",
+                "id": "i1",
+                "sourceColumn": 23
+              },
+              {
+                "role": "interval",
+                "id": "i2",
+                "sourceColumn": 24
+              }
+            ],
+            "options": {
+              "seriesSelector": {
+                "allowMultiple": true,
+                "method": "setViewColumn"
+              },
+              "interval": {
+                "i1": {
+                  "style": "bars"
+                },
+                "i2": {
+                  "style": "points",
+                  "pointSize": 4,
+                  "lineWidth": 4
+                }
+              },
+              "seriesType": "bars",
+              "vAxis": {
+                "title": "Number of Pages"
+              }
+            }
+          },
+          {
+            "subchartTitle": "Total Per User Category",
+            "subchartSubtitle": "placeholder",
+            "columns": [
+              0,
+              5,
+              10,
+              15,
+              20,
+              25
+            ],
             "options": {
               "seriesSelector": {
                 "allowMultiple": true,
@@ -901,10 +1016,10 @@
             "subchartSubtitle": "placeholder",
             "columns": [
               0,
-              1,
-              2,
-              3,
-              4
+              5,
+              10,
+              15,
+              20
             ],
             "options": {
               "seriesType": "bars",
@@ -920,10 +1035,73 @@
           }
         ],
         "options": {
+          "bar": {
+            "groupWidth": "40%"
+          },
           "hAxis": {
             "title": "Month - Year",
             "minorGridlines": {
               "count": 0
+            }
+          }
+        }
+      },
+      {
+        "title": "Distribution of Pages by User Category",
+        "headers": 1,
+        "chartType": "ColumnChart",
+        "gid": 1245632050,
+        "subcharts": [
+          {
+            "subchartTitle": "Decimal Scale",
+            "subchartSubtitle": "placeholder"
+          },
+          {
+            "subchartTitle": "Log Scale",
+            "subchartSubtitle": "placeholder",
+            "options": {
+              "hAxis": {
+                "scaleType": "log"
+              },
+              "vAxis": {
+                "scaleType": "log"
+              }
+            }
+          }
+        ],
+        "columns": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "options": {
+          "seriesSelector": {
+            "allowMultiple": false,
+            "method": "setViewColumn"
+          },
+          "vAxis": {
+            "title": "Number of Unique Users Who Printed (x) Number of Pages",
+            "gridlines": {
+              "multiple": 1
+            }
+          },
+          "hAxis": {
+            "title": "Number of Pages Each User Printed",
+            "minorGridlines": {
+              "count": 0
+            }
+          }
+        },
+        "control": {
+          "controlType": "CategoryFilter",
+          "options": {
+            "filterColumnIndex": 0,
+            "ui": {
+              "label": "Filter by Month: ",
+              "allowNone": false,
+              "allowMultiple": false
             }
           }
         }

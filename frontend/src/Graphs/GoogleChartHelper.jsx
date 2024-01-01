@@ -179,6 +179,14 @@ export const returnGenericOptions = (props) => {
   options = {
     ...options,
     ...chartData.options,
+    hAxis: {
+      ...chartData.options?.hAxis,
+      ...options.hAxis
+    },
+    vAxis: {
+      ...chartData.options?.vAxis,
+      ...options.vAxis
+    },
     nivoHeatMap: {
       ...chartData.options?.nivoHeatMap,
       ...options.nivoHeatMap
@@ -369,23 +377,6 @@ export const returnGenericOptions = (props) => {
   return options;
 }
 
-export const returnCalendarChartOptions = (existingOptions) => {
-  const calendarDimensions = calculateCalendarDimensions({ cellSizeMin: 14, cellSizeMax: 18 });
-  return {
-    ...existingOptions,
-    width: calendarDimensions.chartWidth,
-    calendar: {
-      cellSize: calendarDimensions.cellSize,
-      yearLabel: {
-        fontSize: calendarDimensions.yearLabelFontSize
-      }
-    },
-    noDataPattern: {
-      backgroundColor: 'none',
-      color: 'none',
-    },
-  }
-}
 
 export const returnChartControlUI = (props) => {
   const { chartControl, mainChartData, mainChartOptions, subchartIndex, theme, isPortrait } = props;
@@ -491,4 +482,22 @@ export const addTouchEventListenerForChartControl = ({ controlWrapper, chartID }
       controlDOM.removeEventListener(touchEvent, touchHandler, { capture: true });
     });
   };
+}
+
+export const returnCalendarChartOptions = (existingOptions) => {
+  const calendarDimensions = calculateCalendarDimensions({ cellSizeMin: 14, cellSizeMax: 18 });
+  return {
+    ...existingOptions,
+    width: calendarDimensions.chartWidth,
+    calendar: {
+      cellSize: calendarDimensions.cellSize,
+      yearLabel: {
+        fontSize: calendarDimensions.yearLabelFontSize
+      }
+    },
+    noDataPattern: {
+      backgroundColor: 'none',
+      color: 'none',
+    },
+  }
 }
