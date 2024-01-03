@@ -437,6 +437,32 @@ function SubChart(props) {
     }
   }, [allInitialColumns, options, seriesSelector, chartWrapper, controlWrapper, initialVAxisRange, hasChartControl]);
 
+  const reconstructFunctionFromJSONstring = (columns) => {
+    if (!columns) return;
+
+    const evaluatedColumns = [];
+    for (const column of columns) {
+      if (typeof column === 'number') {
+        // If it's a number, add it as-is
+        evaluatedColumns.push(column);
+      } else if (typeof column === 'object') {
+        if (column.calc && column.calc !== 'stringify') {
+          // If it's an object with a 'calc' property, evaluate the 'calc' function
+          // using new Function() and add the result to the evaluatedColumns array
+          const calcFunction = new Function("dataTable", "rowNum", column.calc);
+          evaluatedColumns.push({
+            ...column,
+            calc: calcFunction,
+          });
+        } else {
+          // If it's an object without a 'calc' property, or with calc = 'stringify', add it as-is
+          evaluatedColumns.push(column);
+        }
+      }
+    }
+    return evaluatedColumns;
+  }
+
   // Call this function to fetch the data and draw the initial chart
   useEffect(() => {
     if (google && !chartWrapper) {
@@ -444,17 +470,21 @@ function SubChart(props) {
         .then(response => {
           const thisDataTable = response.getDataTable();
           setDataTable(thisDataTable);
+
+          // Get dataColumn views
+          const columns = chartData.columns
+            || (chartData.subcharts
+              && chartData.subcharts[subchartIndex].columns)
+            || null
+            || null;
+          const reconstructedColumns = reconstructFunctionFromJSONstring(columns);
+
           const thisChartWrapper = new google.visualization.ChartWrapper({
             chartType: chartData.chartType,
             dataTable: (!hasChartControl) ? thisDataTable : undefined,
             options: options,
             view: {
-              columns:
-                chartData.columns
-                || (chartData.subcharts
-                  && chartData.subcharts[subchartIndex].columns)
-                || null
-                || null,
+              columns: reconstructedColumns
             },
             containerId: chartID
           });
