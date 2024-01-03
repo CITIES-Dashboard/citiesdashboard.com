@@ -872,113 +872,6 @@
         "gid": 1705611582,
         "subcharts": [
           {
-            "subchartTitle": "Median and Mean Per User Category",
-            "subchartSubtitle": "placeholder",
-            "columns": [
-              0,
-              1,
-              {
-                "role": "interval",
-                "id": "i1",
-                "sourceColumn": 2
-              },
-              {
-                "role": "interval",
-                "id": "i1",
-                "sourceColumn": 3
-              },
-              {
-                "role": "interval",
-                "id": "i2",
-                "sourceColumn": 4
-              },
-              6,
-              {
-                "role": "interval",
-                "id": "i1",
-                "sourceColumn": 7
-              },
-              {
-                "role": "interval",
-                "id": "i1",
-                "sourceColumn": 8
-              },
-              {
-                "role": "interval",
-                "id": "i2",
-                "sourceColumn": 9
-              },
-              11,
-              {
-                "role": "interval",
-                "id": "i1",
-                "sourceColumn": 12
-              },
-              {
-                "role": "interval",
-                "id": "i1",
-                "sourceColumn": 13
-              },
-              {
-                "role": "interval",
-                "id": "i2",
-                "sourceColumn": 14
-              },
-              16,
-              {
-                "role": "interval",
-                "id": "i1",
-                "sourceColumn": 17
-              },
-              {
-                "role": "interval",
-                "id": "i1",
-                "sourceColumn": 18
-              },
-              {
-                "role": "interval",
-                "id": "i2",
-                "sourceColumn": 19
-              },
-              21,
-              {
-                "role": "interval",
-                "id": "i1",
-                "sourceColumn": 22
-              },
-              {
-                "role": "interval",
-                "id": "i1",
-                "sourceColumn": 23
-              },
-              {
-                "role": "interval",
-                "id": "i2",
-                "sourceColumn": 24
-              }
-            ],
-            "options": {
-              "seriesSelector": {
-                "allowMultiple": true,
-                "method": "setViewColumn"
-              },
-              "interval": {
-                "i1": {
-                  "style": "bars"
-                },
-                "i2": {
-                  "style": "points",
-                  "pointSize": 4,
-                  "lineWidth": 4
-                }
-              },
-              "seriesType": "bars",
-              "vAxis": {
-                "title": "Number of Pages"
-              }
-            }
-          },
-          {
             "subchartTitle": "Total Per User Category",
             "subchartSubtitle": "placeholder",
             "columns": [
@@ -1030,6 +923,153 @@
               "vAxis": {
                 "title": "Percentage",
                 "format": "#.#%"
+              }
+            }
+          },
+          {
+            "subchartTitle": "Median and Mean Per User Category",
+            "subchartSubtitle": "placeholder",
+            "columns": [
+              0,
+              1,
+              {
+                "role": "interval",
+                "id": "i1",
+                "sourceColumn": 2
+              },
+              {
+                "role": "interval",
+                "id": "i1",
+                "sourceColumn": 3
+              },
+              {
+                "role": "interval",
+                "id": "i2",
+                "sourceColumn": 4
+              },
+              {
+                "role": "tooltip",
+                "type": "string",
+                "properties": {
+                  "html": true
+                },
+                "sourceColumn": 26
+              },
+              6,
+              {
+                "role": "interval",
+                "id": "i1",
+                "sourceColumn": 7
+              },
+              {
+                "role": "interval",
+                "id": "i1",
+                "sourceColumn": 8
+              },
+              {
+                "role": "interval",
+                "id": "i2",
+                "sourceColumn": 9
+              },
+              {
+                "role": "tooltip",
+                "type": "string",
+                "properties": {
+                  "html": true
+                },
+                "sourceColumn": 27
+              },
+              11,
+              {
+                "role": "interval",
+                "id": "i1",
+                "sourceColumn": 12
+              },
+              {
+                "role": "interval",
+                "id": "i1",
+                "sourceColumn": 13
+              },
+              {
+                "role": "interval",
+                "id": "i2",
+                "sourceColumn": 14
+              },
+              {
+                "role": "tooltip",
+                "type": "string",
+                "properties": {
+                  "html": true
+                },
+                "sourceColumn": 28
+              },
+              16,
+              {
+                "role": "interval",
+                "id": "i1",
+                "sourceColumn": 17
+              },
+              {
+                "role": "interval",
+                "id": "i1",
+                "sourceColumn": 18
+              },
+              {
+                "role": "interval",
+                "id": "i2",
+                "sourceColumn": 19
+              },
+              {
+                "role": "tooltip",
+                "type": "string",
+                "properties": {
+                  "html": true
+                },
+                "sourceColumn": 29
+              },
+              21,
+              {
+                "role": "interval",
+                "id": "i1",
+                "sourceColumn": 22
+              },
+              {
+                "role": "interval",
+                "id": "i1",
+                "sourceColumn": 23
+              },
+              {
+                "role": "interval",
+                "id": "i2",
+                "sourceColumn": 24
+              },
+              {
+                "role": "tooltip",
+                "type": "string",
+                "properties": {
+                  "html": true
+                },
+                "sourceColumn": 30
+              }
+            ],
+            "options": {
+              "seriesSelector": {
+                "allowMultiple": true,
+                "method": "setViewColumn"
+              },
+              "interval": {
+                "i1": {
+                  "style": "bars"
+                },
+                "i2": {
+                  "style": "points",
+                  "pointSize": 4,
+                  "lineWidth": 4
+                }
+              },
+              "seriesType": "bars",
+              "vAxis": {
+                "title": "Number of Pages"
               }
             }
           }
