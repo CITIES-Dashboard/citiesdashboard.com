@@ -9,6 +9,7 @@ import { Box, Stack, Tooltip, Typography } from '@mui/material/';
 import { useTheme } from '@mui/material/styles';
 import HeatMap from '../HeatMap';
 import SeriesSelector from './SeriesSelector';
+import StackedBarToggle from './StackedBarToggle';
 
 import { fetchDataFromSheet, generateRandomID, returnGenericOptions, returnCalendarChartOptions, returnChartControlUI, ChartControlType, addTouchEventListenerForChartControl } from '../GoogleChartHelper';
 
@@ -263,6 +264,10 @@ function SubChart(props) {
 
   // Properties for selecting (showing or hiding) the serie(s)
   const seriesSelector = options.seriesSelector || false;
+
+  // Properties for toggling stacked bars
+  const toggleStackedBars = options.toggleStackedBars || false;
+  const [isStacked, setIsStacked] = useState(options.isStacked || false);
 
   // Set new options prop and re-render the chart if theme or isPortrait changes
   useEffect(() => {
@@ -583,6 +588,19 @@ function SubChart(props) {
     );
   };
 
+  // Handler for changing the chart to a stacked bar chart
+  const handleStackedBarChart = useCallback(() => {
+    if (chartWrapper) {
+      const newOptions = {
+        ...options,
+        isStacked: !isStacked
+      };
+      chartWrapper.setOptions(newOptions);
+      chartWrapper.draw();
+      setIsStacked(!isStacked);
+    }
+  }, [chartWrapper, isStacked, options]);
+
   const renderChart = () => {
     if (hasChartControl) {
       return (
@@ -639,6 +657,15 @@ function SubChart(props) {
         />
       )}
 
+      {/* Conditionally display Button to Toggle Stacked Bars */}
+      {(toggleStackedBars && !isHomepage && !isFirstRender) && (
+        <StackedBarToggle
+          onToggle={handleStackedBarChart}
+          isStacked={isStacked}
+          isPortrait={isPortrait}
+          theme={theme}
+        />
+      )}
       {/* Display chart here */}
       {renderChart()}
     </GoogleChartStyleWrapper>

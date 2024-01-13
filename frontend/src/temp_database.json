@@ -887,6 +887,7 @@
                 "allowMultiple": true,
                 "method": "setViewColumn"
               },
+            "toggleStackedBars": true,
               "seriesType": "bars",
               "series": {
                 "4": {
