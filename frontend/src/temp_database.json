@@ -887,7 +887,7 @@
                 "allowMultiple": true,
                 "method": "setViewColumn"
               },
-            "toggleStackedBars": true,
+              "toggleStackedBars": true,
               "seriesType": "bars",
               "series": {
                 "4": {
@@ -1058,14 +1058,16 @@
                 "allowMultiple": true,
                 "method": "setViewColumn"
               },
+              "bar": {
+                "groupWidth": "100%"
+              },
               "interval": {
                 "i1": {
-                  "style": "bars"
+                  "style": "boxes"
                 },
                 "i2": {
-                  "style": "points",
-                  "pointSize": 4,
-                  "lineWidth": 4
+                  "style": "bars",
+                  "pointSize": 2
                 }
               },
               "seriesType": "bars",
