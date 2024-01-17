@@ -926,161 +926,9 @@
                 "format": "#.#%"
               }
             }
-          },
-          {
-            "subchartTitle": "Median and Mean Per User Category",
-            "subchartSubtitle": "placeholder",
-            "columns": [
-              0,
-              1,
-              {
-                "role": "interval",
-                "id": "i1",
-                "sourceColumn": 2
-              },
-              {
-                "role": "interval",
-                "id": "i1",
-                "sourceColumn": 3
-              },
-              {
-                "role": "interval",
-                "id": "i2",
-                "sourceColumn": 4
-              },
-              {
-                "role": "tooltip",
-                "type": "string",
-                "properties": {
-                  "html": true
-                },
-                "sourceColumn": 26
-              },
-              6,
-              {
-                "role": "interval",
-                "id": "i1",
-                "sourceColumn": 7
-              },
-              {
-                "role": "interval",
-                "id": "i1",
-                "sourceColumn": 8
-              },
-              {
-                "role": "interval",
-                "id": "i2",
-                "sourceColumn": 9
-              },
-              {
-                "role": "tooltip",
-                "type": "string",
-                "properties": {
-                  "html": true
-                },
-                "sourceColumn": 27
-              },
-              11,
-              {
-                "role": "interval",
-                "id": "i1",
-                "sourceColumn": 12
-              },
-              {
-                "role": "interval",
-                "id": "i1",
-                "sourceColumn": 13
-              },
-              {
-                "role": "interval",
-                "id": "i2",
-                "sourceColumn": 14
-              },
-              {
-                "role": "tooltip",
-                "type": "string",
-                "properties": {
-                  "html": true
-                },
-                "sourceColumn": 28
-              },
-              16,
-              {
-                "role": "interval",
-                "id": "i1",
-                "sourceColumn": 17
-              },
-              {
-                "role": "interval",
-                "id": "i1",
-                "sourceColumn": 18
-              },
-              {
-                "role": "interval",
-                "id": "i2",
-                "sourceColumn": 19
-              },
-              {
-                "role": "tooltip",
-                "type": "string",
-                "properties": {
-                  "html": true
-                },
-                "sourceColumn": 29
-              },
-              21,
-              {
-                "role": "interval",
-                "id": "i1",
-                "sourceColumn": 22
-              },
-              {
-                "role": "interval",
-                "id": "i1",
-                "sourceColumn": 23
-              },
-              {
-                "role": "interval",
-                "id": "i2",
-                "sourceColumn": 24
-              },
-              {
-                "role": "tooltip",
-                "type": "string",
-                "properties": {
-                  "html": true
-                },
-                "sourceColumn": 30
-              }
-            ],
-            "options": {
-              "seriesSelector": {
-                "allowMultiple": true,
-                "method": "setViewColumn"
-              },
-              "bar": {
-                "groupWidth": "100%"
-              },
-              "interval": {
-                "i1": {
-                  "style": "boxes"
-                },
-                "i2": {
-                  "style": "bars",
-                  "pointSize": 2
-                }
-              },
-              "seriesType": "bars",
-              "vAxis": {
-                "title": "Number of Pages"
-              }
-            }
           }
         ],
         "options": {
-          "bar": {
-            "groupWidth": "40%"
-          },
           "hAxis": {
             "title": "Month - Year",
             "minorGridlines": {
@@ -1090,48 +938,279 @@
         }
       },
       {
-        "title": "Distribution of Pages by User Category",
+        "title": "Pages by User Category by Month",
         "headers": 1,
-        "chartType": "ColumnChart",
-        "gid": 1245632050,
-        "subcharts": [
+        "chartType": "BarChart",
+        "gid": 1705611582,
+        "subchartTitle": "Median and Mean Per User Category",
+        "subchartSubtitle": "placeholder",
+        "columns": [
+          0,
+          6,
           {
-            "subchartTitle": "Linear Scale",
-            "subchartSubtitle": "placeholder"
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 3
           },
           {
-            "subchartTitle": "Log Scale",
-            "subchartSubtitle": "placeholder",
-            "options": {
-              "hAxis": {
-                "scaleType": "log"
-              },
-              "vAxis": {
-                "scaleType": "log"
-              }
-            }
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 2
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 2
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 4
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 5
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 3
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 4
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 6
+          },
+          {
+            "role": "interval",
+            "id": "avg",
+            "sourceColumn": 1
+          },
+          12,
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 9
+          },
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 8
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 8
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 10
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 11
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 9
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 10
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 12
+          },
+          {
+            "role": "interval",
+            "id": "avg",
+            "sourceColumn": 7
+          },
+          18,
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 15
+          },
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 14
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 14
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 16
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 17
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 15
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 16
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 18
+          },
+          {
+            "role": "interval",
+            "id": "avg",
+            "sourceColumn": 13
+          },
+          24,
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 21
+          },
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 20
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 20
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 22
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 23
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 21
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 22
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 24
+          },
+          {
+            "role": "interval",
+            "id": "avg",
+            "sourceColumn": 19
+          },
+          30,
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 27
+          },
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 26
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 26
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 28
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 29
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 27
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 28
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 30
+          },
+          {
+            "role": "interval",
+            "id": "avg",
+            "sourceColumn": 25
           }
         ],
-        "columns": [
-          1,
-          2,
-          3,
-          4,
-          5
-        ],
         "options": {
-          "seriesSelector": {
-            "allowMultiple": false,
-            "method": "setViewColumn"
+          "bar": {
+            "groupWidth": "100%"
           },
-          "vAxis": {
-            "title": "Number of Unique Users Who Printed (x) Number of Pages",
-            "gridlines": {
-              "multiple": 1
+          "dataOpacity": 0,
+          "interval": {
+            "iqr1": {
+              "style": "boxes",
+              "lineWidth": 2
+            },
+            "iqr2": {
+              "style": "boxes",
+              "lineWidth": 2
+            },
+            "min": {
+              "style": "sticks",
+              "lineWidth": 2
+            },
+            "max": {
+              "style": "sticks",
+              "lineWidth": 2
+            },
+            "avg": {
+              "style": "points",
+              "pointSize": 10,
+              "fillOpacity": 1
             }
           },
+          "seriesType": "bars",
+          "vAxis": {
+            "title": "Number of Pages"
+          },
           "hAxis": {
-            "title": "Number of Pages Each User Printed",
+            "title": "Month - Year",
             "minorGridlines": {
               "count": 0
             }
