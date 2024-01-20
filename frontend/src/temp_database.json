@@ -866,7 +866,7 @@
     ],
     "charts": [
       {
-        "title": "Pages by User Category by Month",
+        "title": "Total Number of Pages Printed by User Category by Month",
         "headers": 1,
         "chartType": "ComboChart",
         "gid": 1705611582,
@@ -876,11 +876,11 @@
             "subchartSubtitle": "placeholder",
             "columns": [
               0,
-              5,
-              10,
+              1,
+              8,
               15,
-              20,
-              25
+              22,
+              29
             ],
             "options": {
               "seriesSelector": {
@@ -910,10 +910,10 @@
             "subchartSubtitle": "placeholder",
             "columns": [
               0,
-              5,
-              10,
+              1,
+              8,
               15,
-              20
+              22
             ],
             "options": {
               "seriesType": "bars",
@@ -935,18 +935,32 @@
               "count": 0
             }
           }
+        },
+        "control": {
+          "controlType": "ChartRangeFilter",
+          "options": {
+            "filterColumnIndex": 0,
+            "ui": {
+              "minRangeSize": 7884000000
+            }
+          }
         }
       },
       {
-        "title": "Pages by User Category by Month",
+        "title": "Boxplot Distribution of Pages Printed by User Category by Month",
         "headers": 1,
         "chartType": "BarChart",
         "gid": 1705611582,
         "subchartTitle": "Median and Mean Per User Category",
         "subchartSubtitle": "placeholder",
         "columns": [
-          0,
-          6,
+          36,
+          7,
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 4
+          },
           {
             "role": "interval",
             "id": "iqr1",
@@ -954,64 +968,64 @@
           },
           {
             "role": "interval",
-            "id": "iqr1",
-            "sourceColumn": 2
+            "id": "iqr2",
+            "sourceColumn": 3
           },
           {
             "role": "interval",
             "id": "iqr2",
-            "sourceColumn": 2
-          },
-          {
-            "role": "interval",
-            "id": "iqr2",
-            "sourceColumn": 4
-          },
-          {
-            "role": "interval",
-            "id": "min",
             "sourceColumn": 5
           },
           {
             "role": "interval",
             "id": "min",
-            "sourceColumn": 3
+            "sourceColumn": 6
           },
           {
             "role": "interval",
-            "id": "max",
+            "id": "min",
             "sourceColumn": 4
           },
           {
             "role": "interval",
             "id": "max",
-            "sourceColumn": 6
+            "sourceColumn": 5
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 7
           },
           {
             "role": "interval",
             "id": "avg",
-            "sourceColumn": 1
+            "sourceColumn": 2
           },
-          12,
+          14,
           {
             "role": "interval",
             "id": "iqr1",
-            "sourceColumn": 9
+            "sourceColumn": 11
           },
           {
             "role": "interval",
             "id": "iqr1",
-            "sourceColumn": 8
-          },
-          {
-            "role": "interval",
-            "id": "iqr2",
-            "sourceColumn": 8
+            "sourceColumn": 10
           },
           {
             "role": "interval",
             "id": "iqr2",
             "sourceColumn": 10
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 12
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 13
           },
           {
             "role": "interval",
@@ -1020,126 +1034,80 @@
           },
           {
             "role": "interval",
-            "id": "min",
-            "sourceColumn": 9
-          },
-          {
-            "role": "interval",
-            "id": "max",
-            "sourceColumn": 10
-          },
-          {
-            "role": "interval",
             "id": "max",
             "sourceColumn": 12
           },
           {
             "role": "interval",
+            "id": "max",
+            "sourceColumn": 14
+          },
+          {
+            "role": "interval",
             "id": "avg",
-            "sourceColumn": 7
+            "sourceColumn": 9
           },
-          18,
+          21,
           {
             "role": "interval",
             "id": "iqr1",
-            "sourceColumn": 15
-          },
-          {
-            "role": "interval",
-            "id": "iqr1",
-            "sourceColumn": 14
-          },
-          {
-            "role": "interval",
-            "id": "iqr2",
-            "sourceColumn": 14
-          },
-          {
-            "role": "interval",
-            "id": "iqr2",
-            "sourceColumn": 16
-          },
-          {
-            "role": "interval",
-            "id": "min",
-            "sourceColumn": 17
-          },
-          {
-            "role": "interval",
-            "id": "min",
-            "sourceColumn": 15
-          },
-          {
-            "role": "interval",
-            "id": "max",
-            "sourceColumn": 16
-          },
-          {
-            "role": "interval",
-            "id": "max",
             "sourceColumn": 18
           },
           {
             "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 17
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 17
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 19
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 20
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 18
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 19
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 21
+          },
+          {
+            "role": "interval",
             "id": "avg",
-            "sourceColumn": 13
+            "sourceColumn": 16
           },
-          24,
+          28,
           {
             "role": "interval",
             "id": "iqr1",
-            "sourceColumn": 21
+            "sourceColumn": 25
           },
           {
             "role": "interval",
             "id": "iqr1",
-            "sourceColumn": 20
-          },
-          {
-            "role": "interval",
-            "id": "iqr2",
-            "sourceColumn": 20
-          },
-          {
-            "role": "interval",
-            "id": "iqr2",
-            "sourceColumn": 22
-          },
-          {
-            "role": "interval",
-            "id": "min",
-            "sourceColumn": 23
-          },
-          {
-            "role": "interval",
-            "id": "min",
-            "sourceColumn": 21
-          },
-          {
-            "role": "interval",
-            "id": "max",
-            "sourceColumn": 22
-          },
-          {
-            "role": "interval",
-            "id": "max",
             "sourceColumn": 24
           },
           {
             "role": "interval",
-            "id": "avg",
-            "sourceColumn": 19
-          },
-          30,
-          {
-            "role": "interval",
-            "id": "iqr1",
-            "sourceColumn": 27
-          },
-          {
-            "role": "interval",
-            "id": "iqr1",
-            "sourceColumn": 26
+            "id": "iqr2",
+            "sourceColumn": 24
           },
           {
             "role": "interval",
@@ -1148,33 +1116,74 @@
           },
           {
             "role": "interval",
-            "id": "iqr2",
-            "sourceColumn": 28
-          },
-          {
-            "role": "interval",
-            "id": "min",
-            "sourceColumn": 29
-          },
-          {
-            "role": "interval",
             "id": "min",
             "sourceColumn": 27
           },
           {
             "role": "interval",
-            "id": "max",
-            "sourceColumn": 28
-          },
-          {
-            "role": "interval",
-            "id": "max",
-            "sourceColumn": 30
-          },
-          {
-            "role": "interval",
-            "id": "avg",
+            "id": "min",
             "sourceColumn": 25
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 26
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 28
+          },
+          {
+            "role": "interval",
+            "id": "avg",
+            "sourceColumn": 23
+          },
+          35,
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 32
+          },
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 31
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 31
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 33
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 34
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 32
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 33
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 35
+          },
+          {
+            "role": "interval",
+            "id": "avg",
+            "sourceColumn": 30
           }
         ],
         "options": {
@@ -1219,11 +1228,12 @@
         "control": {
           "controlType": "CategoryFilter",
           "options": {
-            "filterColumnIndex": 0,
+            "filterColumnIndex": 36,
             "ui": {
               "label": "Filter by Month: ",
               "allowNone": false,
-              "allowMultiple": false
+              "allowMultiple": false,
+              "sortValues": false
             }
           }
         }
