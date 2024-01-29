@@ -1231,6 +1231,7 @@
             "filterColumnIndex": 36,
             "ui": {
               "label": "Filter by Month: ",
+              "allowTyping": false,
               "allowNone": false,
               "allowMultiple": false,
               "sortValues": false
