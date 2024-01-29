@@ -549,7 +549,7 @@ function SubChart(props) {
       sx={{
         height: `calc(${height} / 8)`,
         mt: 1,
-        opacity: 0.8,
+        opacity: chartControl?.controlType === 'ChartRangeFilter' ? 0.8 : 1,
         filter: 'saturate(0.3)'
       }}
       // Disable tooltip on click or drag
@@ -610,11 +610,11 @@ function SubChart(props) {
           sx={{ height: '100%' }}
         >
           {renderChartControlBox()}
-          <Box id={chartID} sx={{ height: height, maxHeight: maxHeight }} />
+          <Box id={chartID} sx={{ height: height, maxHeight: maxHeight, zIndex: -1 }} />
         </Stack>
       );
     }
-    return <Box id={chartID} sx={{ height: height, maxHeight: maxHeight }} />;
+    return <Box id={chartID} sx={{ height: height, maxHeight: maxHeight, zIndex: -1 }} />;
   };
 
   const isMounted = useRef(true);
