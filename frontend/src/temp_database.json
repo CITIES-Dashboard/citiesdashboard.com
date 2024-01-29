@@ -860,8 +860,7 @@
     "contact": "nyuad.it@nyu.edu",
     "rawDataTables": [
       {
-        "gid": 1304606517,
-        "query": "SELECT C, D, E, F, G, N, O, P, Q, V"
+        "gid": 1304606517
       }
     ],
     "charts": [
@@ -951,6 +950,7 @@
         "headers": 1,
         "chartType": "BarChart",
         "gid": 1705611582,
+        "query": "SELECT * ORDER BY A DESC",
         "subchartTitle": "Median and Mean Per User Category",
         "subchartSubtitle": "placeholder",
         "columns": [
