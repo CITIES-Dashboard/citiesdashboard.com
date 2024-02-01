@@ -1,6 +1,8 @@
 import { Slider, Typography, Grid, Stack } from '@mui/material';
 
 const extractContentInParentheses = (inputString) => {
+  if (typeof inputString !== 'string') return null;
+
   const start = inputString.indexOf('(') + 1;
   const end = inputString.indexOf(')');
   return start && end > start ? inputString.slice(start, end) : null;
@@ -37,7 +39,7 @@ function ModifiedCategoryFilterForTimeline({ onSliderChange, allCategories, curr
           <Typography variant="caption" color="text.secondary">{valueLabelFormat(allCategories.length - 1)}</Typography>
         </Grid>
       </Grid>
-      <Typography textAlign="center" variant="body2">
+      <Typography textAlign="center" variant="body2" color="text.secondary">
         <b>Showing data for:</b>
         &nbsp;
         {valueLabelFormat(currentCategoryIndex)}
