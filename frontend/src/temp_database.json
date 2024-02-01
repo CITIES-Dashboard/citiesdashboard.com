@@ -1216,10 +1216,10 @@
           },
           "seriesType": "bars",
           "vAxis": {
-            "title": "Number of Pages"
+            "textPosition": "none"
           },
           "hAxis": {
-            "title": "Month - Year",
+            "title": "Number of Pages",
             "minorGridlines": {
               "count": 0
             }
@@ -1228,6 +1228,7 @@
         "control": {
           "controlType": "CategoryFilter",
           "options": {
+            "isSlider": true,
             "filterColumnIndex": 36,
             "ui": {
               "label": "Filter by Month: ",

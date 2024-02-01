@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 export const ChartControlType = {
-  CategoryFilter: { position: 'top', stackDirection: 'column' },
+  CategoryFilter: { position: 'bottom', stackDirection: 'column-reverse' },
   DateRangeFilter: { position: 'bottom', stackDirection: 'column-reverse' },
   ChartRangeFilter: { position: 'bottom', stackDirection: 'column-reverse' },
   NumberRangeFilter: { position: 'top', stackDirection: 'column' }

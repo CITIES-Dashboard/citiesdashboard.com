@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useContext, useMemo, useCallback, memo } f
 
 import { GoogleContext } from '../../ContextProviders/GoogleContext';
 
-import { Box, Stack, Tooltip, Typography } from '@mui/material/';
+import { Box, Stack, Tooltip, Typography, Button, Slider } from '@mui/material/';
 
 import { useTheme } from '@mui/material/styles';
 import HeatMap from '../HeatMap';
@@ -26,6 +26,7 @@ import { transformDataForNivo, convertToNivoHeatMapData } from '../GoogleChartHe
 import { CalendarChart, getCalendarChartMargin, yearSpacing } from './NivoCalendarChart';
 
 import { NivoHeatMap } from './NivoHeatMap';
+import ModifiedCategoryFilterForTimeline from './ModifiedCategoryFilterForTimeline';
 
 function SubChart(props) {
   // Props
@@ -269,6 +270,11 @@ function SubChart(props) {
   const toggleStackedBars = options.toggleStackedBars || false;
   const [isStacked, setIsStacked] = useState(options.isStacked || false);
 
+  // Properties for CategoryFilter to be a timeline slider
+  const isSlider = hasChartControl ? chartControl.options?.isSlider : false;
+  const [allCategoriesForCategoryFilter, setAllCategoriesForCategoryFilter] = useState([]);
+  const [currentCategoryIndexForCategoryFilter, setCurrentCategoryIndexForCategoryFilter] = useState([]);
+
   // Set new options prop and re-render the chart if theme or isPortrait changes
   useEffect(() => {
     if (!seriesSelector) {
@@ -499,7 +505,6 @@ function SubChart(props) {
             const thisDashboardWrapper = new google.visualization.Dashboard(
               document.getElementById(`dashboard-${chartID}`));
             setDashboardWrapper(thisDashboardWrapper);
-
             google.visualization.events.addListener(thisDashboardWrapper, 'ready', onChartReady);
 
             const thisControlWrapper = new google.visualization.ControlWrapper({
@@ -508,6 +513,16 @@ function SubChart(props) {
               containerId: `control-${chartID}`
             });
             setControlWrapper(thisControlWrapper);
+
+            // Set all of the available distinct categories for the CategoryFilter if isSlider is true
+            if (isSlider) {
+              const uniqueCategories = thisDataTable
+                .getDistinctValues(chartControlOptions.filterColumnIndex)
+                .filter(c => c !== null);
+
+              setAllCategoriesForCategoryFilter(uniqueCategories);
+              setCurrentCategoryIndexForCategoryFilter(uniqueCategories.length - 1);
+            }
 
             // Establish dependencies
             thisDashboardWrapper.bind(thisControlWrapper, thisChartWrapper);
@@ -560,6 +575,25 @@ function SubChart(props) {
   ), [chartID, height, handleControlBoxClick, shouldShowTooltip]);
 
   const renderChartControlBox = () => {
+    if (chartControl.controlType === "CategoryFilter") {
+      return (
+        isSlider ?
+          (
+            <>
+              <ModifiedCategoryFilterForTimeline
+                allCategories={allCategoriesForCategoryFilter}
+                currentCategoryIndex={currentCategoryIndexForCategoryFilter}
+                onSliderChange={handleCategoryChange}
+              />
+              <Box display="none">
+                {chartControlBox}
+              </Box>
+            </>
+          )
+          : { chartControlBox }
+      )
+    }
+
     if (chartControl.controlType !== "ChartRangeFilter") {
       return chartControlBox;
     }
@@ -600,6 +634,20 @@ function SubChart(props) {
       setIsStacked(!isStacked);
     }
   }, [chartWrapper, isStacked, options]);
+
+  // Handler for CategoryFilter if isSlider is true
+  const handleCategoryChange = (_, newValue) => {
+    if (!isSlider) return;
+    if (!controlWrapper) return;
+
+    controlWrapper.setState({
+      selectedValues: [allCategoriesForCategoryFilter[newValue]]
+    });
+
+    setCurrentCategoryIndexForCategoryFilter(newValue);
+
+    controlWrapper.draw();
+  };
 
   const renderChart = () => {
     if (hasChartControl) {
