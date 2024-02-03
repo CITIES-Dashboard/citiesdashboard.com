@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useContext, useMemo, useCallback, memo } f
 
 import { GoogleContext } from '../../ContextProviders/GoogleContext';
 
-import { Box, Stack, Tooltip, Typography, Button, Slider } from '@mui/material/';
+import { Box, Stack, Tooltip, Typography } from '@mui/material/';
 
 import { useTheme } from '@mui/material/styles';
 import HeatMap from '../HeatMap';
@@ -164,7 +164,7 @@ function SubChart(props) {
   }
 
   const [NivoHeatMapData, setNivoHeatMapData] = useState(null);
-  const [NivoHeatMapWidth, setNivoHeatMapWidth] = useState(900);
+  const [NivoHeatMapWidth, setNivoHeatMapWidth] = useState(700);
   // Early return for 'NivoHeatMap' chartType
   if (chartData.chartType === 'NivoHeatMap') {
     useEffect(() => {
@@ -195,7 +195,7 @@ function SubChart(props) {
         className={className}
         position="relative"
         minWidth={NivoHeatMapWidth + 'px'}
-        height="500px"
+        height={isPortrait ? "420px" : "500px"}
       >
         <NivoHeatMap
           data={NivoHeatMapData}

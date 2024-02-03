@@ -77,16 +77,9 @@ export const NivoHeatMap = ({ data, width, isPortrait, options, tooltipTemplate 
             forceSquare={true}
             margin={
                 isPortrait
-                    ? { top: 100, right: 125, bottom: 50, left: 125 }
-                    : { top: 100, right: 90, bottom: 60, left: 90 }
+                    ? { top: 70, right: 110, bottom: 40, left: 120 }
+                    : { top: 100, right: 90, bottom: 0, left: 90 }
             }
-
-            // borderWidth={1}
-            // borderColor={theme.palette.customBackground}
-
-            // // Custom theming for Dark mode
-            // opacity={theme.palette.mode === 'dark' ? 0.7 : 1}
-            // activeOpacity={theme.palette.mode === 'dark' ? 0.7 : 1}
 
             // --- Labels ---
             // Display both absolute and percentage values in cell labels
@@ -97,13 +90,13 @@ export const NivoHeatMap = ({ data, width, isPortrait, options, tooltipTemplate 
 
                 // Display label with the value and the appropriate percentage
                 return (
-                    <tspan fill={fontColor} fontSize="0.8rem">
+                    <tspan fill={fontColor} fontSize="0.7rem">
                         {addCommasToNumber(data.y)}
                         <tspan
                             x="0"
                             dy="1.35em"
                             fill={fontColor}
-                            fontSize="0.65rem"
+                            fontSize="0.6rem"
                         >
                             ({
                                 options?.nivoHeatMap?.hoverTarget === 'row'
@@ -119,7 +112,7 @@ export const NivoHeatMap = ({ data, width, isPortrait, options, tooltipTemplate 
             colors={{
                 type: 'diverging',
                 scheme: 'purples',
-                divergeAt: 0.3
+                divergeAt: 0.2
             }}
 
             emptyColor={theme.palette.background.default}
