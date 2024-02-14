@@ -6,16 +6,17 @@ import parse from 'html-react-parser';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { replacePlainHTMLWithMuiComponents } from '../Utils/Utils';
 
-function CollapsibleSubtitle({ text, wordLimit = 75, reference }) {
+function CollapsibleSubtitle({ text, wordLimit = 60, reference }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const subtitleRef = useRef(null);
 
   const words = text.split(' ');
+  console.log(words.length, wordLimit);
 
   // If not on mobile or words are within limit, just display the full text
-  if (!isMobile || words.length <= wordLimit) {
+  if (!isMobile || words.length / wordLimit <= 1.4) {
     return (
       <Box>
         <Typography>{parse(text, { replace: replacePlainHTMLWithMuiComponents })}</Typography>
