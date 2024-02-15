@@ -13,7 +13,6 @@ function CollapsibleSubtitle({ text, wordLimit = 60, reference }) {
   const subtitleRef = useRef(null);
 
   const words = text.split(' ');
-  console.log(words.length, wordLimit);
 
   // If not on mobile or words are within limit, just display the full text
   if (!isMobile || words.length / wordLimit <= 1.4) {
