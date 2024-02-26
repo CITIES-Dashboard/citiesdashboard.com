@@ -871,7 +871,7 @@
         "subcharts": [
           {
             "subchartTitle": "Total Per User Category",
-            "subchartSubtitle": "placeholder",
+            "subchartSubtitle": "<p>The graph above presents a monthly analysis of the total number of pages consumed by different user categories. <b>Faculty & Researchers</b> lead in page usage across most months, with <b>Students</b> closely following. <b>Staff</b> members, while generally using fewer pages than the aforementioned groups, show a notable increase in usage during academic off-seasons—specifically in January, and from June to August, where they surpass other categories in page consumption. This can be attributed to the fact that a majority of the Student body is not on campus during the months when the fall and spring semesters are not in session.</p><p>Additionally, the visualization highlights fluctuations in overall paper consumption, represented by a grey trend line. This line reveals that paper usage peaks during active academic periods and experiences a slight decline during the winter break, with a more pronounced drop observed during summer breaks. This pattern underscores the direct impact of academic cycles on paper consumption behaviors across different user groups.</p>",
             "columns": [
               0,
               1,
@@ -905,7 +905,7 @@
           },
           {
             "subchartTitle": "Percentage by User Category",
-            "subchartSubtitle": "placeholder",
+            "subchartSubtitle": "<p>This stacked bar graph delineates the distribution of paper consumption among four distinct user categories — Students, Staff, Faculty & Researchers, and Others — on a month-by-month basis throughout the academic year. Each bar represents the total paper usage for a given month, with the different colors indicating the proportion of usage by each user category.</p><p>From September 2022 to November 2023, <b>Faculty & Researchers</b> consistently represent the largest share of paper usage, while the <b>Students'</b> share is slightly less but still substantial. The <b>Staff</b> category, although lower than the other two during most months, exhibits a surge during the semester breaks, particularly in January, and during the summer months from June to August, where their usage surpasses the other categories. The 'Others' category consistently shows the smallest portion of usage across all months.</p><p>The graph also demonstrates seasonal patterns in total paper consumption, with the highest usage occurring during the active semesters and a noticeable decrease during winter and summer breaks. The pattern of paper use among the different categories seems to correlate with the academic calendar, highlighting how paper consumption is intertwined with the rhythms of academic life.</p>",
             "columns": [
               0,
               1,
@@ -951,7 +951,7 @@
         "gid": 1705611582,
         "query": "SELECT * ORDER BY A DESC",
         "subchartTitle": "Median and Mean Per User Category",
-        "subchartSubtitle": "placeholder",
+        "subtitle": "<p>This boxplot illustrates the distribution of pages printed by different user categories, showcasing data variability on a month-by-month basis via a controllable slider. The large dots represent the mean number of pages printed per category, while the line within each box marks the median.</p><p>Consistently across all user categories, the mean is higher than the median, indicating a right-skewed distribution. This suggests that within each group, there are outliers or a subset of heavy users who print significantly more pages than the average, thereby pulling the mean upwards. The <b>Faculty & Researchers</b> category, in particular, exhibits the greatest spread, highlighting a broad range of printing behaviors, from minimal to very high usage. The presence of such skewness across all categories indicates that a majority of users print a moderate number of pages, but the overall average is influenced by a few individuals printing large quantities.</p>",
         "columns": [
           36,
           7,
