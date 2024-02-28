@@ -17,6 +17,7 @@ function StackedBarToggle({ onToggle, isStacked, isPortrait, theme }) {
         color: theme.palette.text.secondary,
       }}
       onClick={onToggle}
+      size="small"
     >
       {isStacked ? 'Unstack Bars' : 'Stack Bars'}
     </Button>
