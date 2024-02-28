@@ -871,7 +871,7 @@
         "subcharts": [
           {
             "subchartTitle": "Total Per User Category",
-            "subchartSubtitle": "<p>The graph above presents a monthly analysis of the total number of pages consumed by different user categories. <b>Faculty & Researchers</b> lead in page usage across most months, with <b>Students</b> closely following. <b>Staff</b> members, while generally using fewer pages than the aforementioned groups, show a notable increase in usage during academic off-seasons—specifically in January, and from June to August, where they surpass other categories in page consumption. This can be attributed to the fact that a majority of the Student body is not on campus during the months when the fall and spring semesters are not in session.</p><p>Additionally, the visualization highlights fluctuations in overall paper consumption, represented by a grey trend line. This line reveals that paper usage peaks during active academic periods and experiences a slight decline during the winter break, with a more pronounced drop observed during summer breaks. This pattern underscores the direct impact of academic cycles on paper consumption behaviors across different user groups.</p>",
+            "subchartSubtitle": "<p>The graph above presents a monthly analysis of the total number of pages consumed by different user categories. <b>Faculty & Researcher</b> and <b>Student</b> are the two biggest contributors in campus' paper usage, followed by <b>Staff</b> and <b>Others</b>. </p><p>Additionally, the visualization highlights fluctuations in overall paper consumption across <b>All Categories</b>, represented by the grey line, with the highest usage occurring during the academic semesters, exceeding <b>270,000 pages</b> printed per month. There is also a noticeable decrease of usage during winter and summer breaks, with the lowest months clocking in at only around <b>1/4</b> of peak-usage months. This pattern underscores the direct impact of academic cycles on paper consumption behaviors across different user groups.</p>",
             "columns": [
               0,
               1,
@@ -886,6 +886,7 @@
                 "method": "setViewColumn"
               },
               "toggleStackedBars": true,
+              "isStacked": true,
               "seriesType": "bars",
               "series": {
                 "4": {
@@ -905,7 +906,7 @@
           },
           {
             "subchartTitle": "Percentage by User Category",
-            "subchartSubtitle": "<p>This stacked bar graph delineates the distribution of paper consumption among four distinct user categories — Students, Staff, Faculty & Researchers, and Others — on a month-by-month basis throughout the academic year. Each bar represents the total paper usage for a given month, with the different colors indicating the proportion of usage by each user category.</p><p>From September 2022 to November 2023, <b>Faculty & Researchers</b> consistently represent the largest share of paper usage, while the <b>Students'</b> share is slightly less but still substantial. The <b>Staff</b> category, although lower than the other two during most months, exhibits a surge during the semester breaks, particularly in January, and during the summer months from June to August, where their usage surpasses the other categories. The 'Others' category consistently shows the smallest portion of usage across all months.</p><p>The graph also demonstrates seasonal patterns in total paper consumption, with the highest usage occurring during the active semesters and a noticeable decrease during winter and summer breaks. The pattern of paper use among the different categories seems to correlate with the academic calendar, highlighting how paper consumption is intertwined with the rhythms of academic life.</p>",
+            "subchartSubtitle": "<p>This stacked bar graph illustrates the <b>distribution</b> of paper consumption among four distinct user categories on a month-by-month basis since September 2022. <b>Faculty & Researcher</b> consistently represents the largest group of paper usage, accounting for around 30% - 40% of all papers printed. <b>Student</b> follows closely behind. <b>Staff</b>, although representing a lower proportion than the previous two demographic groups during most months, exhibits a surge during the summer months from June to August, where their usage exceeds 60% of the entire university, surpassing all other categories. This is due to the majority of the student body not residing on campus during such periods. <b>Others</b> consistently shows the smallest portion of usage across all months, only accounting for 5 - 10% of all papers printed.</p>",
             "columns": [
               0,
               1,
@@ -951,10 +952,18 @@
         "gid": 1705611582,
         "query": "SELECT * ORDER BY A DESC",
         "subchartTitle": "Median and Mean Per User Category",
-        "subtitle": "<p>This boxplot illustrates the distribution of pages printed by different user categories, showcasing data variability on a month-by-month basis via a controllable slider. The large dots represent the mean number of pages printed per category, while the line within each box marks the median.</p><p>Consistently across all user categories, the mean is higher than the median, indicating a right-skewed distribution. This suggests that within each group, there are outliers or a subset of heavy users who print significantly more pages than the average, thereby pulling the mean upwards. The <b>Faculty & Researchers</b> category, in particular, exhibits the greatest spread, highlighting a broad range of printing behaviors, from minimal to very high usage. The presence of such skewness across all categories indicates that a majority of users print a moderate number of pages, but the overall average is influenced by a few individuals printing large quantities.</p>",
+        "subtitle": "<p>These boxplots illustrate the distribution of pages printed by different user categories, showcasing data variability on a month-by-month basis via <b>a controllable slider</b>. For each category, the large dot represents the mean (average) number of pages printed by a user from that category, while the line inside each box marks the median, the box marks the 25th and 75th percentile, and the whiskers represent min and max values. More information on how to read a boxplot can be found <a href='https://en.wikipedia.org/wiki/Box_plot'>here</a>.</p><p>Consistently across all user categories, the mean is higher than the median, indicating a right-skewed distribution. This suggests that within each user category, <b>there are outliers or a subset of heavy users who print significantly more pages than the average person</b>, thereby pulling the mean upwards. <b>Faculty & Researcher</b> category, in particular, exhibits the greatest spread, highlighting a broad range of printing behaviors, from minimal to very high usage. The presence of such skewness across all categories indicates that a majority of users print a moderate number of pages, but the overall average is much higher, caused by few individuals printing large quantities.</p>",
         "columns": [
           36,
           7,
+          {
+            "role": "tooltip",
+            "type": "string",
+            "properties": {
+              "html": true
+            },
+            "sourceColumn": 37
+          },
           {
             "role": "interval",
             "id": "iqr1",
@@ -1002,6 +1011,14 @@
           },
           14,
           {
+            "role": "tooltip",
+            "type": "string",
+            "properties": {
+              "html": true
+            },
+            "sourceColumn": 38
+          },
+          {
             "role": "interval",
             "id": "iqr1",
             "sourceColumn": 11
@@ -1047,6 +1064,14 @@
             "sourceColumn": 9
           },
           21,
+          {
+            "role": "tooltip",
+            "type": "string",
+            "properties": {
+              "html": true
+            },
+            "sourceColumn": 39
+          },
           {
             "role": "interval",
             "id": "iqr1",
@@ -1094,6 +1119,14 @@
           },
           28,
           {
+            "role": "tooltip",
+            "type": "string",
+            "properties": {
+              "html": true
+            },
+            "sourceColumn": 40
+          },
+          {
             "role": "interval",
             "id": "iqr1",
             "sourceColumn": 25
@@ -1139,6 +1172,14 @@
             "sourceColumn": 23
           },
           35,
+          {
+            "role": "tooltip",
+            "type": "string",
+            "properties": {
+              "html": true
+            },
+            "sourceColumn": 41
+          },
           {
             "role": "interval",
             "id": "iqr1",
