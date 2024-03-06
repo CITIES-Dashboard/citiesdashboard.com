@@ -1290,7 +1290,7 @@
         "subcharts": [
           {
             "subchartTitle": "Grouped by User Category",
-            "subchartSubtitle": "In this first heatmap, page usage has been visualized as a percentage of the total number of pages used by <b>each user category</b>. A marked preference for <b>B/W print (A4)</b> pages is evident among Student, Faculty & Researcher, and Others, representing approximately <b>60-65%</b> of their respective total paper usages. Conversely, Staff exhibited an almost equal usage of <b>color print (A4) pages</b>, <b>color copy (A4) pages</b> and <b>B/W print (A4) pages</b>, comprising almost all of their total usage.",
+            "subchartSubtitle": "In this first heatmap, page usage has been visualized as a percentage of the total number of pages used by <b>each user category</b>. A marked preference for <b>B/W A4</b> pages is evident among Student, Faculty & Researcher, and Others, representing approximately <b>60-70%</b> of their respective total paper usages. Conversely, Staff exhibited a strong preference for <b>color A4 pages</b>.",
             "tooltipFormat": "<span><strong>{columnCategory}</strong>: {y}<br />{percentage} of {rowOrColTotal} pages used by {rowCategory}</span>",
             "options": {
               "nivoHeatMap": {
@@ -1301,7 +1301,7 @@
           },
           {
             "subchartTitle": "Grouped by Page Type",
-            "subchartSubtitle": "In this second heatmap, page usage is visualized as a percentage of all pages used for <b>each type of paper</b>. Student and Faculty & Researcher together account for approximately <b>80%</b> of all B/W print (A4), signifying their substantial reliance on standard black and white documents for academic purposes. In contrast, Staff displays a pronounced preference for color documents, utilizing more than <b>85%</b> of <b>Color copy (A4)</b> and <b>Color copy (A3)</b>.<br><br>Notably, both Student and Staff use a much greater quantity of <b>print (A3) pages</b> — both in color and B/W — compared to Faculty & Researcher. This suggests they are more frequently involved in creating larger format materials, such as posters for events and presentations, which require the visibility and impact that larger page sizes provide.",
+            "subchartSubtitle": "In this second heatmap, page usage is visualized as a percentage of all pages used for <b>each type of paper</b>. Student and Faculty & Researcher together account for approximately <b>80%</b> of all B/W A4 pages, signifying their substantial reliance on standard black and white documents for academic purposes. In contrast, Staff displays a pronounced preference for color documents, utilizing more than <b>40%</b> of both <b>A3 and A4 color pages</b>.<br><br>Notably, both Student and Staff use a much greater quantity of <b>A3 pages</b> — both in color and B/W — compared to Faculty & Researcher. This suggests they are more frequently involved in creating larger format materials, such as posters for events and presentations, which require the visibility and impact that larger page sizes provide.",
             "tooltipFormat": "<span><strong>{rowCategory}</strong>: {y}<br />{percentage} of {rowOrColTotal} {columnCategory} pages used</span>",
             "options": {
               "nivoHeatMap": {

@@ -49,11 +49,15 @@ export const NivoHeatMap = ({ data, width, isPortrait, options, tooltipTemplate 
 
     // --- Get Range of Data (Currently, for coloring labels for readability) ---
     const [yValueRange, setYValueRange] = useState({ minValue: null, maxValue: null });
+    const [numColumns, setNumColumns] = useState(0);
 
     useEffect(() => {
         // Calculate the range of y values when data changes
         const range = findRangeOfYValues(data);
         setYValueRange(range);
+
+        // Calculate the number of columns in the heatmap
+        setNumColumns(data[0].data.length);
     }, [data]); // Dependency array: Recalculate when 'data' changes
 
     if (yValueRange.minValue === null || yValueRange.maxValue === null) {
@@ -141,7 +145,7 @@ export const NivoHeatMap = ({ data, width, isPortrait, options, tooltipTemplate 
                 orient: "left",
                 tickRotation: -90
             }}
-            axisRight={isPortrait === true || null}
+            axisRight={isPortrait === true || numColumns <= 5}
 
             // --- Tooltip ---
             // Use custom tooltip component
