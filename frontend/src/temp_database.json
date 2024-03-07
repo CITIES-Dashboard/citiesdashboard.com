@@ -15,7 +15,6 @@
     "id": "athletics-fabs-membership",
     "title": "Athletics FABS Membership",
     "sheetId": "1mRberQXQI9uHCP_gGXgK8NfjbiA2DdQc-HH1c01eEDk",
-    "description": "This dataset visualizes the number of unique active memberships registered in the Fitness and Athletics Booking system (FABS) by academic year (AY). For FABS, an AY starts from <b>August 1</b> of the first calendar year to <b>July 31</b> of the second calendar year. After <b>July 31</b>, all existing memberships expire and members need to register again for the next AY. FABS members can register for sport classes, reserve lockers, and book and access Athletic facilities.<br><br>While there are 11 original types of FABS accounts, our data visualizations simplify them into <b>four distinct demographic groups</b>. For detailed data of the original 11 types of FABS accounts, you can download the raw dataset. <table><thead><tr><th>Simplified demographic groups</th><th>Original type(s) of FABS accounts</th></tr></thead><tbody><tr><td>Undergraduate students</td><td>Student</td></tr><tr><td>Graduate students and Alumni</td><td>Grad student and Alumni</td></tr><tr><td>Faculty and Staff</td><td>Faculty, Staff, and Family Member</td></tr><tr><td>External and Other</td><td>Community, Contract, External Instructor, Guest, and Others</td></tr></tbody></table>",
     "owners": [
       "Department of Athletics"
     ],
@@ -843,6 +842,484 @@
             "minorGridlines": {
               "count": 0
             }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "isActive": true,
+    "id": "printing-and-copying",
+    "title": "Printing & Copying",
+    "sheetId": "1O1X73cSXO1lQuiQ1lj7d9QdE3KgdIufFlurmAPeI1ek",
+    "description": "This dataset visualizes printing and copying activities at NYUAD. It tracks the usage of black and white (B/W) and color printing data across various paper sizes like A3 and A4, segmented by different user categories. The visualizations offers a detailed breakdown including time trends and user category comparisons.<br><br>While there are 10+ original types of printing accounts, our data visualizations simplify them into <b>four distinct demographic groups</b>. For detailed data of the original types of printing accounts, you can download the raw dataset. <table><thead><tr><th>Simplified groups</th><th>Original types of printing accounts</th></tr></thead><tbody><tr><td>Student</td><td>admitted_student, legacy_student, degree, student_applicant, student on leave, abu_dhabi_smsp</td></tr><tr><td>Faculty and Researcher</td><td>adjunct faculty, faculty, researcher, research_affiliate, retired faculty, visiting_academic_other, visiting_scholar</td></tr><tr><td>Staff</td><td>ad_contingent, ad_employee_of_vendor, administrator, contractor, employee_of_vendor, prospective_employee, security_staff</td></tr><tr><td>Others</td><td>ad_executive_authority, employee_family_member, nyu_building_resident, account_sponsored_retiree, program_affiliate_other, nyu_commercial_tenant, unknown</td></tr></tbody></table>",
+    "owners": [
+      "NYUAD IT"
+    ],
+    "contact": "nyuad.it@nyu.edu",
+    "rawDataTables": [
+      {
+        "gid": 1304606517
+      }
+    ],
+    "charts": [
+      {
+        "title": "Total Number of Pages by User Category by Month",
+        "headers": 1,
+        "chartType": "ComboChart",
+        "gid": 1705611582,
+        "subcharts": [
+          {
+            "subchartTitle": "Total Per User Category",
+            "subchartSubtitle": "<p>The graph above presents a monthly analysis of the total number of pages consumed by different user categories. <b>Faculty & Researcher</b> and <b>Student</b> are the two biggest contributors in campus' paper usage, followed by <b>Staff</b> and <b>Others</b>. </p><p>Additionally, the visualization highlights fluctuations in overall paper consumption across <b>All Categories</b>, represented by the grey line, with the highest usage occurring during the academic semesters, exceeding <b>270,000 pages</b> printed per month. There is also a noticeable decrease of usage during winter and summer breaks, with the lowest months clocking in at only around <b>1/4</b> of peak-usage months. This pattern underscores the direct impact of academic cycles on paper consumption behaviors across different user groups.</p>",
+            "columns": [
+              0,
+              1,
+              8,
+              15,
+              22,
+              29
+            ],
+            "options": {
+              "seriesSelector": {
+                "allowMultiple": true,
+                "method": "setViewColumn"
+              },
+              "toggleStackedBars": true,
+              "isStacked": true,
+              "seriesType": "bars",
+              "series": {
+                "4": {
+                  "type": "line",
+                  "lineWidth": 3,
+                  "pointSize": 5
+                }
+              },
+              "bar": {
+                "groupWidth": "40%"
+              },
+              "vAxis": {
+                "title": "Number of Pages (in Thousands)",
+                "format": "short"
+              }
+            }
+          },
+          {
+            "subchartTitle": "Percentage by User Category",
+            "subchartSubtitle": "<p>This stacked bar graph illustrates the <b>distribution</b> of paper consumption among four distinct user categories on a month-by-month basis since September 2022. <b>Faculty & Researcher</b> consistently represents the largest group of paper usage, accounting for around 30% - 40% of all papers printed. <b>Student</b> follows closely behind. <b>Staff</b>, although representing a lower proportion than the previous two demographic groups during most months, exhibits a surge during the summer months from June to August, where their usage exceeds 60% of the entire university, surpassing all other categories. This is due to the majority of the student body not residing on campus during such periods. <b>Others</b> consistently shows the smallest portion of usage across all months, only accounting for 5 - 10% of all papers printed.</p>",
+            "columns": [
+              0,
+              1,
+              8,
+              15,
+              22
+            ],
+            "options": {
+              "seriesType": "bars",
+              "bar": {
+                "groupWidth": "40%"
+              },
+              "isStacked": "percent",
+              "vAxis": {
+                "title": "Percentage",
+                "format": "#.#%"
+              }
+            }
+          }
+        ],
+        "options": {
+          "hAxis": {
+            "title": "Month - Year",
+            "minorGridlines": {
+              "count": 0
+            }
+          }
+        },
+        "control": {
+          "controlType": "ChartRangeFilter",
+          "options": {
+            "filterColumnIndex": 0,
+            "ui": {
+              "minRangeSize": 7884000000
+            }
+          }
+        }
+      },
+      {
+        "title": "Boxplot Distribution of Pages Printed by User Category by Month",
+        "headers": 1,
+        "chartType": "BarChart",
+        "gid": 1705611582,
+        "query": "SELECT * ORDER BY A DESC",
+        "subchartTitle": "Median and Mean Per User Category",
+        "subtitle": "<p>These boxplots illustrate the distribution of pages printed by different user categories, showcasing data variability on a month-by-month basis via <b>a controllable slider</b>. For each category, the large dot represents the mean (average) number of pages printed by a user from that category, while the line inside each box marks the median, the box marks the 25th and 75th percentile, and the whiskers represent min and max values. More information on how to read a boxplot can be found <a href='https://en.wikipedia.org/wiki/Box_plot'>here</a>.</p><p>Consistently across all user categories, the mean is higher than the median, indicating a right-skewed distribution. This suggests that within each user category, <b>there are outliers or a subset of heavy users who print significantly more pages than the average person</b>, thereby pulling the mean upwards. <b>Faculty & Researcher</b> category, in particular, exhibits the greatest spread, highlighting a broad range of printing behaviors, from minimal to very high usage. The presence of such skewness across all categories indicates that a majority of users print a moderate number of pages, but the overall average is much higher, caused by few individuals printing large quantities.</p>",
+        "columns": [
+          36,
+          7,
+          {
+            "role": "tooltip",
+            "type": "string",
+            "properties": {
+              "html": true
+            },
+            "sourceColumn": 37
+          },
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 4
+          },
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 3
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 3
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 5
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 6
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 4
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 5
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 7
+          },
+          {
+            "role": "interval",
+            "id": "avg",
+            "sourceColumn": 2
+          },
+          14,
+          {
+            "role": "tooltip",
+            "type": "string",
+            "properties": {
+              "html": true
+            },
+            "sourceColumn": 38
+          },
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 11
+          },
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 10
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 10
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 12
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 13
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 11
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 12
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 14
+          },
+          {
+            "role": "interval",
+            "id": "avg",
+            "sourceColumn": 9
+          },
+          21,
+          {
+            "role": "tooltip",
+            "type": "string",
+            "properties": {
+              "html": true
+            },
+            "sourceColumn": 39
+          },
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 18
+          },
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 17
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 17
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 19
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 20
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 18
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 19
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 21
+          },
+          {
+            "role": "interval",
+            "id": "avg",
+            "sourceColumn": 16
+          },
+          28,
+          {
+            "role": "tooltip",
+            "type": "string",
+            "properties": {
+              "html": true
+            },
+            "sourceColumn": 40
+          },
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 25
+          },
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 24
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 24
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 26
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 27
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 25
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 26
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 28
+          },
+          {
+            "role": "interval",
+            "id": "avg",
+            "sourceColumn": 23
+          },
+          35,
+          {
+            "role": "tooltip",
+            "type": "string",
+            "properties": {
+              "html": true
+            },
+            "sourceColumn": 41
+          },
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 32
+          },
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 31
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 31
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 33
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 34
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 32
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 33
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 35
+          },
+          {
+            "role": "interval",
+            "id": "avg",
+            "sourceColumn": 30
+          }
+        ],
+        "options": {
+          "bar": {
+            "groupWidth": "100%"
+          },
+          "dataOpacity": 0,
+          "interval": {
+            "iqr1": {
+              "style": "boxes",
+              "lineWidth": 2
+            },
+            "iqr2": {
+              "style": "boxes",
+              "lineWidth": 2
+            },
+            "min": {
+              "style": "sticks",
+              "lineWidth": 2
+            },
+            "max": {
+              "style": "sticks",
+              "lineWidth": 2
+            },
+            "avg": {
+              "style": "points",
+              "pointSize": 10,
+              "fillOpacity": 1
+            }
+          },
+          "seriesType": "bars",
+          "vAxis": {
+            "textPosition": "none"
+          },
+          "hAxis": {
+            "title": "Number of Pages",
+            "minorGridlines": {
+              "count": 0
+            }
+          }
+        },
+        "control": {
+          "controlType": "CategoryFilter",
+          "options": {
+            "isSlider": true,
+            "filterColumnIndex": 36,
+            "ui": {
+              "label": "Filter by Month: ",
+              "allowTyping": false,
+              "allowNone": false,
+              "allowMultiple": false,
+              "sortValues": false
+            }
+          }
+        }
+      },
+      {
+        "title": "Compositions of Page Type by User Category (Since Sep 2022)",
+        "headers": 1,
+        "chartType": "NivoHeatMap",
+        "nivo": true,
+        "gid": 2096148199,
+        "subtitle": "The two heat-maps above visualize the total usage of various paper types by different user categories at NYU Abu Dhabi, <b>since September 2022</b>. Each cell's color corresponds to the volume of pages used, with darker shades indicating higher usage.<br><br>",
+        "subcharts": [
+          {
+            "subchartTitle": "Grouped by User Category",
+            "subchartSubtitle": "In this first heatmap, page usage has been visualized as a percentage of the total number of pages used by <b>each user category</b>. A marked preference for <b>B/W A4</b> pages is evident among Student, Faculty & Researcher, and Others, representing approximately <b>60-70%</b> of their respective total paper usages. Conversely, Staff exhibited a strong preference for <b>color A4 pages</b>.",
+            "tooltipFormat": "<span><strong>{columnCategory}</strong>: {y}<br />{percentage} of {rowOrColTotal} pages used by {rowCategory}</span>",
+            "options": {
+              "nivoHeatMap": {
+                "yInnerPadding": 0.2,
+                "hoverTarget": "row"
+              }
+            }
+          },
+          {
+            "subchartTitle": "Grouped by Page Type",
+            "subchartSubtitle": "In this second heatmap, page usage is visualized as a percentage of all pages used for <b>each type of paper</b>. Student and Faculty & Researcher together account for approximately <b>80%</b> of all B/W A4 pages, signifying their substantial reliance on standard black and white documents for academic purposes. In contrast, Staff displays a pronounced preference for color documents, utilizing more than <b>40%</b> of both <b>A3 and A4 color pages</b>.<br><br>Notably, both Student and Staff use a much greater quantity of <b>A3 pages</b> — both in color and B/W — compared to Faculty & Researcher. This suggests they are more frequently involved in creating larger format materials, such as posters for events and presentations, which require the visibility and impact that larger page sizes provide.",
+            "tooltipFormat": "<span><strong>{rowCategory}</strong>: {y}<br />{percentage} of {rowOrColTotal} {columnCategory} pages used</span>",
+            "options": {
+              "nivoHeatMap": {
+                "xInnerPadding": 0.2,
+                "hoverTarget": "column"
+              }
+            }
+          }
+        ],
+        "options": {
+          "nivoHeatMap": {
+            "xOuterPadding": 0.05,
+            "yOuterPadding": 0.05,
+            "legends": [
+              {
+                "title": "Number of Pages"
+              }
+            ]
           }
         }
       }

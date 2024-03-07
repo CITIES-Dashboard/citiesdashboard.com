@@ -9,6 +9,7 @@ import { Box, Stack, Tooltip, Typography } from '@mui/material/';
 import { useTheme } from '@mui/material/styles';
 import HeatMap from '../HeatMap';
 import SeriesSelector from './SeriesSelector';
+import StackedBarToggle from './StackedBarToggle';
 
 import { fetchDataFromSheet, generateRandomID, returnGenericOptions, returnCalendarChartOptions, returnChartControlUI, ChartControlType, addTouchEventListenerForChartControl } from '../GoogleChartHelper';
 
@@ -20,9 +21,12 @@ import ChartSubstituteComponentLoader from '../ChartSubstituteComponents/ChartSu
 
 import { isMobile } from 'react-device-detect';
 
-import { transformDataForNivo } from '../GoogleChartHelper'
+import { transformDataForNivo, convertToNivoHeatMapData } from '../GoogleChartHelper'
 
 import { CalendarChart, getCalendarChartMargin, yearSpacing } from './NivoCalendarChart';
+
+import { NivoHeatMap } from './NivoHeatMap';
+import ModifiedCategoryFilterForTimeline from './ModifiedCategoryFilterForTimeline';
 
 function SubChart(props) {
   // Props
@@ -159,6 +163,53 @@ function SubChart(props) {
     );
   }
 
+  const [NivoHeatMapData, setNivoHeatMapData] = useState(null);
+  const [NivoHeatMapWidth, setNivoHeatMapWidth] = useState(500);
+  // Early return for 'NivoHeatMap' chartType
+  if (chartData.chartType === 'NivoHeatMap') {
+    useEffect(() => {
+      if (!google) return;
+      fetchDataFromSheet({ chartData: chartData, subchartIndex: subchartIndex })
+        .then(response => {
+          const rawData = response.getDataTable();
+          const heatMapData = convertToNivoHeatMapData(rawData);
+          setNivoHeatMapData(heatMapData);
+        }
+        )
+        .catch(error => {
+          console.log(error);
+        });
+    }, [google]);
+
+    if (!NivoHeatMapData) {
+      return (
+        <Box sx={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+          <LoadingAnimation />
+        </Box>
+      )
+    }
+
+    return (
+      <GoogleChartStyleWrapper
+        isPortrait={isPortrait}
+        className={className}
+        position="relative"
+        minWidth={NivoHeatMapWidth + 'px'}
+        height={isPortrait ? "420px" : "500px"}
+      >
+        <NivoHeatMap
+          data={NivoHeatMapData}
+          width={NivoHeatMapWidth}
+          isPortrait={isPortrait}
+          options={options}
+          tooltipTemplate={chartData.tooltipFormat || chartData.subcharts[subchartIndex].tooltipFormat}
+        />
+      </GoogleChartStyleWrapper>
+    );
+  }
+
+
+
   // States of the Google Charts
   const [dataTable, setDataTable] = useState();
   const [chartWrapper, setChartWrapper] = useState();
@@ -215,6 +266,15 @@ function SubChart(props) {
   // Properties for selecting (showing or hiding) the serie(s)
   const seriesSelector = options.seriesSelector || false;
 
+  // Properties for toggling stacked bars
+  const toggleStackedBars = options.toggleStackedBars || false;
+  const [isStacked, setIsStacked] = useState(options.isStacked || false);
+
+  // Properties for CategoryFilter to be a timeline slider
+  const isSlider = hasChartControl ? chartControl.options?.isSlider : false;
+  const [allCategoriesForCategoryFilter, setAllCategoriesForCategoryFilter] = useState([]);
+  const [currentCategoryIndexForCategoryFilter, setCurrentCategoryIndexForCategoryFilter] = useState([]);
+
   // Set new options prop and re-render the chart if theme or isPortrait changes
   useEffect(() => {
     if (!seriesSelector) {
@@ -268,17 +328,8 @@ function SubChart(props) {
 
       // Set the visibility of data column, 
       if (col.role === 'data') {
-        // initially, all data columns are selected if multiple series are selectable
-        if (seriesSelector?.allowMultiple) {
-          col.selected = true;
-        } else {
-          // else for single serie selector, only first data column is selected
-          if (dataSeriesIndex === 0) {
-            col.selected = true;
-          } else {
-            col.selected = false;
-          }
-        }
+        // initially, all data columns are selected
+        col.selected = true;
         col.seriesIndex = dataSeriesIndex;
         dataSeriesIndex++;
       }
@@ -347,7 +398,7 @@ function SubChart(props) {
     }
     else if (seriesSelector.method === "setViewColumn") {
       let newViewColumns = [];
-      newViewColumns.push(0); // this is the domain column
+      newViewColumns.push(chartData.columns?.[0] || 0); // this is the domain column
       newDataColumns.forEach((dataColumn) => {
         if (dataColumn.selected) {
           newViewColumns.push(dataColumn);
@@ -397,6 +448,32 @@ function SubChart(props) {
     }
   }, [allInitialColumns, options, seriesSelector, chartWrapper, controlWrapper, initialVAxisRange, hasChartControl]);
 
+  const reconstructFunctionFromJSONstring = (columns) => {
+    if (!columns) return;
+
+    const evaluatedColumns = [];
+    for (const column of columns) {
+      if (typeof column === 'number') {
+        // If it's a number, add it as-is
+        evaluatedColumns.push(column);
+      } else if (typeof column === 'object') {
+        if (column.calc && column.calc !== 'stringify') {
+          // If it's an object with a 'calc' property, evaluate the 'calc' function
+          // using new Function() and add the result to the evaluatedColumns array
+          const calcFunction = new Function("dataTable", "rowNum", column.calc);
+          evaluatedColumns.push({
+            ...column,
+            calc: calcFunction,
+          });
+        } else {
+          // If it's an object without a 'calc' property, or with calc = 'stringify', add it as-is
+          evaluatedColumns.push(column);
+        }
+      }
+    }
+    return evaluatedColumns;
+  }
+
   // Call this function to fetch the data and draw the initial chart
   useEffect(() => {
     if (google && !chartWrapper) {
@@ -404,17 +481,21 @@ function SubChart(props) {
         .then(response => {
           const thisDataTable = response.getDataTable();
           setDataTable(thisDataTable);
+
+          // Get dataColumn views
+          const columns = chartData.columns
+            || (chartData.subcharts
+              && chartData.subcharts[subchartIndex].columns)
+            || null
+            || null;
+          const reconstructedColumns = reconstructFunctionFromJSONstring(columns);
+
           const thisChartWrapper = new google.visualization.ChartWrapper({
             chartType: chartData.chartType,
             dataTable: (!hasChartControl) ? thisDataTable : undefined,
             options: options,
             view: {
-              columns:
-                chartData.columns
-                || (chartData.subcharts
-                  && chartData.subcharts[subchartIndex].columns)
-                || null
-                || null,
+              columns: reconstructedColumns
             },
             containerId: chartID
           });
@@ -424,7 +505,6 @@ function SubChart(props) {
             const thisDashboardWrapper = new google.visualization.Dashboard(
               document.getElementById(`dashboard-${chartID}`));
             setDashboardWrapper(thisDashboardWrapper);
-
             google.visualization.events.addListener(thisDashboardWrapper, 'ready', onChartReady);
 
             const thisControlWrapper = new google.visualization.ControlWrapper({
@@ -433,6 +513,16 @@ function SubChart(props) {
               containerId: `control-${chartID}`
             });
             setControlWrapper(thisControlWrapper);
+
+            // Set all of the available distinct categories for the CategoryFilter if isSlider is true
+            if (isSlider) {
+              const uniqueCategories = thisDataTable
+                .getDistinctValues(chartControlOptions.filterColumnIndex)
+                .filter(c => c !== null);
+
+              setAllCategoriesForCategoryFilter(uniqueCategories);
+              setCurrentCategoryIndexForCategoryFilter(uniqueCategories.length - 1);
+            }
 
             // Establish dependencies
             thisDashboardWrapper.bind(thisControlWrapper, thisChartWrapper);
@@ -485,6 +575,25 @@ function SubChart(props) {
   ), [chartID, height, handleControlBoxClick, shouldShowTooltip]);
 
   const renderChartControlBox = () => {
+    if (chartControl.controlType === "CategoryFilter") {
+      return (
+        isSlider ?
+          (
+            <>
+              <ModifiedCategoryFilterForTimeline
+                allCategories={allCategoriesForCategoryFilter}
+                currentCategoryIndex={currentCategoryIndexForCategoryFilter}
+                onSliderChange={handleCategoryChange}
+              />
+              <Box display="none">
+                {chartControlBox}
+              </Box>
+            </>
+          )
+          : { chartControlBox }
+      )
+    }
+
     if (chartControl.controlType !== "ChartRangeFilter") {
       return chartControlBox;
     }
@@ -511,6 +620,33 @@ function SubChart(props) {
         </Tooltip>
       </>
     );
+  };
+
+  // Handler for changing the chart to a stacked bar chart
+  const handleStackedBarChart = useCallback(() => {
+    if (chartWrapper) {
+      const newOptions = {
+        ...options,
+        isStacked: !isStacked
+      };
+      chartWrapper.setOptions(newOptions);
+      chartWrapper.draw();
+      setIsStacked(!isStacked);
+    }
+  }, [chartWrapper, isStacked, options]);
+
+  // Handler for CategoryFilter if isSlider is true
+  const handleCategoryChange = (_, newValue) => {
+    if (!isSlider) return;
+    if (!controlWrapper) return;
+
+    controlWrapper.setState({
+      selectedValues: [allCategoriesForCategoryFilter[newValue]]
+    });
+
+    setCurrentCategoryIndexForCategoryFilter(newValue);
+
+    controlWrapper.draw();
   };
 
   const renderChart = () => {
@@ -569,6 +705,15 @@ function SubChart(props) {
         />
       )}
 
+      {/* Conditionally display Button to Toggle Stacked Bars */}
+      {(toggleStackedBars && !isHomepage && !isFirstRender) && (
+        <StackedBarToggle
+          onToggle={handleStackedBarChart}
+          isStacked={isStacked}
+          isPortrait={isPortrait}
+          theme={theme}
+        />
+      )}
       {/* Display chart here */}
       {renderChart()}
     </GoogleChartStyleWrapper>

@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 export const ChartControlType = {
-  CategoryFilter: { position: 'top', stackDirection: 'column' },
+  CategoryFilter: { position: 'bottom', stackDirection: 'column-reverse' },
   DateRangeFilter: { position: 'bottom', stackDirection: 'column-reverse' },
   ChartRangeFilter: { position: 'bottom', stackDirection: 'column-reverse' },
   NumberRangeFilter: { position: 'top', stackDirection: 'column' }
@@ -95,6 +95,42 @@ export const transformDataForNivo = (dataTable, dataColumn, tooltipColumn) => {
   };
 };
 
+export const convertToNivoHeatMapData = (googleSheetsData) => {
+  const dataTable = JSON.parse(googleSheetsData.toJSON());
+  const cols = dataTable.cols.map(col => col.label).slice(1); // Exclude the first column
+  const rows = dataTable.rows;
+
+  // Calculate total for each column
+  const columnTotals = new Array(cols.length).fill(0);
+  rows.forEach(row => {
+    row.c.slice(1).forEach((cell, index) => {
+      columnTotals[index] += cell.v;
+    });
+  });
+
+  // Process each row
+  return rows.map(row => {
+    const rowTotal = row.c.slice(1).reduce((acc, cell) => acc + cell.v, 0);
+
+    const data = cols.map((col, index) => {
+      const value = row.c[index + 1].v; // +1 to offset label column
+      const rowPercentage = rowTotal > 0 ? (value / rowTotal * 100).toFixed(1) : 0;
+      const colPercentage = columnTotals[index] > 0 ? (value / columnTotals[index] * 100).toFixed(1) : 0;
+
+      return {
+        x: col,
+        y: value,
+        rowPercentage: `${rowPercentage}%`,
+        colPercentage: `${colPercentage}%`,
+        rowTotal: rowTotal,
+        colTotal: columnTotals[index],
+      };
+    });
+
+    return { id: row.c[0].v, data };
+  });
+};
+
 // Function to generate a random ID for the google chart container
 export const generateRandomID = () => {
   return Math.random().toString(36).substr(2, 9); // Generates a random string of length 9
@@ -143,6 +179,18 @@ export const returnGenericOptions = (props) => {
   options = {
     ...options,
     ...chartData.options,
+    hAxis: {
+      ...chartData.options?.hAxis,
+      ...options.hAxis
+    },
+    vAxis: {
+      ...chartData.options?.vAxis,
+      ...options.vAxis
+    },
+    nivoHeatMap: {
+      ...chartData.options?.nivoHeatMap,
+      ...options.nivoHeatMap
+    },
     theme: 'material',
     curveType: options.curveType || chartData.options?.curveType || 'function',
     crosshair: { orientation: 'both', trigger: 'focus', opacity: 0.5 },
@@ -329,23 +377,6 @@ export const returnGenericOptions = (props) => {
   return options;
 }
 
-export const returnCalendarChartOptions = (existingOptions) => {
-  const calendarDimensions = calculateCalendarDimensions({ cellSizeMin: 14, cellSizeMax: 18 });
-  return {
-    ...existingOptions,
-    width: calendarDimensions.chartWidth,
-    calendar: {
-      cellSize: calendarDimensions.cellSize,
-      yearLabel: {
-        fontSize: calendarDimensions.yearLabelFontSize
-      }
-    },
-    noDataPattern: {
-      backgroundColor: 'none',
-      color: 'none',
-    },
-  }
-}
 
 export const returnChartControlUI = (props) => {
   const { chartControl, mainChartData, mainChartOptions, subchartIndex, theme, isPortrait } = props;
@@ -451,4 +482,22 @@ export const addTouchEventListenerForChartControl = ({ controlWrapper, chartID }
       controlDOM.removeEventListener(touchEvent, touchHandler, { capture: true });
     });
   };
+}
+
+export const returnCalendarChartOptions = (existingOptions) => {
+  const calendarDimensions = calculateCalendarDimensions({ cellSizeMin: 14, cellSizeMax: 18 });
+  return {
+    ...existingOptions,
+    width: calendarDimensions.chartWidth,
+    calendar: {
+      cellSize: calendarDimensions.cellSize,
+      yearLabel: {
+        fontSize: calendarDimensions.yearLabelFontSize
+      }
+    },
+    noDataPattern: {
+      backgroundColor: 'none',
+      color: 'none',
+    },
+  }
 }
