@@ -81,8 +81,8 @@ export const NivoHeatMap = ({ data, width, isPortrait, options, tooltipTemplate 
             forceSquare={true}
             margin={
                 isPortrait
-                    ? { top: 70, right: 110, bottom: 40, left: 120 }
-                    : { top: 100, right: 90, bottom: 0, left: 90 }
+                    ? { top: 70, right: 110, bottom: 60, left: 120 }
+                    : { top: 100, right: 90, bottom: 60, left: 90 }
             }
 
             // --- Labels ---
@@ -133,12 +133,12 @@ export const NivoHeatMap = ({ data, width, isPortrait, options, tooltipTemplate 
                     anchor: 'bottom',
                     translateX: 0,
                     translateY: 35,
-                    length: width / 2,
+                    length: Math.max(width, 500),
                     thickness: width / 100,
                     direction: 'row',
                     tickSpacing: width / 200,
                     tickOverlap: false,
-                    tickFormat: '>-.2s',
+                    tickFormat: '>-.1s',
                 }
             ]}
             axisTop={{

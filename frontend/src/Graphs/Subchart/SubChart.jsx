@@ -164,7 +164,7 @@ function SubChart(props) {
   }
 
   const [NivoHeatMapData, setNivoHeatMapData] = useState(null);
-  const [NivoHeatMapWidth, setNivoHeatMapWidth] = useState(700);
+  const [NivoHeatMapWidth, setNivoHeatMapWidth] = useState(500);
   // Early return for 'NivoHeatMap' chartType
   if (chartData.chartType === 'NivoHeatMap') {
     useEffect(() => {

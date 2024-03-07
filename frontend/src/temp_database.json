@@ -1281,12 +1281,12 @@
         }
       },
       {
-        "title": "Compositions of Page Type by User Category",
+        "title": "Compositions of Page Type by User Category (Since Sep 2022)",
         "headers": 1,
         "chartType": "NivoHeatMap",
         "nivo": true,
         "gid": 2096148199,
-        "subtitle": "The two heat-maps above visualize the total usage of various paper types by different user categories at NYU Abu Dhabi. Each cell's color corresponds to the volume of pages used, with darker shades indicating higher usage.<br><br>",
+        "subtitle": "The two heat-maps above visualize the total usage of various paper types by different user categories at NYU Abu Dhabi, <b>since September 2022</b>. Each cell's color corresponds to the volume of pages used, with darker shades indicating higher usage.<br><br>",
         "subcharts": [
           {
             "subchartTitle": "Grouped by User Category",
@@ -1294,7 +1294,7 @@
             "tooltipFormat": "<span><strong>{columnCategory}</strong>: {y}<br />{percentage} of {rowOrColTotal} pages used by {rowCategory}</span>",
             "options": {
               "nivoHeatMap": {
-                "yInnerPadding": 0.1,
+                "yInnerPadding": 0.2,
                 "hoverTarget": "row"
               }
             }
@@ -1305,7 +1305,7 @@
             "tooltipFormat": "<span><strong>{rowCategory}</strong>: {y}<br />{percentage} of {rowOrColTotal} {columnCategory} pages used</span>",
             "options": {
               "nivoHeatMap": {
-                "xInnerPadding": 0.1,
+                "xInnerPadding": 0.2,
                 "hoverTarget": "column"
               }
             }
