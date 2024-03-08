@@ -193,9 +193,9 @@ const Project = ({ themePreference }) => {
                 }}
                 gutterBottom
               >
-                {parse(project.description, {
+                {project.description ? parse(project.description, {
                   replace: replacePlainHTMLWithMuiComponents,
-                })}
+                }) : "No project description"}
               </Typography>
 
               <DatasetDownloadDialog project={project} />

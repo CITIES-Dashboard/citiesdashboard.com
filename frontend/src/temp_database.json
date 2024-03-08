@@ -14,6 +14,7 @@
     "isActive": true,
     "id": "athletics-fabs-membership",
     "title": "Athletics FABS Membership",
+    "description": "This dataset visualizes the number of unique active memberships registered in the Fitness and Athletics Booking system (FABS) by academic year (AY). For FABS, an AY starts from <b>August 1</b> of the first calendar year to <b>July 31</b> of the second calendar year. After <b>July 31</b>, all existing memberships expire and members need to register again for the next AY. FABS members can register for sport classes, reserve lockers, and book and access Athletic facilities.<br><br>While there are 11 original types of FABS accounts, our data visualizations simplify them into <b>four distinct demographic groups</b>. For detailed data of the original 11 types of FABS accounts, you can download the raw dataset. <table><thead><tr><th>Simplified demographic groups</th><th>Original type(s) of FABS accounts</th></tr></thead><tbody><tr><td>Undergraduate students</td><td>Student</td></tr><tr><td>Graduate students and Alumni</td><td>Grad student and Alumni</td></tr><tr><td>Faculty and Staff</td><td>Faculty, Staff, and Family Member</td></tr><tr><td>External and Other</td><td>Community, Contract, External Instructor, Guest, and Others</td></tr></tbody></table>",
     "sheetId": "1mRberQXQI9uHCP_gGXgK8NfjbiA2DdQc-HH1c01eEDk",
     "owners": [
       "Department of Athletics"
