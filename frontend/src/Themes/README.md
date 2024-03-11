@@ -1,10 +1,10 @@
-### Theme Configurations
+# Theme Configurations
 
-#### Overview
+### Overview
 
 This folder contains theme configurations for our application, focusing on providing a consistent and customizable user interface. 
 
-#### Files
+### Files
 
 - [**CustomThemes.jsx**](./CustomThemes.jsx): 
   This file defines custom themes for the application. It configures theme settings such as colors, typography, and other UI elements that can be applied across the application to maintain a consistent look and feel. These themes are then made available to the application through Material-UI's `ThemeProvider`, which applies the selected theme to all components within its context. 
