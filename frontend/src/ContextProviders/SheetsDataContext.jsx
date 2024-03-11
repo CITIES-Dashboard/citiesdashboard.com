@@ -14,15 +14,17 @@ export function SheetsDataProvider(props) {
   const getLastUpdateData = useCallback(async () => {
     const sheetDataMap = {};
     try {
-      const spreadsheetId = '1ddbsEukjKPX3tApu2nYRDoQpLMGpqFdrZ9jh_JYh5Tk';
+      const spreadsheetId = '1ddbsEukjKPX3tApu2nYRDoQpLMGpqFdrZ9jh_JYh5Tk'; // ID of the metadata Sheets document
       const response = await gapi.client.sheets.spreadsheets.get({ spreadsheetId });
 
+      // Get the A2 cell value from each sheet (containing the last update date of the project)
       const ranges = response.result.sheets.map((sheet) => `${sheet.properties.title}!A2:A2`);
       const dataResponse = await gapi.client.sheets.spreadsheets.values.batchGet({
         spreadsheetId,
         ranges,
       });
 
+      // Create a map with the sheet name as key and the A2 cell value (last update date) as value
       dataResponse.result.valueRanges.forEach((range, index) => {
         if (range.values && range.values.length > 0) {
           const sheetName = getSheetNameFromRange(ranges[index]);
@@ -37,6 +39,8 @@ export function SheetsDataProvider(props) {
     }
   }, [getSheetNameFromRange]);
 
+  // Load the Google Sheets API client and get the required data
+  // This also ensures that the Sheets API is loaded just once when the app is loaded
   useEffect(() => {
     gapi.load('client:auth2', () => {
       gapi.client.init({
