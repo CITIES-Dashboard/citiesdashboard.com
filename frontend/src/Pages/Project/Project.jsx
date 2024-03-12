@@ -35,7 +35,8 @@ import { CommentCountsContext } from '../../ContextProviders/CommentCountsContex
 
 import { SheetsDataContext } from '../../ContextProviders/SheetsDataContext';
 
-import ChartSubstituteComponentLoader from '../../Graphs/ChartSubstituteComponents/ChartSubstituteComponentLoader';
+// Might be used in the future to display a customized table instead of the regular ChartComponent
+// import ChartSubstituteComponentLoader from '../../Graphs/ChartSubstituteComponents/ChartSubstituteComponentLoader';
 
 import CollapsibleSubtitle from '../../Components/CollapsibleSubtitle';
 
@@ -214,8 +215,9 @@ const Project = ({ themePreference }) => {
                     {index + 1}. {element.title}
                   </Typography>
 
-                  {/* Either display the regular ChartComponent, or substitute with a customized component in ../../Graphs/ChartSubstituteComponents/ (if specified) */}
-                  {element.chartSubstituteComponentName ?
+                  {/* For future reference: Either display the regular ChartComponent, or substitute 
+                  with a customized component in ../../Graphs/ChartSubstituteComponents/ (if specified) */}
+                  {/* {element.chartSubstituteComponentName ?
                     <ChartSubstituteComponentLoader chartSubstituteComponentName={element.chartSubstituteComponentName} />
                     : (
                       <ChartComponent
@@ -225,7 +227,15 @@ const Project = ({ themePreference }) => {
                           ...element,
                         }}
                       />
-                    )}
+                    )} */}
+
+                  <ChartComponent
+                    chartData={{
+                      chartIndex: index,
+                      sheetId: project.sheetId,
+                      ...element,
+                    }}
+                  />
                   <Box sx={{ my: 3 }}>
                     <Typography
                       component="div"

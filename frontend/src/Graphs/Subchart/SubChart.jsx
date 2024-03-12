@@ -17,7 +17,8 @@ import GoogleChartStyleWrapper from './GoogleChartStyleWrapper';
 
 import LoadingAnimation from '../../Components/LoadingAnimation';
 
-import ChartSubstituteComponentLoader from '../ChartSubstituteComponents/ChartSubstituteComponentLoader';
+// Might be used in the future to display a customized table instead of the regular ChartComponent
+// import ChartSubstituteComponentLoader from '../ChartSubstituteComponents/ChartSubstituteComponentLoader';
 
 import { isMobile } from 'react-device-detect';
 
@@ -32,11 +33,11 @@ function SubChart(props) {
   // Props
   const { chartData, subchartIndex, windowSize, isPortrait, isHomepage, height, maxHeight } = props;
 
-  // Early return if this doesn't contain a normal Google Chart but a chartSubstituteComponent
-  const chartSubstituteComponentName = chartData.subcharts?.[subchartIndex].chartSubstituteComponentName;
-  if (chartSubstituteComponentName) {
-    return <ChartSubstituteComponentLoader chartSubstituteComponentName={chartSubstituteComponentName} />;
-  }
+  // // Early return if this doesn't contain a normal Google Chart but a chartSubstituteComponent
+  // const chartSubstituteComponentName = chartData.subcharts?.[subchartIndex].chartSubstituteComponentName;
+  // if (chartSubstituteComponentName) {
+  //   return <ChartSubstituteComponentLoader chartSubstituteComponentName={chartSubstituteComponentName} />;
+  // }
 
   // Formulate the className
   const className = useMemo(() => {
