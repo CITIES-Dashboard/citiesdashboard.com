@@ -17,15 +17,10 @@ const ChartStyleWrapper = styled(Box)(({ theme }) => ({
       filter: 'invert(0.848) hue-rotate(180deg)',
     }
   }),
-  // Special CSS for historical-snapshot-aqi chart
-  '& .historical-snapshot-aqi svg [clip-path*="ABSTRACT_RENDERER"] > g:nth-of-type(1), .historical-snapshot-aqi [id*="googlechart-control"] svg [clip-path*="ABSTRACT_RENDERER"] > g:nth-of-type(2)': {
-    opacity: 0.6
-  },
   // Center Calendar chart in wrapper
   '& .Calendar [dir]:not(:empty)': {
     margin: 'auto'
   },
-
   // add horizontal scrollbar to Calendar charts
   '& .Calendar > div > div:last-of-type > div': {
     overflowX: 'auto',

@@ -14,8 +14,6 @@ import { useTheme } from '@mui/material/styles';
 
 import ThemePreferences from '../../Themes/ThemePreferences';
 
-import AirQualityIndexLegendQuickGlance from '../../Components/AirQualityHelper';
-
 import data from '../../temp_database.json';
 import jsonData from '../../section_data.json';
 
@@ -102,10 +100,6 @@ const Project = ({ themePreference }) => {
     <>
       {loading && (
         <Box width="100%">
-          {
-            project.id === 'air-quality' && <AirQualityIndexLegendQuickGlance themePreference={themePreference} />
-          }
-
           <FullWidthBox backgroundColor='customAlternateBackground'>
             <Container sx={{ pt: 5, pb: 3 }}>
 

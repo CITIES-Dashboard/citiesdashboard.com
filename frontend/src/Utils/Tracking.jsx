@@ -6,8 +6,7 @@ export const Events = {
   rawDatasetDownloaded: 'raw_dataset_downloaded',
   expandSampleData: 'expand_sample_data',
   collapseSampleData: 'collapse_sample_data',
-  openContactFormInExternalTab: 'open_contact_form_in_external_tab',
-  airQualityIndexLegendQuickGlance: 'air_quality_index_legend_quick_glance'
+  openContactFormInExternalTab: 'open_contact_form_in_external_tab'
 };
 
 export const sendEventAnalytics = (eventName, options) => {

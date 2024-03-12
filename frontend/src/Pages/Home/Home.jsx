@@ -56,7 +56,6 @@ function Home({ themePreference, title }) {
           />
           <iframe
             src={`${project.embeddedWebsite}?themePreference=${themePreference}`}
-            title="CITIESair"
             style={{
               width: '100%',
               height: '98%',
