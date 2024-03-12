@@ -2,17 +2,13 @@
 
 ### Overview
 
-This directory contains utility files that provide essential functionalities and services to support the application's operations. These utilities include an AQI guide (used in the Air Quality project page), tracking configurations (for analytics), and general utility functions that enhance the application's features, accessiblity and performance.
+This directory contains utility files that provide essential functionalities and services to support the application's operations. These utilities include tracking configurations (for analytics) and general utility functions that enhance the application's features, accessiblity and performance.
 
 ### Files
 
-- **AirQualityIndexHelper.jsx**
-
-  This utility functions as an AQI guide. This guide is presented via a `Popper` component on the air quality page, making it a user-friendly resource for understanding AQI readings. It contains detailed descriptions of AQI levels and their potential health impacts, designed to be easily understandable by the general public. The guide's content is structured for quick reference, aiding users in making informed decisions based on air quality data.
-
 - **Tracking.jsx**
 
-  This file implements user interaction tracking within the application. It is designed to capture and report user actions, providing insights into how users interact with the application. This data is invaluable for understanding user behavior.
+  This file configures and helps implement user interaction tracking within the application. It is designed to configure capturing and reporting of user actions, which helps provide insights into how users interact with the application. This data is invaluable for understanding user behavior.
 
   **Key Features:**
   - Event listeners for user actions (clicks, page navigation, etc.).
