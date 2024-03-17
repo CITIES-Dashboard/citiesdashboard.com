@@ -25,4 +25,13 @@ TODO: Add documentation for the Project page.
 
 ## 404 Page
 
-The 404 page is a simple page that is displayed when a user navigates to a page that does not exist. Upon rendering, it updates the page title and sets the current page context to '404' to reflect the error state. The page presents a clear message ("Page not found") with a lighthearted note ("Bad links happen to good people") and an option for users to return to the homepage via a Button component linked to the root path. This setup ensures users facing navigation errors are informed and can easily navigate back to a valid page.
+The 404 page is a simple page that is displayed when a user navigates to a page that does not exist. It does so via the following `Router` setup in [App.jsx](../App.jsx):
+
+```jsx
+// Route for the 404 page
+<Route path="/404" element={<FourOhFour title="Page Not Found | CITIES Dashboard" />} />
+// Redirects any paths not specified in the Router to the 404 page
+<Route path="*" element={<Navigate replace to="/404" />} /> 
+```
+
+Upon rendering, it updates the page title and sets the current page context to '404' to reflect the error state. The page presents a clear message ("Page not found") with a lighthearted note ("Bad links happen to good people") and an option for users to return to the homepage via a Button component linked to the root path. This setup ensures users facing navigation errors are informed and can easily navigate back to a valid page.
