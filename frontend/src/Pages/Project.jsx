@@ -4,6 +4,7 @@ import { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { LinkContext } from '../ContextProviders/LinkContext';
 import { TabContext } from '../ContextProviders/TabContext';
+import { useNavigate } from 'react-router-dom';
 import parse from 'html-react-parser';
 import ChartComponent from '../Graphs/ChartComponent';
 import UppercaseTitle from '../Components/UppercaseTitle';
@@ -60,6 +61,7 @@ const Project = ({ themePreference }) => {
   const [project, setProject] = useState({});
   const [loading, setLoading] = useState(false);
   const [tab, setTab] = useContext(TabContext);
+  const navigate = useNavigate();
 
   const [commentCounts] = useContext(CommentCountsContext);
   const commentCount = commentCounts[project.id];
@@ -67,35 +69,36 @@ const Project = ({ themePreference }) => {
   const [sheetsData] = useContext(SheetsDataContext);
   const lastUpdate = sheetsData[project.id];
 
-  // Update the page's title
-  useEffect(() => { if (project.title) document.title = `${project.title} | CITIES Dashboard`, [project] });
+  const theme = useTheme();
 
   // Update the currentPage with the project's ID
   // and the chartsTitle with all the charts' titles of the project
   useEffect(() => {
-    // loop through all projects and find the one with the matching id
+    // find the project with the matching id
+    const project = data.find((project) => project.id === id);
+    
     let chartsTitles = [];
-
-    data.map((project) => {
-      if (project.id === id) {
-        setProject({ ...project });
-        let temp = {};
-        for (let i = 0; i < project.charts.length; i++) {
-          temp[i] = 0;
-        }
-        setTab(temp);
-        setLoading(true);
-        // Populate the array with all the charts' titles of the project
-        chartsTitles = project.charts.map((element, index) => ({ chartTitle: element.title, chartID: `chart-${index + 1}` }));
+    if (project) {
+      setProject({ ...project });
+      let temp = {};
+      for (let i = 0; i < project.charts.length; i++) {
+        temp[i] = 0;
       }
-    });
+      setTab(temp);
+      setLoading(true);
+      // Populate the array with all the charts' titles of the project
+      chartsTitles = project.charts.map((element, index) => ({ chartTitle: element.title, chartID: `chart-${index + 1}` }));
+    } else {
+      navigate('/404', { replace: true });
+    }
 
     setCurrentPage("project");
     setChartsTitlesList(chartsTitles);
 
   }, [id, setCurrentPage, setChartsTitlesList]);
 
-  const theme = useTheme();
+  // Update the page's title
+  useEffect(() => { if (project.title) document.title = `${project.title} | CITIES Dashboard`, [project] });
 
   return (
     <>
