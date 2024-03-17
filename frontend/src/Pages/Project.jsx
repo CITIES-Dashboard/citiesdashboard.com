@@ -89,6 +89,7 @@ const Project = ({ themePreference }) => {
       // Populate the array with all the charts' titles of the project
       chartsTitles = project.charts.map((element, index) => ({ chartTitle: element.title, chartID: `chart-${index + 1}` }));
     } else {
+      setCurrentPage('404');
       navigate('/404', { replace: true });
     }
 
