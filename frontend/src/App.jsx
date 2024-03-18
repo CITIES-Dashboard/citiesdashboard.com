@@ -1,5 +1,5 @@
 // React components
-import { useState, useMemo, lazy, Suspense } from 'react';
+import { useState, useMemo, useContext, lazy, Suspense } from 'react';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 
 // MUI components
@@ -11,16 +11,19 @@ import ThemePreferences from './Themes/ThemePreferences';
 import CustomThemes from './Themes/CustomThemes';
 
 // UI components
-import ScrollToTop from './Components/ScrollToTop';
 import Header from './Components/Header/Header';
-import Footer from './Components/Footer/Footer';
+import Footer from './Components/Footer';
 import FourOhFour from './Pages/404';
 import DeviceOrientationNotification from './Components/SnackBarNotifications';
 import LoadingAnimation from './Components/LoadingAnimation';
 
+import { LinkContext } from './ContextProviders/LinkContext';
+import jsonData from './section_data.json';
+import SpeedDialButton from './Components/SpeedDialButton';
+
 // Lazy load pages
 const Home = lazy(() => import('./Pages/Home/Home'));
-const Project = lazy(() => import('./Pages/Project/Project'));
+const Project = lazy(() => import('./Pages/Project'));
 
 // Create theme design tokens based on theme preference
 const getDesignTokens = (themePreference) => ({
@@ -58,10 +61,12 @@ function App() {
   // this is to set bg-color of left/right padding on landscape iOS devices
   document.body.style.background = theme.palette.customAlternateBackground;
 
+  // eslint-disable-next-line no-unused-vars
+  const [currentPage, _, chartsTitlesList, __] = useContext(LinkContext);
+
   return (
     <BrowserRouter basename="/">
       <ThemeProvider theme={theme}>
-        <ScrollToTop />
         <Box
           sx={{
             display: 'flex',
@@ -72,6 +77,11 @@ function App() {
           }}
         >
           <DeviceOrientationNotification />
+
+          <SpeedDialButton
+            chartsTitlesList={chartsTitlesList}
+            topAnchorID={jsonData.topAnchor.id}
+          />
 
           {useMemo(
             () => (

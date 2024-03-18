@@ -25,7 +25,7 @@ jobs:
           path: ./prod-files
 
       - name: Copy files from development repository to production repository
-        run: rsync -av --exclude=frontend/public/CNAME --exclude=.git/ --exclude=.github/workflows/ --exclude=.vscode --exclude=documentation/ --exclude=.gitignore --exclude=readme.md --exclude=prod-files/ ./ ./prod-files
+        run: rsync -av --exclude=frontend/public/CNAME --exclude=.git/ --exclude=.github/workflows/ --exclude=.vscode --exclude=documentation/ --exclude=.gitignore --exclude='*.md' --exclude=prod-files/ ./ ./prod-files
 
       - name: Commit and push changes to production repository
         run: |

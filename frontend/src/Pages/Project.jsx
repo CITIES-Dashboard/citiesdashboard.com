@@ -2,22 +2,21 @@
 /* eslint-disable */
 import { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import { LinkContext } from '../../ContextProviders/LinkContext';
-import { TabContext } from '../../ContextProviders/TabContext';
+import { LinkContext } from '../ContextProviders/LinkContext';
+import { TabContext } from '../ContextProviders/TabContext';
+import { useNavigate } from 'react-router-dom';
 import parse from 'html-react-parser';
-import ChartComponent from '../../Graphs/ChartComponent';
-import UppercaseTitle from '../../Components/UppercaseTitle';
-import CommentSection from '../../Components/CommentSection';
+import ChartComponent from '../Graphs/ChartComponent';
+import UppercaseTitle from '../Components/UppercaseTitle';
+import CommentSection from '../Components/CommentSection';
 import { Box, Typography, Container, Divider, Chip, Grid, Tooltip } from '@mui/material';
 
 import { useTheme } from '@mui/material/styles';
 
-import ThemePreferences from '../../Themes/ThemePreferences';
+import ThemePreferences from '../Themes/ThemePreferences';
 
-import AirQualityIndexLegendQuickGlance from '../../Components/AirQualityHelper';
-
-import data from '../../temp_database.json';
-import jsonData from '../../section_data.json';
+import data from '../temp_database.json';
+import jsonData from '../section_data.json';
 
 import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
@@ -25,21 +24,22 @@ import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import CommentIcon from '@mui/icons-material/Comment';
 
-import { replacePlainHTMLWithMuiComponents } from '../../Utils/Utils';
-import DatasetDownloadDialog from '../../Components/DatasetDownload/DatasetDownloadDialog';
+import { replacePlainHTMLWithMuiComponents } from '../Utils/Utils';
+import DatasetDownloadDialog from '../Components/DatasetDownload/DatasetDownloadDialog';
 
-import { scrollToSection } from '../../Components/Header/MenuItemAsNavLink';
-import FullWidthBox from '../../Components/FullWidthBox';
+import { scrollToSection } from '../Components/Header/MenuItemAsNavLink';
+import FullWidthBox from '../Components/FullWidthBox';
 
-import * as Tracking from '../../Utils/Tracking';
+import * as Tracking from '../Utils/Tracking';
 
-import { CommentCountsContext } from '../../ContextProviders/CommentCountsContext';
+import { CommentCountsContext } from '../ContextProviders/CommentCountsContext';
 
-import { SheetsDataContext } from '../../ContextProviders/SheetsDataContext';
+import { SheetsDataContext } from '../ContextProviders/SheetsDataContext';
 
-import ChartSubstituteComponentLoader from '../../Graphs/ChartSubstituteComponents/ChartSubstituteComponentLoader';
+// Might be used in the future to display a customized table instead of the regular ChartComponent
+// import ChartSubstituteComponentLoader from '../../Graphs/ChartSubstituteComponents/ChartSubstituteComponentLoader';
 
-import CollapsibleSubtitle from '../../Components/CollapsibleSubtitle';
+import CollapsibleSubtitle from '../Components/CollapsibleSubtitle';
 
 // Custom Chip component to display metadata
 const CustomChip = (props) => {
@@ -61,6 +61,7 @@ const Project = ({ themePreference }) => {
   const [project, setProject] = useState({});
   const [loading, setLoading] = useState(false);
   const [tab, setTab] = useContext(TabContext);
+  const navigate = useNavigate();
 
   const [commentCounts] = useContext(CommentCountsContext);
   const commentCount = commentCounts[project.id];
@@ -68,44 +69,42 @@ const Project = ({ themePreference }) => {
   const [sheetsData] = useContext(SheetsDataContext);
   const lastUpdate = sheetsData[project.id];
 
-  // Update the page's title
-  useEffect(() => { if (project.title) document.title = `${project.title} | CITIES Dashboard`, [project] });
+  const theme = useTheme();
 
   // Update the currentPage with the project's ID
   // and the chartsTitle with all the charts' titles of the project
   useEffect(() => {
-    // loop through all projects and find the one with the matching id
+    // find the project with the matching id
+    const project = data.find((project) => project.id === id);
+    
     let chartsTitles = [];
-
-    data.map((project) => {
-      if (project.id === id) {
-        setProject({ ...project });
-        let temp = {};
-        for (let i = 0; i < project.charts.length; i++) {
-          temp[i] = 0;
-        }
-        setTab(temp);
-        setLoading(true);
-        // Populate the array with all the charts' titles of the project
-        chartsTitles = project.charts.map((element, index) => ({ chartTitle: element.title, chartID: `chart-${index + 1}` }));
+    if (project) {
+      setProject({ ...project });
+      let temp = {};
+      for (let i = 0; i < project.charts.length; i++) {
+        temp[i] = 0;
       }
-    });
+      setTab(temp);
+      setLoading(true);
+      // Populate the array with all the charts' titles of the project
+      chartsTitles = project.charts.map((element, index) => ({ chartTitle: element.title, chartID: `chart-${index + 1}` }));
+    } else {
+      setCurrentPage('404');
+      navigate('/404', { replace: true });
+    }
 
     setCurrentPage("project");
     setChartsTitlesList(chartsTitles);
 
   }, [id, setCurrentPage, setChartsTitlesList]);
 
-  const theme = useTheme();
+  // Update the page's title
+  useEffect(() => { if (project.title) document.title = `${project.title} | CITIES Dashboard`, [project] });
 
   return (
     <>
       {loading && (
         <Box width="100%">
-          {
-            project.id === 'air-quality' && <AirQualityIndexLegendQuickGlance themePreference={themePreference} />
-          }
-
           <FullWidthBox backgroundColor='customAlternateBackground'>
             <Container sx={{ pt: 5, pb: 3 }}>
 
@@ -220,8 +219,9 @@ const Project = ({ themePreference }) => {
                     {index + 1}. {element.title}
                   </Typography>
 
-                  {/* Either display the regular ChartComponent, or substitute with a customized component in ../../Graphs/ChartSubstituteComponents/ (if specified) */}
-                  {element.chartSubstituteComponentName ?
+                  {/* For future reference: Either display the regular ChartComponent, or substitute 
+                  with a customized component in ../../Graphs/ChartSubstituteComponents/ (if specified) */}
+                  {/* {element.chartSubstituteComponentName ?
                     <ChartSubstituteComponentLoader chartSubstituteComponentName={element.chartSubstituteComponentName} />
                     : (
                       <ChartComponent
@@ -231,7 +231,15 @@ const Project = ({ themePreference }) => {
                           ...element,
                         }}
                       />
-                    )}
+                    )} */}
+
+                  <ChartComponent
+                    chartData={{
+                      chartIndex: index,
+                      sheetId: project.sheetId,
+                      ...element,
+                    }}
+                  />
                   <Box sx={{ my: 3 }}>
                     <Typography
                       component="div"

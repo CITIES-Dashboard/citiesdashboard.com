@@ -5,43 +5,24 @@ const darkShade = 400;
 const lightShade = 600;
 const darkShadeColorAxis = 300;
 
-const maroon = {
-  50: '#f0e0e5',
-  100: '#d8b3bd',
-  200: '#bf8091',
-  300: '#a54d65',
-  400: '#912644',
-  500: '#7e0023',
-  600: '#76001f',
-  700: '#6b001a',
-  800: '#610015',
-  900: '#4e000c',
-  A100: '#ff8189',
-  A200: '#ff4e5a',
-  A400: '#ff1b2a',
-  A700: '#ff0212'
-};
-
-const getAQIPalette = ({ increasingOrder, isDark }) => {
-  const shadeValue = isDark ? darkShade : lightShade;
-  const array = [
-    colors.green[shadeValue],
-    colors.yellow[isDark ? shadeValue + 200 : shadeValue],
-    colors.orange[isDark ? shadeValue : shadeValue - 100],
-    colors.red[shadeValue],
-    colors.purple[shadeValue],
-    maroon[shadeValue]
-  ];
-
-  if (increasingOrder) {
-    const noDataColor = colors.grey[isDark ? shadeValue + 400 : shadeValue - 300];
-    array.push(noDataColor);
-  } else {
-    array.reverse();
-  }
-
-  return array;
-};
+// Maroon color schema
+// Currently not used; previously used in air quality dashboard
+// const maroon = {
+//   50: '#f0e0e5',
+//   100: '#d8b3bd',
+//   200: '#bf8091',
+//   300: '#a54d65',
+//   400: '#912644',
+//   500: '#7e0023',
+//   600: '#76001f',
+//   700: '#6b001a',
+//   800: '#610015',
+//   900: '#4e000c',
+//   A100: '#ff8189',
+//   A200: '#ff4e5a',
+//   A400: '#ff1b2a',
+//   A700: '#ff0212'
+// };
 
 const CustomThemes = {
   dark: {
@@ -67,27 +48,9 @@ const CustomThemes = {
           multiColor: [colors.blue[darkShade], colors.pink[darkShade], colors.amber[darkShade], colors.teal[darkShade], colors.grey[darkShade]],
           grayscale: [colors.grey[darkShade + 100], colors.grey[darkShade + 300]],
           rainbow: [colors.red[darkShade], colors.orange[darkShade], colors.amber[darkShade], colors.green[darkShade], colors.blue[darkShade], colors.indigo[darkShade], colors.blue[darkShade]],
-          aqi: getAQIPalette({ increasingOrder: true, isDark: true }),
-          reverseAqi: getAQIPalette({ increasingOrder: false, isDark: true }),
           studentPopulation: ['#aaa', '#666', colors.red[darkShade], colors.amber[darkShade + 100], colors.teal[darkShade]]
         },
         colorAxisFirstColor: colors.grey[darkShadeColorAxis],
-        aqiColorAxis: {
-          minValue: 0,
-          maxValue: 500,
-          colors: [
-            colors.green[darkShade],
-            colors.yellow[darkShade + 200],
-            colors.orange[darkShade],
-            colors.red[darkShade],
-            colors.purple[darkShade],
-            colors.purple[darkShade],
-            maroon[darkShade],
-            maroon[darkShade],
-            maroon[darkShade],
-            maroon[darkShade]
-          ]
-        },
         axisTitle: colors.grey[darkShade - 100],
         axisText: colors.grey[darkShade],
         gridlines: colors.grey[darkShade + 200],
@@ -120,27 +83,9 @@ const CustomThemes = {
           multiColor: [colors.blue[lightShade], colors.pink[lightShade], colors.amber[lightShade], colors.teal[lightShade], colors.grey[lightShade]],
           grayscale: [colors.grey[lightShade - 100], colors.grey[lightShade + 200]],
           rainbow: [colors.red[lightShade], colors.orange[lightShade], colors.amber[lightShade], colors.green[lightShade], colors.blue[lightShade], colors.indigo[lightShade], colors.deepPurple[lightShade]],
-          aqi: getAQIPalette({ increasingOrder: true, isDark: false }),
-          reverseAqi: getAQIPalette({ increasingOrder: false, isDark: false }),
           studentPopulation: [colors.grey[lightShade], '#333333', colors.red[lightShade], colors.amber[lightShade], colors.teal[lightShade]]
         },
         colorAxisFirstColor: colors.common.white,
-        aqiColorAxis: {
-          minValue: 0,
-          maxValue: 500,
-          colors: [
-            colors.green[lightShade],
-            colors.yellow[lightShade],
-            colors.orange[lightShade - 100],
-            colors.red[lightShade],
-            colors.purple[lightShade],
-            colors.purple[lightShade],
-            maroon[lightShade],
-            maroon[lightShade],
-            maroon[lightShade],
-            maroon[lightShade]
-          ]
-        },
         axisTitle: colors.grey[lightShade + 100],
         axisText: colors.grey[lightShade],
         gridlines: colors.grey[lightShade - 200],
@@ -165,4 +110,3 @@ const CustomThemes = {
 };
 
 export default CustomThemes;
-/* Sync CITIESair and CITIES Dashboard */

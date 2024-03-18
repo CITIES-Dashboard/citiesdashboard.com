@@ -282,9 +282,6 @@ export const returnGenericOptions = (props) => {
           theme.palette.NYUpurple,
         ];
         break;
-      case 'aqi':
-        options.colorAxis = theme.palette.chart.aqiColorAxis;
-        break;
       default:
         break;
     }

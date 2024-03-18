@@ -1,12 +1,10 @@
-// disable eslint for this file
-/* eslint-disable */
-
 import { useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Box, Grid, Stack, Typography, Container, Card, CardContent, CardMedia, CardActionArea, Divider, Tooltip, Chip } from '@mui/material';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import CommentIcon from '@mui/icons-material/Comment';
+import LaunchIcon from '@mui/icons-material/Launch';
 import { LinkContext } from '../../ContextProviders/LinkContext';
 import { DataContext } from '../../ContextProviders/HomePageContext';
 import { CommentCountsContext } from '../../ContextProviders/CommentCountsContext';
@@ -21,8 +19,6 @@ import GetInTouch from './GetInTouch';
 import jsonData from '../../section_data.json';
 
 import * as Tracking from '../../Utils/Tracking';
-
-import LaunchIcon from '@mui/icons-material/Launch';
 
 function Home({ themePreference, title }) {
   // Update the page's title
@@ -44,7 +40,7 @@ function Home({ themePreference, title }) {
 
   const renderTeaserChartOrEmbeddedWebsite = (project) => {
     if (project.chart) return project.chart;
-    else if (project.embeddedWebsite) {
+    if (project.embeddedWebsite) {
       return (
         <>
           <Chip
@@ -55,8 +51,8 @@ function Home({ themePreference, title }) {
             color="primary"
           />
           <iframe
+            title={project.title}
             src={`${project.embeddedWebsite}?themePreference=${themePreference}`}
-            title="CITIESair"
             style={{
               width: '100%',
               height: '98%',
@@ -64,9 +60,10 @@ function Home({ themePreference, title }) {
             }}
           />
         </>
-      )
+      );
     }
-  }
+    return null;
+  };
 
   return (
     <Box width="100%">
@@ -97,22 +94,18 @@ function Home({ themePreference, title }) {
                     rel={project.externalWebsite ? 'noopener noreferrer' : ''}
                     disabled={!project.isActive}
                     onClick={() => {
-                      project.externalWebsite
-                        ? Tracking.sendEventAnalytics(
-                          Tracking.Events.internalNavigation,
-                          {
-                            destination_id: `/project/${project.id}`,
-                            destination_label: project.id,
-                            origin_id: 'home'
-                          }
-                        )
-                        : Tracking.sendEventAnalytics(
-                          Tracking.Events.externalNavigation,
-                          {
-                            destination_link: project.externalWebsite,
-                            origin_id: 'home'
-                          }
-                        )
+                      if (project.externalWebsite) {
+                        Tracking.sendEventAnalytics(Tracking.Events.internalNavigation, {
+                          destination_id: `/project/${project.id}`,
+                          destination_label: project.id,
+                          origin_id: 'home',
+                        });
+                      } else {
+                        Tracking.sendEventAnalytics(Tracking.Events.externalNavigation, {
+                          destination_link: project.externalWebsite,
+                          origin_id: 'home',
+                        });
+                      }
                     }}
                   >
                     <CardMedia
@@ -134,8 +127,8 @@ function Home({ themePreference, title }) {
                           >
                             {project.title}
                             {
-                              project.embeddedWebsite &&
-                              <LaunchIcon sx={{ fontSize: '1rem', ml: 0.5 }} />
+                              project.embeddedWebsite
+                              && <LaunchIcon sx={{ fontSize: '1rem', ml: 0.5 }} />
                             }
                           </Typography>
                           <Typography

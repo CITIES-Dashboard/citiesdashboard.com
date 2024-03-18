@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
 import { styled } from '@mui/material/styles';
-import { Link, Tooltip, Box, Typography, Container, Paper, AppBar, Toolbar, useScrollTrigger, Slide, Stack, Drawer, Divider } from '@mui/material';
+import { Link, Tooltip, Box, Typography, Container, Paper, AppBar, Toolbar, useScrollTrigger, Slide, Stack, Drawer } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -12,10 +12,6 @@ import { LinkContext } from '../../ContextProviders/LinkContext';
 import FullWidthBox from '../FullWidthBox';
 
 import ThemeSelector from './ThemeSelector';
-import NavBar from './NavBar';
-import SpeedDialButton from './SpeedDialButton';
-
-// import images
 
 import jsonData from '../../section_data.json';
 import { replacePlainHTMLWithMuiComponents } from '../../Utils/Utils';
@@ -46,7 +42,7 @@ export default function Header(props) {
   const { setThemePreference } = props;
 
   // eslint-disable-next-line no-unused-vars
-  const [currentPage, _, chartsTitlesList, __] = useContext(LinkContext);
+  const [currentPage, _, __, ___] = useContext(LinkContext);
 
   // trigger for hiding/showing the AppBar
   const triggerHideAppBar = useScrollTrigger({
@@ -139,17 +135,6 @@ export default function Header(props) {
           }}
         >
           <Stack onClick={handleDrawerToggle}>
-            {/* // Only show the NavBar here in mobile  */}
-            {/* <Box sx={showInMobile('block')}>
-              <Container sx={{ py: 2 }}>
-                <Typography variant="h6" color="text.secondary" fontWeight="medium" gutterBottom>
-                  CITIES Dashboard
-                </Typography>
-                <NavBar currentPage={currentPage} />
-              </Container>
-              <Divider />
-            </Box> */}
-
             <Container sx={{ pt: 2, pb: 3 }}>
               <Typography variant="h6" color="text.secondary" fontWeight="medium" gutterBottom>
                 Dashboard Settings
@@ -223,9 +208,6 @@ export default function Header(props) {
           </FullWidthBox>
         )
       )}
-
-      <SpeedDialButton chartsTitlesList={chartsTitlesList} topAnchorID={jsonData.topAnchor.id} />
-
     </>
   );
 }
