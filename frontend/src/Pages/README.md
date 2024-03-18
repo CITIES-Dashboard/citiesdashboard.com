@@ -21,7 +21,35 @@ The Home page serves as the landing page for the CITIES data visualization dashb
 
 ## Project
 
-TODO: Add documentation for the Project page.
+The Project page is dedicated to showcasing detailed visualizations and data for each specific project within the CITIES dashboard. 
+
+This page dynamically generates content based on the project selected by the user, utilizing the `useParams` hook from `react-router-dom` to identify the project ID from the URL. The path to the project page is defined in [App.jsx](../App.jsx) as follows:
+
+```jsx
+// Route for the project page, with the project ID as a parameter
+<Route
+  path="/project/:id"
+  element={<Project themePreference={themePreference} />}
+/>
+```
+
+The `Project` component performs several key functions:
+
+- **Loading Project Data**: Upon mount, the [Project.jsx](./Project.jsx) component searches `temp_database.json` for a project entry that matches the retrieved `id`. This is done within a `useEffect()` hook to ensure the project data is renewed upon URL change. If the project is not found, the component redirects to the [404 page](#404-page).
+
+- **Displaying Project Overview and Key Information**: The page leverages Material-UI for consistent styling across various components such as `Box`, `Typography`, and `Container`. Each project page has an `<h4>` heading rendered through the [UppercaseTitle](../Components/UppercaseTitle.jsx) component, along with dataset ownership, contact, and last update information presented via custom-styled `Chip` components with tooltips, and a count of charts and comments related to the project. This is followed by a `Typography` component for the project's description, sourced from the `temp_database.json` file, and converted to MUI format using our `replacePlainHTMLWithMuiComponents` utility function.
+
+  *To learn more about how each dataset's last update date is determined using the Sheets API, see the [SheetsDataContext.jsx](../ContextProviders/SheetsDataContext.jsx) file, and its [documentation](../ContextProviders/README.md).*
+
+- **State Management**: The `Project` component employs `useState` to manage the state of the project data (`project`), loading status (`loading`), and tab state for subcharts (`tab`). On Component mount, the project's state is updated with the found project data, triggering a re-render to display the newly loaded project details.
+  
+- **Displaying Charts and Subcharts**: Each project may contain multiple charts, detailed in the project data under the `charts` array. The component maps over this array to render a `ChartComponent` for each chart, passing relevant data props, including chart details and the parent project's `sheetId` for data fetching.
+  
+- **Handling Subcharts**: For charts with subcharts, the `tab` state controls which subchart is currently active or displayed. The component dynamically adjusts to user interaction, updating the active tab state and consequently the displayed subchart. 
+  
+- **User Interaction and Analytics**: The component tracks user interaction with the custom `Chip` components, enabling analytics to monitor user engagement with project details and comments. This is achieved by integrating the `sendEventAnalytics` function from the [Tracking](../Utils/Tracking.js) utility, which logs user interactions to Google Analytics.
+
+In essence, `Project.jsx` serves as a dynamic container for individual project data, enabling users to explore detailed visualizations, understand project specifics, and interact with various charts and subcharts, all derived from the `temp_database.json` based on the project `id` specified in the URL.
 
 ## 404 Page
 
