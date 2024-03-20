@@ -13,11 +13,10 @@ The Header components include:
 [Header.jsx](Header.jsx) - Serves as the primary navigation component, integrating a dynamically hidable AppBar for efficient space utilization and enhanced user experience. It incorporates responsive design principles, adapting to device orientations for optimal display and interaction.
 
 - Utilizes `useScrollTrigger` for a hide-on-scroll AppBar, improving page readability as users navigate content.
-- Features a mobile-responsive menu activated by a `MenuIcon`, revealing a drawer with navigation links and settings.
+- Features a mobile-responsive menu activated by a `MenuIcon`, revealing a drawer with settings and nav links (though not implemented at the moment due to the simple design of the current home page).
 - Incorporates a settings icon, opening a drawer for theme selection through `ThemeSelector`.
 - Embeds the CITIES Dashboard logo as a clickable element, redirecting users to the Home page, with analytics tracking for clicks.
 - Implements utility functions `showInMobile` and `showInDesktop` to toggle visibility of elements based on the device's screen size.
-- Smooth Includes links with smooth scroll functionality to sections within the page, equipped with event tracking to analyze user navigation patterns.
 
 [MenuItemAsNavLink.jsx](MenuItemAsNavLink.jsx) - Crafts a versatile menu item component capable of executing different navigation behaviors: navigating to a new page, scrolling to a specified section within a page, or performing no action. This adaptability makes it a fundamental building block for constructing navigational menus within the application.
 
@@ -29,11 +28,9 @@ The Header components include:
 
 [NavLinkBehavior.jsx](NavLinkBehavior.jsx) - Defines an enumeration for specifying the types of navigational actions a link can perform within the application. This simple yet effective approach categorizes link behaviors into three distinct types:
 
-- `toNewPage`: Directs the user to a new page within the application.
+- `toNewPage`: Directs the user to a new page within this React application.
 - `scrollTo`: Scrolls the page to a specific section identified by an ID.
 - `doNothing`: Disables any action, making the link non-interactive.
-
-This enumeration enhances code readability and maintainability by providing a clear and centralized definition of possible navigation behaviors.
 
 [ThemeSelector.jsx](ThemeSelector.jsx) - Allows users to switch between different theme modes (light, dark, or system default) for the application. It provides a dropdown menu for theme selection, persisting the choice in local storage and applying the selected theme across the application.
 
