@@ -16,19 +16,19 @@
 The CITIES Dashboard serves as a data repository for community-wide actions on sustainability and well-being. This dashboard is created by and for the community of NYU Abu Dhabi, students, researchers, faculty, staff, and NYUAD partners alike. We highly encourage anyone interested to contribute to this open-source project by sharing new datasets, analyzing existing datasets, proposing projects, and promoting the dashboard to a wider audience. Ultimately, we envision the CITIES Dashboard as a handy tool to support research, education, and community outreach within the NYU Abu Dhabi campus and a precious instrument to support NYUAD partners in meeting their KPI (e.g., reducing food waste).
 
 ![homepage](/documentation/home-page.png)
-*The Home page of the dashboard...*
-  
-![homepage-all-project](/documentation/home-page-2.png)
-*... where all data sets / projects are prominently displayed*
+*The Home page of the dashboard where all data sets / projects are prominently displayed*
 
 ![project-page](/documentation/project-page.png)
-*The project page showing the descriptions of the data set, a link to the raw data set (Google Sheets database), a sample data set...*
+*The project page showing the general description of the data set, dataset metadata (such as owner and last update date)...*
+
+![project-page-3](/documentation/project-page-3.png)
+*...raw dataset download and version control...*
 
 ![project-page-2](/documentation/project-page-2.png)
-*... and data visualizations (made with Google Charts)*
+*...and data visualizations (made with Google Charts and/or Nivo Charts)*
 
 ![about-page](/documentation/about-page.png)
-*The About page of the dashboard, detailing CITIES' social network accounts and describing the rationale of the project*
+*The About section of the dashboard, detailing CITIES' social network accounts and describing the rationale of the project, together with a Get In Touch form*
 
 
 # 2. Description
@@ -198,7 +198,7 @@ Google Sheets parameters:
 - **`"subcharts"`**: sometimes, a chart can contain multiple subcharts for richer contextual data visualization.
 
   ![subcharts](/documentation/subcharts.png)
-  *__Example:__ the historical air quality chart can have 3 different subcharts: one for outdoor air quality, one for indoor air quality in the Campus Center, and one for indoor air quality in the Dining Hall. The user can switch between these 3 subcharts using the __\_\_tabs\_\___.*
+  *__Example:__ `Mean Daily Food Waste (kg) by Week` can have 2 different subcharts: one for total amount of food waste across all three meals and one for each meal stacked on top of each other. The user can switch between these subcharts using __\_\_tabs\_\___.*
   
   This property is optional; if omitted, the chart will have one single data visualization. If included, its value should be an array with object literals each correspond to a subchart. It has one mandatory property:
   
