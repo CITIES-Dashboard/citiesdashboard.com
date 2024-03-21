@@ -1,4 +1,23 @@
 [Last update: March 8 2023 - some parts are not correct anymore, pending revisions]
+
+### TODO for documentation
+1. remove introduction, or make it into one-liner. this is a technical documentation, so there's no need for it to be long like now
+1. take new screenshots for things that have changed, use food waste instead of air quality like now (since air quality is already moved to citiesair)
+2. modify Description to make it more reflective of the tech stack currently used. would be great if you can make a quick sketch on draw.io that can help explain the overall architecture of the dashboard better (interplay between frontend and sheet and raw dataset syncer for example)
+2.1 hmaybe remove the ones that are not as important to understand how the frontend works like header and footer? there have been so many additions, so let's leave the spotlights for more important components like the chart and google chart itself
+2.2 looking good for the most part, just modify the part where react google chart is mentioned. if you have extra time, try making the texts a bit shorter as well
+2.3.2 explain  "chartCounts": 6,
+    "embeddedWebsite": "https://citiesair.com/nyuadmap",
+    "externalWebsite": "https://citiesair.com/dashboard/nyuad?source=cities-dashboard"
+as it's embedded iframe for the home tiles and not follow the standard chart like the other ones
+2.3.2 add that owner is an array
+2.3.2 rawDataTables is only used for dataset fetcher script now, not displayed in the project anymore
+
+instead, talk more about the new component: DatasetDownload component below
+2.3.3 remove react google chart references (btw, do this for everywhere)
+2.3.3 add the unique parameters for options that are not native to google charts, the one that we gradually added more because of nivo or stack/unstack button... try to be exhaustive here, all the custom parameters we added, perhaps also put a href link to the components that deal with each parameter as well
+2.3.3 add mentions for control as well, but just shortly
+
 # CITIES VISUALIZATION DASHBOARD
 
 1. [Introduction](#1-introduction)
