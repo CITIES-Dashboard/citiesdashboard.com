@@ -8,8 +8,8 @@ import { Box, Stack, Tooltip, Typography } from '@mui/material/';
 
 import { useTheme } from '@mui/material/styles';
 import HeatMap from '../HeatMap';
-import SeriesSelector from './SeriesSelector';
-import StackedBarToggle from './StackedBarToggle';
+import SeriesSelector from './SubchartUtils/SeriesSelector';
+import StackedBarToggle from './SubchartUtils/StackedBarToggle';
 
 import { fetchDataFromSheet, generateRandomID, returnGenericOptions, returnChartControlUI, ChartControlType, addTouchEventListenerForChartControl } from '../GoogleChartHelper';
 
@@ -24,10 +24,10 @@ import { isMobile } from 'react-device-detect';
 
 import { transformDataForNivo, convertToNivoHeatMapData } from '../NivoChartHelper';
 
-import { CalendarChart, getCalendarChartMargin, yearSpacing } from './NivoCalendarChart';
+import { CalendarChart, getCalendarChartMargin, yearSpacing } from './NivoCharts/NivoCalendarChart';
 
-import { NivoHeatMap } from './NivoHeatMap';
-import ModifiedCategoryFilterForTimeline from './ModifiedCategoryFilterForTimeline';
+import { NivoHeatMap } from './NivoCharts/NivoHeatMap';
+import ModifiedCategoryFilterForTimeline from './SubchartUtils/ModifiedCategoryFilterForTimeline';
 
 function SubChart(props) {
   // Props
