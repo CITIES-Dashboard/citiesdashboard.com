@@ -11,7 +11,7 @@ import HeatMap from '../HeatMap';
 import SeriesSelector from './SeriesSelector';
 import StackedBarToggle from './StackedBarToggle';
 
-import { fetchDataFromSheet, generateRandomID, returnGenericOptions, returnCalendarChartOptions, returnChartControlUI, ChartControlType, addTouchEventListenerForChartControl } from '../GoogleChartHelper';
+import { fetchDataFromSheet, generateRandomID, returnGenericOptions, returnChartControlUI, ChartControlType, addTouchEventListenerForChartControl } from '../GoogleChartHelper';
 
 import GoogleChartStyleWrapper from './GoogleChartStyleWrapper';
 
@@ -22,7 +22,7 @@ import LoadingAnimation from '../../Components/LoadingAnimation';
 
 import { isMobile } from 'react-device-detect';
 
-import { transformDataForNivo, convertToNivoHeatMapData } from '../GoogleChartHelper'
+import { transformDataForNivo, convertToNivoHeatMapData } from '../NivoChartHelper';
 
 import { CalendarChart, getCalendarChartMargin, yearSpacing } from './NivoCalendarChart';
 
@@ -75,9 +75,6 @@ function SubChart(props) {
   // Get the options object for chart
   let options = useMemo(() => {
     let opts = returnGenericOptions({ ...props, theme });
-    if (chartData.chartType === 'Calendar') {
-      opts = returnCalendarChartOptions(opts);
-    }
     return opts;
   }, [props, theme, chartData.chartType]);
   // State to store transformed data for CalendarChart
