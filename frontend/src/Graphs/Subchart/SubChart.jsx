@@ -13,7 +13,7 @@ import StackedBarToggle from './SubchartUtils/StackedBarToggle';
 
 import { fetchDataFromSheet, generateRandomID, returnGenericOptions, returnChartControlUI, ChartControlType, addTouchEventListenerForChartControl } from '../GoogleChartHelper';
 
-import GoogleChartStyleWrapper from './GoogleChartStyleWrapper';
+import GoogleChartStyleWrapper from './SubchartUtils/GoogleChartStyleWrapper';
 
 import LoadingAnimation from '../../Components/LoadingAnimation';
 
