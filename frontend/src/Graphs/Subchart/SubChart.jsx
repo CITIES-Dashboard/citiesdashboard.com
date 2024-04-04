@@ -163,8 +163,8 @@ function SubChart(props) {
 
   const [NivoHeatMapData, setNivoHeatMapData] = useState(null);
   const [NivoHeatMapWidth, setNivoHeatMapWidth] = useState(500);
-  // Early return for 'NivoHeatMap' chartType
-  if (chartData.chartType === 'NivoHeatMap') {
+  // Early return for 'HeatMap' chartType
+  if (chartData.chartType === 'HeatMap') {
     useEffect(() => {
       if (!google) return;
       fetchDataFromSheet({ chartData: chartData, subchartIndex: subchartIndex })
