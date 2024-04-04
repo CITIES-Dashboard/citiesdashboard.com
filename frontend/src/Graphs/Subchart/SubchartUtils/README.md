@@ -13,9 +13,15 @@ This file contains the StackedBarToggle component, which is a toggle switch that
 ### [`SeriesSelector.jsx`](SeriesSelector.jsx)
 This component is designed to enable users to select / deselect data series in visualizations, providing users with the ability to customize the data displayed according to their preferences. This component is particularly useful in charts with a lot of data series (5+) and where user control over the visibility of these series enhances the analysis experience. **Key features and implementation details are summarized below:**
 
-**Flexible Selection Mechanism**: 
+**Flexible User Selection Mechanism**: 
 - Supports both single and multiple selections, allowing users to choose ONLY one at a time or several data series to be displayed. This flexibility is controlled through the `allowMultiple` prop. The same prop can be stored and read out from `seriesSelector.allowMultiple` in `temp_database.json`
 - *[Only Desktop]* Supports both a drop down menu and `Chip` for the user to select/deselect series. `Chip` provides at-a-glance information on which series are currently shown and a convenient way to remove series from view. `Chip` is not shown on small screen devices to save space.
+
+**Flexible Implementation Mechanism**: 
+- Although the underlying method for showing/hiding a series is implemented in the `Subchart` component (documentation [here](../SubChart.jsx)), it is also worth nothing that there are 2 methods as such:
+   - `toggleVisibility`: "hide" a series by making it transparent. This is good for situations where we do not want the chart axis scale to change when selecting/deselecting series. The series will still occupying a space in the chart, albeit not seen by the user. This is akin to `visibility: hidden` in CSS.
+   - `setViewColumn`: properly hide a series by removing it from the underlying `dataView` inside the chart (using `setView` method, [documentation by Google](https://developers.google.com/chart/interactive/docs/reference#dataview-class)). As this approach completely removes certain series from the `dataView`, it will affect the scaling of axes to fit the displaying series. This is akin to `display: none` in CSS.
+- Whichever method should the `SeriesSelector` uses can be provided in the `temp_database.json` in `seriesSelector.method`.
 
 **Series Population**:
 - Series items are dynamically populated from the `itemsFromChart` prop. `Subchart` supplies this prop with its calculated `dataColumn` from Google Charts.
