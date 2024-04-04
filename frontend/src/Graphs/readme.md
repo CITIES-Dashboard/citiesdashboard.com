@@ -45,7 +45,7 @@ If subcharts are not available, one single chart is displayed instead, without a
 - handleWindowResize: added to a `resize` event listener, together with a debounce of 100ms, to resize the chart container upon window resize. This is due to the fact that Google Charts are not 100% responsive out of the box, and requires further customization, such as determining if the current window is portrait or not, to improve the charts' readability in small screen devices.
 - handleChange: listen to changes in the selected tab for a given chart to update the display of its subcharts accordingly, via TabContext.
 
-### [`Heatmap.jsx`](Heatmap.jsx)
+### [`GoogleSheetEmbedVisualization.jsx`](GoogleSheetEmbedVisualization.jsx)
 This component is only currently used for Athletic checkin project, in charts 3 and 4. Barely a chart, it simply provides a re-usable component to visually embed a Google Sheet on the dashboard. Any formatting (such as color, row and column size, text style...) must be done on the Google Sheet, as this component only embed the sheet via an `<iframe>` tag.
 
 This component requires 3 simple prop:

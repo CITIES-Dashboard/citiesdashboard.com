@@ -4,10 +4,9 @@ The `SubChart` component is an integral part of the CITIES dashboard, designed t
 
 ### Imports
 - **React Hooks and Contexts**: Utilizes standard React hooks (`useState`, `useRef`, `useEffect`, `useContext`, `useMemo`, `useCallback`, `memo`) for state management, referencing DOM elements, performing side effects, memoization, and optimizing re-renders. The `memo` function wraps the component to prevent unnecessary re-renders.
-- **Material-UI Components and Hooks**: Imports from Material-UI (`Box`, `Stack`, `Tooltip`, `Typography`, `useTheme`) are used for layout and styling, taking advantage of Material-UI's design system for consistent UI.
-- **ContextProviders**: `GoogleContext` is used to load the Google Charts library and provide access to Google Charts components and functions.
+- **ContextProviders**: `GoogleContext` is used to load the Google Charts library and provide access to Google Charts components and functions. The library can only be loaded once during the entire life cycle of the web app; therefore, it is implemented in a Context Provider.
 - **Chart Components and Helpers**: ([Detailed documentation for these functions](../readme.md))
-  1.  `fetchDataFromSheet`: Fetches data from a Google Sheet for chart rendering. This data is used by Google Charts and Nivo Charts to generate visualizations.
+  1.  `fetchDataFromSheet`: Fetches data from a Google Sheet for chart rendering. This data is then used by Google Charts and Nivo Charts to generate visualizations.
 
   2. **Google Charts Components and Helpers**:
    - `generateRandomID`: Generates unique IDs for Google Charts containers.
@@ -28,21 +27,21 @@ The `SubChart` component is an integral part of the CITIES dashboard, designed t
 - **Device Detection**: `isMobile` from `react-device-detect` helps adjust the component's behavior or layout based on the device type, enhancing responsiveness and user experience.
 
 ### Props
-- `chartData`: The data for the chart to be rendered (from [temp_database.json](../../temp_database.json)). This is the core information that dictates what type of chart is displayed and how it is configured.
+- `chartData`: The data for the chart to be rendered (parsed and modified from [temp_database.json](../../temp_database.json)). This is the core information that dictates what type of chart and how it is configured.
 - `subchartIndex`: Used to locate the specific subchart within the chartData array, ensuring the correct subchart is rendered.
-- `windowSize`: Information about the current window size, aiding in responsive design adjustments.
-- `isPortrait`: A boolean indicating if the device orientation is portrait, influencing chart layout decisions.
-- `isHomepage`: A flag to indicate if the chart is being rendered on the homepage, used to determine if certain features like chart controls, tooltips, [SeriesSelector](./SubchartUtils/SeriesSelector.jsx), etc., should be displayed or not.
+- `windowSize`: Information about the current window size for responsive charts (Google Charts is partially responsive, but not 100%)
+- `isPortrait`: A boolean indicating if the device orientation is portrait, influencing chart layout decisions. For example, in portrait mode, the legend is displayed on top of the chart while in landscape mode, it is on the right side.
+- `isHomepage`: A flag to indicate if the chart is being rendered on the homepage (as a promo teaser). This is used to determine if certain features like chart controls, tooltips, [SeriesSelector](./SubchartUtils/SeriesSelector.jsx), etc., should be displayed or not, since the chart on the home page must be stripped down for simplicity.
 - `height`, `maxHeight`: Specify the desired height constraints for the chart.
 
 ### Early Return Conditions
-The `SubChart` component employs several early return conditions, primarily when we want to render Nivo charts instead of Google Charts.
+The `SubChart` component employs several early return conditions, primarily when we want to render special kinds of charts that do not follow the general configurations of the majority of Google Charts.
 
-*Class Name Configuration*: Before proceeding with the early exits, the component constructs a `className` for the chart container using `useMemo`. This class name might include a custom class defined in `chartData` along with the chart type, ensuring that each chart can be styled uniquely via CSS.
+*Class Name Configuration*: Before proceeding with the early exits, the component constructs a `className` for the chart container using `useMemo`. This class name might include a custom class defined in `chartData` along with the chart type, ensuring that each chart can be styled further via CSS.
 
-1. **HeatMap Early Exit**: If the chart type is identified as a (Google Charts) `HeatMap`, the component renders a `HeatMap` component directly and exits early. This bypass is specific to handling heat map charts, utilizing props such as `publishedSheetId`, `gid`, and `range` from `chartData` to configure the heat map.
+1. **GoogleSheetEmbedVisualization Early Exit**: If the chart type is identified as a `GoogleSheetEmbedVisualization`, the component renders such component directly and exits early. This bypass is specific to handling heat map charts, utilizing props such as `publishedSheetId`, `gid`, and `range` from `chartData` to configure the heat map. Technically, a `GoogleSheetEmbedVisualization` is not a chart but an `<iframe>` embed of a Google Sheet. Its documentation can be found [here](../README.md#googlesheetembedvisualizationjsx).
 
-2. **Nivo Calendar Chart Early Exit**: Similarly, if the chart type is `Calendar`, an early return constructs and renders a (Nivo) `CalendarChart` component. This process involves fetching data from a Google Sheet, transforming it into a format suitable for a Nivo `CalendarChart`, and calculating the chart's height based on the number of years covered by the data. This dynamic height calculation ensures that the calendar chart visually accommodates all data points across different years.
+2. **Nivo Calendar Chart Early Exit**: Similarly, if the chart type is `Calendar`, an early return constVucts and renders a (Nivo) `CalendarChart` component. This process involves fetching data from a Google Sheet, transforming it into a format suitable for a Nivo `CalendarChart`, and calculating the chart's height based on the number of years covered by the data. This dynamic height calculation ensures that the calendar chart responsively accommodates all data points across different years.
 
 3. **Nivo HeatMap Early Exit**: For `NivoHeatMap` chart types, the component similarly fetches and processes data specifically for rendering with the Nivo `HeatMap` component. 
 

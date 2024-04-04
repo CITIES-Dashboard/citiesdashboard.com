@@ -389,7 +389,7 @@
             }
           ]
         },
-        "chartType": "HeatMap"
+        "chartType": "GoogleSheetEmbedVisualization"
       },
       {
         "title": "Heat Map for the Total Monthly Number of Check-in, by Day of the Week",
@@ -441,7 +441,7 @@
             }
           ]
         },
-        "chartType": "HeatMap"
+        "chartType": "GoogleSheetEmbedVisualization"
       }
     ]
   },

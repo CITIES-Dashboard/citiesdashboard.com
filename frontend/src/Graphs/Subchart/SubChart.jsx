@@ -7,7 +7,7 @@ import { GoogleContext } from '../../ContextProviders/GoogleContext';
 import { Box, Stack, Tooltip, Typography } from '@mui/material/';
 
 import { useTheme } from '@mui/material/styles';
-import HeatMap from '../HeatMap';
+import GoogleSheetEmbedVisualization from '../GoogleSheetEmbedVisualization';
 import SeriesSelector from './SubchartUtils/SeriesSelector';
 import StackedBarToggle from './SubchartUtils/StackedBarToggle';
 
@@ -45,8 +45,8 @@ function SubChart(props) {
   }, [chartData.customClassName, chartData.chartType]);
 
 
-  // Early return for 'HeatMap' chartType
-  if (chartData.chartType === 'HeatMap') {
+  // Early return for 'GoogleSheetEmbedVisualization' chartType
+  if (chartData.chartType === 'GoogleSheetEmbedVisualization') {
     return (
       <Box
         position="relative"
@@ -56,7 +56,7 @@ function SubChart(props) {
         width="100%"
         sx={{ pt: 2, pb: 2, margin: 'auto' }}
       >
-        <HeatMap
+        <GoogleSheetEmbedVisualization
           publishedSheetId={chartData.publishedSheetId}
           gid={chartData.gid || chartData.subcharts[subchartIndex].gid || null}
           range={
