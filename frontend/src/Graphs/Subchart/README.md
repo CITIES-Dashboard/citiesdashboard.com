@@ -41,9 +41,9 @@ The `SubChart` component employs several early return conditions, primarily when
 
 1. **GoogleSheetEmbedVisualization Early Exit**: If the chart type is identified as a `GoogleSheetEmbedVisualization`, the component renders such component directly and exits early. This bypass is specific to handling heat map charts, utilizing props such as `publishedSheetId`, `gid`, and `range` from `chartData` to configure the heat map. Technically, a `GoogleSheetEmbedVisualization` is not a chart but an `<iframe>` embed of a Google Sheet. Its documentation can be found [here](../README.md#googlesheetembedvisualizationjsx).
 
-2. **Nivo Calendar Chart Early Exit**: Similarly, if the chart type is `Calendar`, an early return constVucts and renders a (Nivo) `CalendarChart` component. This process involves fetching data from a Google Sheet, transforming it into a format suitable for a Nivo `CalendarChart`, and calculating the chart's height based on the number of years covered by the data. This dynamic height calculation ensures that the calendar chart responsively accommodates all data points across different years.
+2. **Nivo Calendar Chart Early Exit**: Similarly, if the chart type is `Calendar`, it returns early and renders a (Nivo) `CalendarChart` component. This process involves fetching data from a Google Sheet, transforming it into a format suitable for a Nivo `CalendarChart`, and calculating the chart's height based on the number of years covered by the data. This dynamic height calculation ensures that the calendar chart responsively accommodates all data points across different years.
 
-3. **Nivo HeatMap Early Exit**: For `NivoHeatMap` chart types, the component similarly fetches and processes data specifically for rendering with the Nivo `HeatMap` component. 
+3. **Nivo HeatMap Early Exit**: For `HeatMap` chart types, the component similarly fetches and processes data specifically for rendering with the `NivoHeatMap` component. 
 
 ### Google Charts Rendering and Interactive Features
 After handling early exits for specific chart types, the component focuses on rendering standard Google Charts and enhancing them with interactive features such as SeriesSelector, Stacked Bar Toggle, and various Chart Controls. This section delves into the setup, rendering, and interaction management for Google Charts within the `SubChart` component.
