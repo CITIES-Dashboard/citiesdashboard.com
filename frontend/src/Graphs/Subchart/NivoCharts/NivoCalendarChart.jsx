@@ -5,7 +5,7 @@ import { useTheme } from '@mui/material/styles';
 import { Box, Chip } from '@mui/material';
 
 import parse from 'html-react-parser';
-import { replacePlainHTMLWithMuiComponents } from '../../Utils/Utils';
+import { replacePlainHTMLWithMuiComponents } from '../../../Utils/Utils';
 
 export const yearSpacing = 40;
 

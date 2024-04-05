@@ -44,93 +44,6 @@ export const fetchDataFromSheet = ({ chartData, subchartIndex }) => {
   });
 };
 
-export const transformDataForNivo = (dataTable, dataColumn, tooltipColumn) => {
-  const data = JSON.parse(dataTable.toJSON())
-  const transformed = [];
-
-  const parseDate = (dateString) => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const formattedDate = `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
-    return formattedDate;
-  }
-
-  data.rows.forEach(row => {
-    // Get the date string from the first column 
-    const dateString = row.c[0].f;
-    // Parse and convert the date string to a 'YYYY-MM-DD' format
-    const formattedDate = parseDate(dateString);
-    // Get the data from the appropriate column
-    const value = row.c[dataColumn]?.v;
-    // Get the tooltip from the appropriate column
-    const tooltip = row.c[tooltipColumn]?.v;
-
-    // If the date string and value are both valid, push them into the result array
-    if (dateString && value !== undefined && value !== null) {
-      transformed.push({
-        day: formattedDate,
-        value: value,
-        tooltip: tooltip
-      });
-    }
-  });
-
-  // Get dateRange (from - to)
-  const dateStrings = transformed.map(item => item.day);
-  const dateRange = {
-    min: dateStrings.reduce((min, current) => (current < min ? current : min)),
-    max: dateStrings.reduce((max, current) => (current > max ? current : max))
-  };
-
-  // Get valueRange (min - max)
-  const values = transformed.map(item => item.value);
-  const valueRange = { min: Math.min(...values), max: Math.max(...values) };
-
-  return {
-    data: transformed,
-    dateRange: dateRange,
-    valueRange: valueRange
-  };
-};
-
-export const convertToNivoHeatMapData = (googleSheetsData) => {
-  const dataTable = JSON.parse(googleSheetsData.toJSON());
-  const cols = dataTable.cols.map(col => col.label).slice(1); // Exclude the first column
-  const rows = dataTable.rows;
-
-  // Calculate total for each column
-  const columnTotals = new Array(cols.length).fill(0);
-  rows.forEach(row => {
-    row.c.slice(1).forEach((cell, index) => {
-      columnTotals[index] += cell.v;
-    });
-  });
-
-  // Process each row
-  return rows.map(row => {
-    const rowTotal = row.c.slice(1).reduce((acc, cell) => acc + cell.v, 0);
-
-    const data = cols.map((col, index) => {
-      const value = row.c[index + 1].v; // +1 to offset label column
-      const rowPercentage = rowTotal > 0 ? (value / rowTotal * 100).toFixed(1) : 0;
-      const colPercentage = columnTotals[index] > 0 ? (value / columnTotals[index] * 100).toFixed(1) : 0;
-
-      return {
-        x: col,
-        y: value,
-        rowPercentage: `${rowPercentage}%`,
-        colPercentage: `${colPercentage}%`,
-        rowTotal: rowTotal,
-        colTotal: columnTotals[index],
-      };
-    });
-
-    return { id: row.c[0].v, data };
-  });
-};
-
 // Function to generate a random ID for the google chart container
 export const generateRandomID = () => {
   return Math.random().toString(36).substr(2, 9); // Generates a random string of length 9
@@ -415,15 +328,6 @@ export const returnChartControlUI = (props) => {
   return chartControlUI;
 }
 
-const calculateCalendarDimensions = ({ cellSizeMin, cellSizeMax }) => {
-  const cellSize = Math.min(Math.max((window.innerWidth * 0.9) / 58, cellSizeMin), cellSizeMax);
-  return {
-    chartWidth: cellSize * 56, // fixed ratio
-    cellSize,
-    yearLabelFontSize: cellSize * 2
-  };
-};
-
 export const addTouchEventListenerForChartControl = ({ controlWrapper, chartID }) => {
   const touchHandler = (event) => {
     var touches = event.changedTouches,
@@ -479,22 +383,4 @@ export const addTouchEventListenerForChartControl = ({ controlWrapper, chartID }
       controlDOM.removeEventListener(touchEvent, touchHandler, { capture: true });
     });
   };
-}
-
-export const returnCalendarChartOptions = (existingOptions) => {
-  const calendarDimensions = calculateCalendarDimensions({ cellSizeMin: 14, cellSizeMax: 18 });
-  return {
-    ...existingOptions,
-    width: calendarDimensions.chartWidth,
-    calendar: {
-      cellSize: calendarDimensions.cellSize,
-      yearLabel: {
-        fontSize: calendarDimensions.yearLabelFontSize
-      }
-    },
-    noDataPattern: {
-      backgroundColor: 'none',
-      color: 'none',
-    },
-  }
 }

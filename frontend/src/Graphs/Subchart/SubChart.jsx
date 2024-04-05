@@ -7,13 +7,13 @@ import { GoogleContext } from '../../ContextProviders/GoogleContext';
 import { Box, Stack, Tooltip, Typography } from '@mui/material/';
 
 import { useTheme } from '@mui/material/styles';
-import HeatMap from '../HeatMap';
-import SeriesSelector from './SeriesSelector';
-import StackedBarToggle from './StackedBarToggle';
+import GoogleSheetEmbedVisualization from '../GoogleSheetEmbedVisualization';
+import SeriesSelector from './SubchartUtils/SeriesSelector';
+import StackedBarToggle from './SubchartUtils/StackedBarToggle';
 
-import { fetchDataFromSheet, generateRandomID, returnGenericOptions, returnCalendarChartOptions, returnChartControlUI, ChartControlType, addTouchEventListenerForChartControl } from '../GoogleChartHelper';
+import { fetchDataFromSheet, generateRandomID, returnGenericOptions, returnChartControlUI, ChartControlType, addTouchEventListenerForChartControl } from '../GoogleChartHelper';
 
-import GoogleChartStyleWrapper from './GoogleChartStyleWrapper';
+import GoogleChartStyleWrapper from './SubchartUtils/GoogleChartStyleWrapper';
 
 import LoadingAnimation from '../../Components/LoadingAnimation';
 
@@ -22,12 +22,12 @@ import LoadingAnimation from '../../Components/LoadingAnimation';
 
 import { isMobile } from 'react-device-detect';
 
-import { transformDataForNivo, convertToNivoHeatMapData } from '../GoogleChartHelper'
+import { transformDataForNivo, convertToNivoHeatMapData } from '../NivoChartHelper';
 
-import { CalendarChart, getCalendarChartMargin, yearSpacing } from './NivoCalendarChart';
+import { CalendarChart, getCalendarChartMargin, yearSpacing } from './NivoCharts/NivoCalendarChart';
 
-import { NivoHeatMap } from './NivoHeatMap';
-import ModifiedCategoryFilterForTimeline from './ModifiedCategoryFilterForTimeline';
+import { NivoHeatMap } from './NivoCharts/NivoHeatMap';
+import ModifiedCategoryFilterForTimeline from './SubchartUtils/ModifiedCategoryFilterForTimeline';
 
 function SubChart(props) {
   // Props
@@ -45,8 +45,8 @@ function SubChart(props) {
   }, [chartData.customClassName, chartData.chartType]);
 
 
-  // Early return for 'HeatMap' chartType
-  if (chartData.chartType === 'HeatMap') {
+  // Early return for 'GoogleSheetEmbedVisualization' chartType
+  if (chartData.chartType === 'GoogleSheetEmbedVisualization') {
     return (
       <Box
         position="relative"
@@ -56,7 +56,7 @@ function SubChart(props) {
         width="100%"
         sx={{ pt: 2, pb: 2, margin: 'auto' }}
       >
-        <HeatMap
+        <GoogleSheetEmbedVisualization
           publishedSheetId={chartData.publishedSheetId}
           gid={chartData.gid || chartData.subcharts[subchartIndex].gid || null}
           range={
@@ -75,9 +75,6 @@ function SubChart(props) {
   // Get the options object for chart
   let options = useMemo(() => {
     let opts = returnGenericOptions({ ...props, theme });
-    if (chartData.chartType === 'Calendar') {
-      opts = returnCalendarChartOptions(opts);
-    }
     return opts;
   }, [props, theme, chartData.chartType]);
   // State to store transformed data for CalendarChart
@@ -166,8 +163,8 @@ function SubChart(props) {
 
   const [NivoHeatMapData, setNivoHeatMapData] = useState(null);
   const [NivoHeatMapWidth, setNivoHeatMapWidth] = useState(500);
-  // Early return for 'NivoHeatMap' chartType
-  if (chartData.chartType === 'NivoHeatMap') {
+  // Early return for 'HeatMap' chartType
+  if (chartData.chartType === 'HeatMap') {
     useEffect(() => {
       if (!google) return;
       fetchDataFromSheet({ chartData: chartData, subchartIndex: subchartIndex })

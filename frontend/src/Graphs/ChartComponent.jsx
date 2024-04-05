@@ -99,8 +99,8 @@ function ChartComponent({ chartData: passedChartData, chartHeight: passedChartHe
     chartMaxHeight = isPortrait ? '800px' : '500px';
   }
 
-  // Assign the subcharts array for HeatMap based on the device orientation
-  if (chartData.chartType === 'HeatMap') {
+  // Assign the subcharts array for GoogleSheetEmbedVisualization based on the device orientation
+  if (chartData.chartType === 'GoogleSheetEmbedVisualization') {
     chartData = {
       ...chartData,
       ...chartData[isPortrait ? 'subchartsPortrait' : 'subchartsLandscape'],
@@ -130,7 +130,7 @@ function ChartComponent({ chartData: passedChartData, chartHeight: passedChartHe
           windowSize={windowSize}
           height={chartData.height ? chartData.height : chartHeight}
           maxHeight={
-            chartData.chartType === 'HeatMap' ? '' : chartMaxHeight
+            chartData.chartType === 'GoogleSheetEmbedVisualization' ? '' : chartMaxHeight
           }
         />
       );
@@ -180,7 +180,7 @@ function ChartComponent({ chartData: passedChartData, chartHeight: passedChartHe
                   windowSize={windowSize}
                   height={chartData.height ? chartData.height : chartHeight}
                   maxHeight={
-                    ['HeatMap', 'Calendar'].includes(chartData.chartType)
+                    ['GoogleSheetEmbedVisualization', 'Calendar'].includes(chartData.chartType)
                       ? ''
                       : chartMaxHeight
                   }
@@ -201,7 +201,7 @@ function ChartComponent({ chartData: passedChartData, chartHeight: passedChartHe
         windowSize={windowSize}
         height={chartData.height ? chartData.height : chartHeight}
         maxHeight={
-          chartData.chartType === 'HeatMap' ? '' : chartMaxHeight
+          chartData.chartType === 'GoogleSheetEmbedVisualization' ? '' : chartMaxHeight
         }
       />
     );

@@ -389,7 +389,7 @@
             }
           ]
         },
-        "chartType": "HeatMap"
+        "chartType": "GoogleSheetEmbedVisualization"
       },
       {
         "title": "Heat Map for the Total Monthly Number of Check-in, by Day of the Week",
@@ -441,7 +441,7 @@
             }
           ]
         },
-        "chartType": "HeatMap"
+        "chartType": "GoogleSheetEmbedVisualization"
       }
     ]
   },
@@ -1284,7 +1284,7 @@
       {
         "title": "Compositions of Page Type by User Category (Since Sep 2022)",
         "headers": 1,
-        "chartType": "NivoHeatMap",
+        "chartType": "HeatMap",
         "nivo": true,
         "gid": 2096148199,
         "subtitle": "The two heat-maps above visualize the total usage of various paper types by different user categories at NYU Abu Dhabi, <b>since September 2022</b>. Each cell's color corresponds to the volume of pages used, with darker shades indicating higher usage.<br><br>",
