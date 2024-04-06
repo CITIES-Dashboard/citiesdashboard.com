@@ -1,41 +1,56 @@
 [Last update: March 8 2023 - some parts are not correct anymore, pending revisions]
 
 ### TODO for documentation
-1. remove introduction, or make it into one-liner. this is a technical documentation, so there's no need for it to be long like now
-1. take new screenshots for things that have changed, use food waste instead of air quality like now (since air quality is already moved to citiesair)
-2. modify Description to make it more reflective of the tech stack currently used. would be great if you can make a quick sketch on draw.io that can help explain the overall architecture of the dashboard better (interplay between frontend and sheet and raw dataset syncer for example)
+1. remove introduction, or make it into one-liner. this is a technical documentation, so there's no need for it to be long like now ✅
+1. take new screenshots for things that have changed, use food waste instead of air quality like now (since air quality is already moved to citiesair) ✅
+2. modify Description to make it more reflective of the tech stack currently used. ✅
+   
+   2.0.1 would be great if you can make a quick sketch on draw.io that can help explain the overall architecture of the dashboard better (interplay between frontend and sheet and raw dataset syncer for example) 
+
 2.1 hmaybe remove the ones that are not as important to understand how the frontend works like header and footer? there have been so many additions, so let's leave the spotlights for more important components like the chart and google chart itself
+
 2.2 looking good for the most part, just modify the part where react google chart is mentioned. if you have extra time, try making the texts a bit shorter as well
+
 2.3.2 explain  "chartCounts": 6,
     "embeddedWebsite": "https://citiesair.com/nyuadmap",
     "externalWebsite": "https://citiesair.com/dashboard/nyuad?source=cities-dashboard"
 as it's embedded iframe for the home tiles and not follow the standard chart like the other ones
-2.3.2 add that owner is an array
-2.3.2 rawDataTables is only used for dataset fetcher script now, not displayed in the project anymore
 
-instead, talk more about the new component: DatasetDownload component below
+2.3.2 add that owner is an array
+
+2.3.2 rawDataTables is only used for dataset fetcher script now, not displayed in the project anymore. Instead, talk more about the new component: DatasetDownload component below
+
 2.3.3 remove react google chart references (btw, do this for everywhere)
+
 2.3.3 add the unique parameters for options that are not native to google charts, the one that we gradually added more because of nivo or stack/unstack button... try to be exhaustive here, all the custom parameters we added, perhaps also put a href link to the components that deal with each parameter as well
+
 2.3.3 add mentions for control as well, but just shortly
+
+2.4 Detailed the deployment process for the dashboard ✅
 
 # CITIES VISUALIZATION DASHBOARD
 
-1. [Introduction](#1-introduction)
-2. [Description](#2-description)  
-    2.1. [React Components](#21-react-components-pages-and-context-providers)  
-    2.2. [Google Sheets Database](#22-google-sheet-database)  
-    2.3. [Front-end Database and Google Charts Data Visualization](#23-front-end-database-and-google-charts-data-visualization)
-3. [Build and Test Locally](#3-build-and-test-locally)  
-    3.1. [Prerequisites](#31-prerequisites)  
-    3.2. [Install Dependencies](#32-install-dependencies)
-4. [References](#4-references)
+- [CITIES VISUALIZATION DASHBOARD](#cities-visualization-dashboard)
+- [1. Introduction](#1-introduction)
+- [2. Description](#2-description)
+  - [2.1. React Components, Pages, and Context Providers](#21-react-components-pages-and-context-providers)
+  - [2.2. Google Sheets database](#22-google-sheets-database)
+  - [2.3. Front-end Database and Google Charts Data Visualization](#23-front-end-database-and-google-charts-data-visualization)
+    - [2.3.1. JSON array level](#231-json-array-level)
+    - [2.3.2. Data set level](#232-data-set-level)
+    - [2.3.3. Chart level](#233-chart-level)
+  - [2.4 Deployment Process](#24-deployment-process)
+- [3. Build and Test Locally](#3-build-and-test-locally)
+  - [3.1. Prerequisites](#31-prerequisites)
+  - [3.2. Install Dependencies](#32-install-dependencies)
+- [4. References](#4-references)
 
 # 1. Introduction
 
-The CITIES Dashboard serves as a data repository for community-wide actions on sustainability and well-being. This dashboard is created by and for the community of NYU Abu Dhabi, students, researchers, faculty, staff, and NYUAD partners alike. We highly encourage anyone interested to contribute to this open-source project by sharing new datasets, analyzing existing datasets, proposing projects, and promoting the dashboard to a wider audience. Ultimately, we envision the CITIES Dashboard as a handy tool to support research, education, and community outreach within the NYU Abu Dhabi campus and a precious instrument to support NYUAD partners in meeting their KPI (e.g., reducing food waste).
+The CITIES Dashboard offers interactive data visualizations on various aspects of living at NYU Abu Dhabi. It's prominent features include:
 
 ![homepage](/documentation/home-page.png)
-*The Home page of the dashboard where all data sets / projects are prominently displayed*
+*The Home page of the dashboard where all data sets / projects are displayed*
 
 ![project-page](/documentation/project-page.png)
 *The project page showing the general description of the data set, dataset metadata (such as owner and last update date)...*
@@ -52,7 +67,13 @@ The CITIES Dashboard serves as a data repository for community-wide actions on s
 
 # 2. Description
 
-The CITIES Dashboard is a web application that serves as a data repository and allows us to visualize and analyze data from various NYUAD campus sources. The front-end dashboard is built with React.js and Material UI for React (MUI). React Google Charts is used to visualize the data and the dashboard is currently hosted on Github Pages. For CI/CD , CircleCI is used to run tests and deploy the application to github pages. All references for third-party frameworks can be found at the bottom of this documentation.
+The CITIES Dashboard is built with [React.js](https://react.dev/) and [Material UI](https://mui.com/material-ui/all-components/). It utilizes [Google Charts](https://developers.google.com/chart/interactive/docs/gallery) and [Nivo Charts](https://nivo.rocks/) for generating interactive data visualizations for diverse datasets.
+
+The dashboard also utilizes the [Google Sheets API](https://developers.google.com/sheets/api/reference/rest) to fetch dataset metadata. The documentation for [SheetsDataContext](frontend/src/ContextProviders/README.md) provides more information on how the Google Sheets API is integrated into the dashboard for fetching dataset last update data.
+
+The Sheets API is also used by the dashboard for the raw dataset versioning and download feature. This feature allows users to download various versions of the raw datasets in CSV format. On the frontend, the raw dataset download feature is implemented via the [DatasetDownload](frontend/src/Components/DatasetDownload/README.md) components. The automatic dataset versioning and metadata generation process is detailed in the [datasets](https://github.com/CITIES-Dashboard/datasets) repo.
+
+The application is currently hosted on GitHub Pages. [Section 2.4](#24-deployment-process) explains how the deployment process works for the dashboard.
 
 ## 2.1. React Components, Pages, and Context Providers
 
@@ -276,6 +297,11 @@ Google Sheets parameters:
     }
   ],
   ```
+
+## 2.4 Deployment Process
+
+To deploy changes to the production website ([https://citiesdashboard.com/](https://citiesdashboard.com/)), the [push-to-prod-repo.yml](.github/workflows/push-to-prod-repo.yml) workflow is manually triggered. It transfers the production-ready files from the `main` branch of the [cities-dashboard.github.io](https://github.com/CITIES-Dashboard/cities-dashboard.github.io) development repo to the [citiesdashboard.com](https://github.com/CITIES-Dashboard/citiesdashboard.com) production repo. There, the [deploy-to-gh-pages.yml](https://github.com/CITIES-Dashboard/citiesdashboard.com/blob/main/.github/workflows/deploy-to-gh-pages.yml) workflow is automatically triggered to deploy the changes to the production website on GitHub Pages.
+
 # 3. Build and Test Locally
 
 ## 3.1. Prerequisites
