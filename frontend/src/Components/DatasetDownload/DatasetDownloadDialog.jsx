@@ -71,7 +71,7 @@ export default function DatasetDownloadDialog(props) {
       >
         {(
           smallScreen &&
-          <DialogActions justifyContent="flex-start">
+          <DialogActions sx={{ justifyContent: "start" }}>
             <Button autoFocus onClick={handleClose}>
               <ChevronLeftIcon sx={{ fontSize: '1rem' }} />Back
             </Button>
@@ -170,7 +170,7 @@ const DatasetsTable = (props) => {
       <TableBody>
         {datasets?.map((dataset) => (
           <Dataset
-          key={dataset.id}
+            key={dataset.id}
             smallScreen={smallScreen}
             dataset={dataset}
             previewingDataset={previewingDataset}
