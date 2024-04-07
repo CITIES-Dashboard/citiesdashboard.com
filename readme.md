@@ -33,7 +33,7 @@ as it's embedded iframe for the home tiles and not follow the standard chart lik
   - [2.4 Deployment Process](#24-deployment-process)
 - [3. Build and Test Locally](#3-build-and-test-locally)
   - [3.1. Prerequisites](#31-prerequisites)
-  - [3.2. Install Dependencies](#32-install-dependencies)
+  - [3.2. Install Dependencies and Run the Application](#32-install-dependencies-and-run-the-application)
 
 # 1. Introduction
 
@@ -324,30 +324,30 @@ Finally, as Google Sheets are used as database for the datasets, no separate bac
 - [Node.js](https://nodejs.org/en/download/)
 - [Yarn](https://classic.yarnpkg.com/en/docs/install/#windows-stable)
 
-## 3.2. Install Dependencies
+## 3.2. Install Dependencies and Run the Application
 
-Pull the repository from github.
-Run the following commands in the front end directory of the project.
-Use npm install if you are using npm or yarn install if you are using yarn.
+1. Clone the repository from GitHub.
 
-```
-npm install
-```
+2. Navigate to the `src/frontend` directory of the project and run the following command to install the dependencies:
 
-or
+  ```
+  npm install
+  ```
 
-```
-yarn install
-```
+  or
 
-Run the following command to start the application.
+  ```
+  yarn install
+  ```
 
-```
-npm start
-```
+3. Run the following command to start the application.
 
-or
+  ```
+  npm start
+  ```
 
-```
-yarn start
-```
+  or
+
+  ```
+  yarn start
+  ```
