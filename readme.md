@@ -8,11 +8,11 @@ Section 2. Make a quick sketch on draw.io that can help explain the overall arch
 2.3.2 explain  "chartCounts": 6,
     "embeddedWebsite": "https://citiesair.com/nyuadmap",
     "externalWebsite": "https://citiesair.com/dashboard/nyuad?source=cities-dashboard"
-as it's embedded iframe for the home tiles and not follow the standard chart like the other ones
+as it's embedded iframe for the home tiles and not follow the standard chart like the other ones ✅
 
-2.3.2 add that owner is an array
+2.3.2 add that owner is an array ✅
 
-2.3.2 rawDataTables is only used for dataset fetcher script now, not displayed in the project anymore. Instead, talk more about the new component: DatasetDownload component below
+2.3.2 rawDataTables is only used for dataset fetcher script now, not displayed in the project anymore. Instead, talk more about the new component: DatasetDownload component below ✅
 
 2.3.3 remove react google chart references (btw, do this for everywhere)
 
@@ -29,6 +29,7 @@ as it's embedded iframe for the home tiles and not follow the standard chart lik
   - [2.3. Front-end Database and Google Charts Data Visualization](#23-front-end-database-and-google-charts-data-visualization)
     - [2.3.1. JSON array level](#231-json-array-level)
     - [2.3.2. Data set level](#232-data-set-level)
+      - [Dataset Download Functionality](#dataset-download-functionality)
     - [2.3.3. Chart level](#233-chart-level)
   - [2.4 Deployment Process](#24-deployment-process)
 - [3. Build and Test Locally](#3-build-and-test-locally)
@@ -167,30 +168,35 @@ The current dashboard prototype uses a temporary JSON database on the front-end,
 The JSON file contains an array of object literals, each correspond to a data set or project.
 
 ### 2.3.2. Data set level
-Each data set contains several pairs of keys and values to describe that dataset, below are the most common properties.
+
+Each data set contains several pairs of keys and values to describe the dataset. Below are the most common properties, with modifications and additions highlighted.
 
 *Properties with an asterisk \* are mandatory, omissions of which will result in an error*
 
-- **`"id"`\***: unique identifier of this data set, also used as its end point url for routing. For example: "food-waste" → https://cities-dashboard.github.io/project/food-waste
-- **`"title"`**: title of the data set, to be displayed on the home and project pages
-- **`"sheetId"`\***: the *alphanumeric id* of the Google Sheets database for this data set: https://docs.google.com/spreadsheets/d/[sheetID]/edit#gid=[gid]
-- **`"publishedSheetId"`**: the *alphanumeric id* of a *__published__* Google Sheets database, only used together with **`"chartType":`** `"HeatMap"`
-- **`"description"`**: the description of this data set, to be displayed on its project page
-- **`"owner"`**: the name of the data set's owner
-- **`"ownerContact"`**: email address of the owner
-- **`"rawDataTables"`**: an array of object literal(s), each specify sample data table(s) of this data set. Each object's (raw data table) properties are similar to a chart's properties. However, the **`"chartType"`** property is automatically defaulted to `Table` in the [Project.jsx](./frontend/src/Pages/Project/Project.jsx) file.  
+- **`"id"`\***: Unique identifier of this data set, also used as its endpoint URL for routing. For example: "food-waste" → https://citiesdashboard.com/project/food-waste
+- **`"title"`**: Title of the data set, to be displayed on the home and project pages.
+- **`"sheetId"`\***: The *alphanumeric id* of the Google Sheets database for this data set: https://docs.google.com/spreadsheets/d/[sheetID]/edit#gid=[gid]
+- **`"publishedSheetId"`**: The *alphanumeric id* of a *__published__* Google Sheets database, only used together with **`"chartType"`**: `"HeatMap"`.
+- **`"description"`**: The description of this data set, to be displayed on its project page.
+- **`"owners"`**: An array of the names and/or URLs related to the data set's owner(s).
+- **`"ownerContact"`**: Email address of the owner.
+- **`"chartCounts"`**: Specifies the number of charts associated with the dataset. A value of 6, for example, indicates there are six charts derived from the data set. It is used for the Air Quality project, which has been shifted to [citiesair.com](https://citiesair.com/nyuadmap).
+- **`"embeddedWebsite"`**: URL of an external website embedded as an iframe within the dataset's presentation on the home page. This is not a standard chart but serves as an interactive element. For example, the NYUAD Air Quality project embeds a map from [citiesair.com](https://citiesair.com/nyuadmap).
+- **`"externalWebsite"`**: Direct link to an external dashboard or website related to the dataset. This provides users with an option to explore the dataset in a more comprehensive or interactive manner outside the cities-dashboard environment. For example, the NYUAD Air Quality project links to [citiesair.com](https://citiesair.com/dashboard/nyuad?source=cities-dashboard).
+  
+**Note**: `rawDataTables` is no longer displayed within the project. It is now solely used for the dataset fetcher script to define sample data tables for internal use.
 
-  **Example:**
-  ```
-  "rawDataTables": [
-    {
-      "gid": 195224,
-      "headers": 1,
-      "query": "SELECT A, B, C, D, E, F ORDER BY A DESC LIMIT 10"
-    }
-  ]
-  ```
-- **`"charts"`**: an array of object literal(s), each describing the chart(s) for this data set. If empty, then the data set is greyed out on the home page with a **`"Coming Soon"`** banner.
+#### Dataset Download Functionality
+
+The Dataset Download feature is designed to enhance user engagement by providing direct access to the datasets used by each project. It incorporates several key components to facilitate data access:
+
+- **DatasetCalendar**: Utilizes `dayjs` for date manipulation and Material-UI components to render a calendar interface. This component highlights specific dates to indicate the availability of dataset versions, allowing users to select and download data as of a particular date.
+
+- **DatasetDownloadDialog**: A dialog component that interacts with the user to confirm download actions, present available download options, and display additional metadata about the dataset to be downloaded. It leverages Material-UI for consistent styling and user experience.
+
+- **DatasetFetcher**: This script component manages the retrieval of dataset information, including fetching available versions, metadata, and generating download URLs. It ensures that users have access to the most current and historical data for their needs. The raw datasets are versioned and managed in the [datasets](https://github.com/CITIES-Dashboard/datasets/) repo.
+
+Together, these components create a seamless Dataset Download experience, enabling users to easily access and utilize data for their specific requirements.
 
 ### 2.3.3. Chart level
 - **`"title"`**: the title of the chart, not to be confused with the title of the data set above
