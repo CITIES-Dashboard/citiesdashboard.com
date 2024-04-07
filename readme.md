@@ -1,15 +1,9 @@
-[Last update: March 8 2023 - some parts are not correct anymore, pending revisions]
+**Last Update:** April 2024
 
 ### TODO for documentation
-1. remove introduction, or make it into one-liner. this is a technical documentation, so there's no need for it to be long like now ✅
-1. take new screenshots for things that have changed, use food waste instead of air quality like now (since air quality is already moved to citiesair) ✅
-2. modify Description to make it more reflective of the tech stack currently used. ✅
-   
-   2.0.1 would be great if you can make a quick sketch on draw.io that can help explain the overall architecture of the dashboard better (interplay between frontend and sheet and raw dataset syncer for example) 
+Section 2. Make a quick sketch on draw.io that can help explain the overall architecture of the dashboard better (interplay between frontend and sheet and raw dataset syncer for example) 
 
-2.1 hmaybe remove the ones that are not as important to understand how the frontend works like header and footer? there have been so many additions, so let's leave the spotlights for more important components like the chart and google chart itself
-
-2.2 looking good for the most part, just modify the part where react google chart is mentioned. if you have extra time, try making the texts a bit shorter as well ✅
+2.1 A brief overview of these files and directories that make up the application, and link to their documentation
 
 2.3.2 explain  "chartCounts": 6,
     "embeddedWebsite": "https://citiesair.com/nyuadmap",
@@ -26,13 +20,9 @@ as it's embedded iframe for the home tiles and not follow the standard chart lik
 
 2.3.3 add mentions for control as well, but just shortly
 
-2.4 Detailed the deployment process for the dashboard ✅
-
-# CITIES VISUALIZATION DASHBOARD
-
-- [CITIES VISUALIZATION DASHBOARD](#cities-visualization-dashboard)
+# CITIES DASHBOARD
 - [1. Introduction](#1-introduction)
-- [2. Description](#2-description)
+- [2. General Technical Description](#2-general-technical-description)
   - [2.1. React Components, Pages, and Context Providers](#21-react-components-pages-and-context-providers)
   - [2.2. Google Sheets database](#22-google-sheets-database)
   - [2.3. Front-end Database and Google Charts Data Visualization](#23-front-end-database-and-google-charts-data-visualization)
@@ -43,11 +33,10 @@ as it's embedded iframe for the home tiles and not follow the standard chart lik
 - [3. Build and Test Locally](#3-build-and-test-locally)
   - [3.1. Prerequisites](#31-prerequisites)
   - [3.2. Install Dependencies](#32-install-dependencies)
-- [4. References](#4-references)
 
 # 1. Introduction
 
-The CITIES Dashboard offers interactive data visualizations on various aspects of living at NYU Abu Dhabi. It's prominent features include:
+The CITIES Dashboard offers interactive data visualizations on various aspects of living at NYU Abu Dhabi. Its prominent features include:
 
 ![homepage](/documentation/home-page.png)
 *The Home page of the dashboard where all data sets / projects are displayed*
@@ -65,15 +54,17 @@ The CITIES Dashboard offers interactive data visualizations on various aspects o
 *The About section of the dashboard, detailing CITIES' social network accounts and describing the rationale of the project, together with a Get In Touch form*
 
 
-# 2. Description
+# 2. General Technical Description
 
-The CITIES Dashboard is built with [React.js](https://react.dev/) and [Material UI](https://mui.com/material-ui/all-components/). It utilizes [Google Charts](https://developers.google.com/chart/interactive/docs/gallery) and [Nivo Charts](https://nivo.rocks/) for generating interactive data visualizations for diverse datasets.
+The CITIES Dashboard is built with [React.js](https://react.dev/) and [Material UI](https://mui.com/material-ui/all-components/). It utilizes (mostly) [Google Charts](https://developers.google.com/chart/interactive/docs/gallery) and (sometimes) [Nivo Charts](https://nivo.rocks/) for generating interactive data visualizations for different datasets.
 
-The dashboard also utilizes the [Google Sheets API](https://developers.google.com/sheets/api/reference/rest) to fetch dataset metadata. The documentation for [SheetsDataContext](frontend/src/ContextProviders/README.md) provides more information on how the Google Sheets API is integrated into the dashboard for fetching dataset last update data.
+Google Sheets are used as the database for all datasets, as a lot of departments, such as Dining and Printing, store their data in spreadsheets. This makes the pipeline for data entry and monthly data update much faster and more convenient for non-experts. The Dashboard implements [Google Visualization Query language](https://developers.google.com/chart/interactive/docs/querylanguage) to query chart data from said Google Sheets.
 
-The Sheets API is also used by the dashboard for the raw dataset versioning and download feature. This feature allows users to download various versions of the raw datasets in CSV format. On the frontend, the raw dataset download feature is implemented via the [DatasetDownload](frontend/src/Components/DatasetDownload/README.md) components. The automatic dataset versioning and metadata generation process is detailed in the [datasets](https://github.com/CITIES-Dashboard/datasets) repo.
+At the same time, the dashboard also utilizes the [Google Sheets API](https://developers.google.com/sheets/api/reference/rest) (documentation: [SheetsDataContext](frontend/src/ContextProviders/README.md)) to fetch metadata such as dataset's last update timestamp.
 
-The application is currently hosted on GitHub Pages. [Section 2.4](#24-deployment-process) explains how the deployment process works for the dashboard.
+The Sheets API is also used for the raw dataset versioning (on GitHub) to allow users to download various versions of the raw datasets in CSV files. On the backend, the automatic dataset versioning and metadata generation process is implemented in a separate [GitHub datasets repo](https://github.com/CITIES-Dashboard/datasets). On the frontend, the raw dataset download feature is implemented via the [DatasetDownload](frontend/src/Components/DatasetDownload/README.md) components.
+
+The Dashboard is hosted on GitHub Pages. [Section 2.4](#24-deployment-process) explains how the deployment process works for the dashboard.
 
 ## 2.1. React Components, Pages, and Context Providers
 
@@ -92,21 +83,21 @@ The dashboard utilizes Google Sheets as a database. This is because the raw data
 - May not be technically savvy
 - Do not have an API for automatically interfacing the data
 
-For example, [here](https://docs.google.com/spreadsheets/d/1jQYr20b4c93RmIT4M014YY-qSC-n-qpNMysy6Oz3J6U/edit#gid=2039201290) is the database for Food Waste. It is accessible to the public, but is edit-restricted to university departments (who provide raw data), and project developers who work with the data.
+For example, [here](https://docs.google.com/spreadsheets/d/1jQYr20b4c93RmIT4M014YY-qSC-n-qpNMysy6Oz3J6U/edit#gid=2039201290) is the database for Food Waste. It is publicly view accessible (so no authentication is needed on the Dashboard to fetch the data). However, it is edit restricted to university departments (who provide raw data) and project developers who work with the data.
 
 Using Google Sheets as a database allows the different university departments to update data regularly on a *"sandbox"* sheet (not used to provide data for the actual dashboard). We can then check the data for any invalid input or abnormalities, before copying the new data to *"live"* sheets where the website fetches data from.
 
-  ![google-sheets-sandbox-base](/documentation/google-sheets-raw-data.png)  
+![google-sheets-sandbox-base](/documentation/google-sheets-raw-data.png)  
 
-  ![google-sheets-live-database](/documentation/google-sheets.png)
-  *__Example:__ sandbox raw database (top) vs. live database with further analysis and modifications (bottom)*
+![google-sheets-live-database](/documentation/google-sheets.png)
+*__Example:__ sandbox raw database (top) vs. live database with further analysis and modifications (bottom)*
 
-Google Sheets also allows us to perform preliminary data analysis on the raw data set by adding mulitple pivot tables to multiple sheets in the same document. Moreover, we can quickly make draft charts on Google Sheets itself which look very similar to charts visualized by Google Charts. This speeds up the prototyping process.  
+Google Sheets also allows us to perform data analysis on the raw dataset through pivot tables and filtering techniques. Moreover, we can quickly make draft charts on Google Sheets itself, which look very similar to charts visualized by Google Charts. This speeds up the prototyping process.  
 
-  ![google-sheets-pivot-table](/documentation/google-sheets-pivot-table.png)  
-  *__Example__: A pivot table grouping the food waste by week and a draft of the line chart in the same sheet. This kind of further analysis sheet is hidden by default and can only be seen and edited by the developers, not the public.*
+![google-sheets-pivot-table](/documentation/google-sheets-pivot-table.png)  
+*__Example__: A pivot table grouping the food waste by week and a draft of the line chart in the same sheet. This sheet is hidden by default; it can only be seen and edited by the developers, not the public nor the university departments.*
 
-The data in Google Sheets is fetched and queried using the Google Visualization query language via the `fetchDataFromSheet` function [(more on it here)](frontend/src/Graphs/readme.md). The data can then be used by a Google Chart, or processed further for a Nivo Chart.
+The data in Google Sheets is fetched and queried using the [Google Visualization Query language](https://developers.google.com/chart/interactive/docs/querylanguage) via the `fetchDataFromSheet` function [(more on it here)](frontend/src/Graphs/readme.md). The data can then be used by a Google Chart, or processed further for a Nivo Chart.
 
 ## 2.3. Front-end Database and Google Charts Data Visualization
 The current dashboard prototype uses a temporary JSON database on the front-end, [temp_database.json](./frontend/src/temp_database.json), which contains metadata for the Google Charts data visualization (charts). The data structure of the database is as below:
@@ -296,7 +287,15 @@ Google Sheets parameters:
 
 ## 2.4 Deployment Process
 
-To deploy changes to the production website ([https://citiesdashboard.com/](https://citiesdashboard.com/)), the [push-to-prod-repo.yml](.github/workflows/push-to-prod-repo.yml) workflow is manually triggered. It transfers the production-ready files from the `main` branch of the [cities-dashboard.github.io](https://github.com/CITIES-Dashboard/cities-dashboard.github.io) development repo to the [citiesdashboard.com](https://github.com/CITIES-Dashboard/citiesdashboard.com) production repo. There, the [deploy-to-gh-pages.yml](https://github.com/CITIES-Dashboard/citiesdashboard.com/blob/main/.github/workflows/deploy-to-gh-pages.yml) workflow is automatically triggered to deploy the changes to the production website on GitHub Pages.
+The front-end application is deployed on GitHub, in two separate but linked repositories:
+- [Development repo](https://github.com/CITIES-Dashboard/cities-dashboard.github.io): for the **beta** frontend [website](https://beta.citiesdashboard.com/), redirected from [cities-dashboard.github.io](cities-dashboard.github.io).
+- [Production repo](https://github.com/CITIES-Dashboard/citiesdashboard.com): for the main frontend [website](https://citiesdashboard.com/)
+
+Both of these domains are managed in [name.com](https://www.name.com/).
+
+To deploy changes from this development repo to the production website, the [push-to-prod-repo.yml](.github/workflows/push-to-prod-repo.yml) workflow must be manually triggered. It transfers the production-ready files from the `main` branch of this development repo to the production repo. There, the [deploy-to-gh-pages.yml](https://github.com/CITIES-Dashboard/citiesdashboard.com/blob/main/.github/workflows/deploy-to-gh-pages.yml) workflow is automatically triggered to deploy the changes to the production website on GitHub Pages.
+
+Finally, as Google Sheets are used as database for the datasets, no separate backend is needed. Separately, as mentioned, another GitHub repo ([datasets repo](https://github.com/CITIES-Dashboard/datasets)) is implemented to fetch raw datasets on Google Sheets daily for version controlling.
 
 # 3. Build and Test Locally
 
@@ -332,12 +331,3 @@ or
 ```
 yarn start
 ```
-
-# 4. References
-
-- [React.js](https://reactjs.org/)
-- [CircleCI](https://circleci.com/)
-- [React Google Charts](https://react-google-charts.com/)
-- [React Icons](https://react-icons.github.io/react-icons/)
-- [Material UI](https://material-ui.com/)
-- [Html-React-Parser](https://www.npmjs.com/package/html-react-parser)
