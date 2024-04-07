@@ -9,7 +9,7 @@
 
 2.1 hmaybe remove the ones that are not as important to understand how the frontend works like header and footer? there have been so many additions, so let's leave the spotlights for more important components like the chart and google chart itself
 
-2.2 looking good for the most part, just modify the part where react google chart is mentioned. if you have extra time, try making the texts a bit shorter as well
+2.2 looking good for the most part, just modify the part where react google chart is mentioned. if you have extra time, try making the texts a bit shorter as well ✅
 
 2.3.2 explain  "chartCounts": 6,
     "embeddedWebsite": "https://citiesair.com/nyuadmap",
@@ -88,29 +88,25 @@ The application is currently hosted on GitHub Pages. [Section 2.4](#24-deploymen
 - [LinkContext.js](./frontend/src/ContextProviders/LinkContext.jsx) - The context provider that provides the links to the navigation bar of the dashboard.
 
 ## 2.2. Google Sheets database
-Instead of the typical MERN stack, we use Google Sheets as the back-end database for our project. This is because the raw data set comes from different university departments who:
-- Are not technically savvy
+The dashboard utilizes Google Sheets as a database. This is because the raw datasets for the projects come from different university departments who:
+- May not be technically savvy
 - Do not have an API for automatically interfacing the data
 
-For example, [here](https://docs.google.com/spreadsheets/d/1jQYr20b4c93RmIT4M014YY-qSC-n-qpNMysy6Oz3J6U/edit#gid=2039201290) is the database for Food Waste. This link can also be found in the project's page. It is accessible to the public, but is edit-restricted to developers and university departments.
+For example, [here](https://docs.google.com/spreadsheets/d/1jQYr20b4c93RmIT4M014YY-qSC-n-qpNMysy6Oz3J6U/edit#gid=2039201290) is the database for Food Waste. It is accessible to the public, but is edit-restricted to university departments (who provide raw data), and project developers who work with the data.
 
-Below are some of the benefits of using Google Sheets as the database:
-- It allows the different university departments to update data regularly on a *"sandbox"* sheet (not used to provide data for the actual dashboard). We then quickly check it for syntax or any abnormalities, before copying the new data to the *"live"* sheet where the website fetches data from.
+Using Google Sheets as a database allows the different university departments to update data regularly on a *"sandbox"* sheet (not used to provide data for the actual dashboard). We can then check the data for any invalid input or abnormalities, before copying the new data to *"live"* sheets where the website fetches data from.
 
   ![google-sheets-sandbox-base](/documentation/google-sheets-raw-data.png)  
 
   ![google-sheets-live-database](/documentation/google-sheets.png)
-*__Example:__ sandbox raw database (top) vs. live database with further analysis and modifications (bottom)*
+  *__Example:__ sandbox raw database (top) vs. live database with further analysis and modifications (bottom)*
 
-- It also allows us to perform data analysis on the raw data set by adding mulitple pivot tables to multiple sheets in the same document. Moreover, we can quickly make draft charts on Google Sheets itself which look very similar to charts visualized by Google Charts. This speeds up the prototyping process.  
+Google Sheets also allows us to perform preliminary data analysis on the raw data set by adding mulitple pivot tables to multiple sheets in the same document. Moreover, we can quickly make draft charts on Google Sheets itself which look very similar to charts visualized by Google Charts. This speeds up the prototyping process.  
 
   ![google-sheets-pivot-table](/documentation/google-sheets-pivot-table.png)  
-
   *__Example__: A pivot table grouping the food waste by week and a draft of the line chart in the same sheet. This kind of further analysis sheet is hidden by default and can only be seen and edited by the developers, not the public.*
 
-- Data from the Google Sheets can be fetched and visualized by Google Charts; they are highly compatible. We use React-Google-Charts (v3.0.15) as a thin wrapper for React, see [documentation](https://www.react-google-charts.com/components/chart).
-
-*NOTE: Version 3.0.15 is used because version 4+ produces error when fetching data from a Google Sheets document*
+The data in Google Sheets is fetched and queried using the Google Visualization query language via the `fetchDataFromSheet` function [(more on it here)](frontend/src/Graphs/readme.md). The data can then be used by a Google Chart, or processed further for a Nivo Chart.
 
 ## 2.3. Front-end Database and Google Charts Data Visualization
 The current dashboard prototype uses a temporary JSON database on the front-end, [temp_database.json](./frontend/src/temp_database.json), which contains metadata for the Google Charts data visualization (charts). The data structure of the database is as below:
