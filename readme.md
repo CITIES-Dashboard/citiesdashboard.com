@@ -3,7 +3,7 @@
 ### TODO for documentation
 Section 2. Make a quick sketch on draw.io that can help explain the overall architecture of the dashboard better (interplay between frontend and sheet and raw dataset syncer for example) 
 
-2.1 A brief overview of these files and directories that make up the application, and link to their documentation
+2.1 A brief overview of these files and directories that make up the application, and link to their documentation ✅
 
 2.3.2 explain  "chartCounts": 6,
     "embeddedWebsite": "https://citiesair.com/nyuadmap",
@@ -21,9 +21,10 @@ as it's embedded iframe for the home tiles and not follow the standard chart lik
 2.3.3 add mentions for control as well, but just shortly
 
 # CITIES DASHBOARD
+- [CITIES DASHBOARD](#cities-dashboard)
 - [1. Introduction](#1-introduction)
 - [2. General Technical Description](#2-general-technical-description)
-  - [2.1. React Components, Pages, and Context Providers](#21-react-components-pages-and-context-providers)
+  - [2.1. Main Files and Directories](#21-main-files-and-directories)
   - [2.2. Google Sheets database](#22-google-sheets-database)
   - [2.3. Front-end Database and Google Charts Data Visualization](#23-front-end-database-and-google-charts-data-visualization)
     - [2.3.1. JSON array level](#231-json-array-level)
@@ -66,17 +67,36 @@ The Sheets API is also used for the raw dataset versioning (on GitHub) to allow 
 
 The Dashboard is hosted on GitHub Pages. [Section 2.4](#24-deployment-process) explains how the deployment process works for the dashboard.
 
-## 2.1. React Components, Pages, and Context Providers
+## 2.1. Main Files and Directories
 
-- [App.jsx](./frontend/src/App.jsx) - The main component that renders the dashboard.
-- [Header.jsx](./frontend/src/Components/Header/Header.jsx) - The component that renders the title and the navigation bar.
-- [Footer.jsx](./frontend/src/Components/Header/Footer.jsx) - The component that renders the footer of the dashboard.
-- [Home.jsx](./frontend/src/Pages/Home/Home.jsx) - The component that renders the home page of the dashboard.
-- [About.jsx](./frontend/src/Pages/About/About.jsx) - The component that renders the about page of the dashboard.
-- [Projects.jsx](./frontend/src/Pages/Project/Project.jsx) - The component that renders the individual projects of the dashboard.
-- [404.jsx](./frontend/src/Pages/404.jsx) - The component that renders the 404 page of the dashboard.
-- [DataContext.js](./frontend/src/ContextProviders/DataContext.jsx) - The context provider that provides the data to the home page of the dashboard.
-- [LinkContext.js](./frontend/src/ContextProviders/LinkContext.jsx) - The context provider that provides the links to the navigation bar of the dashboard.
+- `App.jsx` serves as the root component for the dashboard, orchestrating the overall layout, routing, and theme management of the application. It leverages React's ecosystem, including hooks and context, alongside Material-UI for styling and theming. Here's a breakdown of its functionality:
+
+  - **React Router Setup**: Utilizes `BrowserRouter` from `react-router-dom` to map URLs to specific pages such as `Home` and `Project`. A `404` page is also set up to handle unmatched routes. These routes are defined within the `Routes` component, which renders the appropriate page based on the current URL path.
+
+  - **Lazy Loading of Pages**: Uses React's `lazy` and `Suspense` utilities to lazy-load `Home` and `Project` pages, improving load times by splitting the code at designated points and only loading the components when needed.
+
+  - **Theme Management**:
+    - Uses `useState` to maintain `themePreference`, determining whether the app uses a dark or light theme based on user preference or system settings.
+    - `useMemo` is applied to generate a theme object using `createTheme` and `getDesignTokens`, which adapts the theme based on the current `themePreference`.
+    - Custom themes are defined in [`Themes/CustomThemes.jsx`](frontend/src/Themes/CustomThemes.jsx), allowing for a tailored look and feel that aligns with the CITIES Dashboard's aesthetic requirements.
+
+  - **Global Style Adjustments**: Programmatically sets the background color of the `body` element to match the theme, enhancing the visual coherence of the application on devices with landscape orientation.
+
+  - **Context Providers**: Utilizes the `LinkContext` to share state across components, particularly for managing navigation and dynamically updating the UI based on the current page or section. Documentation on the `LinkContext` can be found [here](frontend/src/ContextProviders/README.md).
+
+  - **Main Application Structure**:
+    - Encapsulates the application's main layout within a `Box` component, setting up a flex container that stretches to the viewport's height. This layout includes the `Header`, followed by the main content area (from the specific page based on the current `Route`), with the `Footer` occupying the bottom of the viewport.
+
+  - **Header and Footer**:
+    - The `Header` and `Footer` are rendered using `useMemo` to optimize performance, ensuring that they are only recalculated if specific dependencies change.
+    - These components provide consistent navigation and information architecture across the dashboard, contributing to a cohesive user experience.
+
+- `Components` directory contains reusable components that are used across multiple pages and sections of the dashboard. These components enable functionalities like raw dataset downloading in CSV format, presenting comments under projects, providing navigational aids like Speed Dial Buttons, etc. *For detailed documentation of all components, click [here](frontend/src/Components/README.md)*.
+- `Pages` directory contains the main pages of the dashboard, including the `Home` page, a template `Project` page for each dataset, and a `404` page for undefined routes in the application. The `Routes` defined in [`App.jsx`](frontend/src/App.jsx) correspond to these pages. *For detailed documentation of all pages, click [here](frontend/src/Pages/README.md)*.
+- `Graphs` directory contains the components responsible for rendering data visualizations using Google Charts and Nivo Charts. These components fetch data from Google Sheets, process it, and render the charts on the dashboard. *For detailed documentation of all graph components, click [here](frontend/src/Graphs/README.md)*.
+- `ContextProviders` directory contains the context providers used to manage global state and share data across components. These providers include `LinkContext` for navigation state management and `SheetsDataContext` for fetching metadata from Google Sheets. *For detailed documentation of all context providers, click [here](frontend/src/ContextProviders/README.md)*.
+- `Themes` directory contains the custom themes and color schemes used by the dashboard. *For detailed documentation of all themes, click [here](frontend/src/Themes/README.md)*.
+- `Utils` directory contains utility functions and helper methods used throughout the application. These utilities include an HTML-to-MUI parser, Google Analytics Tracker, etc. *For detailed documentation of all utility functions, click [here](frontend/src/Utils/README.md)*.
 
 ## 2.2. Google Sheets database
 The dashboard utilizes Google Sheets as a database. This is because the raw datasets for the projects come from different university departments who:
