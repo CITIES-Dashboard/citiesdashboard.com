@@ -3,17 +3,6 @@
 ### TODO for documentation
 Section 2. Make a quick sketch on draw.io that can help explain the overall architecture of the dashboard better (interplay between frontend and sheet and raw dataset syncer for example) 
 
-2.1 A brief overview of these files and directories that make up the application, and link to their documentation ✅
-
-2.3.2 explain  "chartCounts": 6,
-    "embeddedWebsite": "https://citiesair.com/nyuadmap",
-    "externalWebsite": "https://citiesair.com/dashboard/nyuad?source=cities-dashboard"
-as it's embedded iframe for the home tiles and not follow the standard chart like the other ones ✅
-
-2.3.2 add that owner is an array ✅
-
-2.3.2 rawDataTables is only used for dataset fetcher script now, not displayed in the project anymore. Instead, talk more about the new component: DatasetDownload component below ✅
-
 2.3.3 remove react google chart references (btw, do this for everywhere)
 
 2.3.3 add the unique parameters for options that are not native to google charts, the one that we gradually added more because of nivo or stack/unstack button... try to be exhaustive here, all the custom parameters we added, perhaps also put a href link to the components that deal with each parameter as well
@@ -28,7 +17,7 @@ as it's embedded iframe for the home tiles and not follow the standard chart lik
   - [2.2. Google Sheets database](#22-google-sheets-database)
   - [2.3. Front-end Database and Google Charts Data Visualization](#23-front-end-database-and-google-charts-data-visualization)
     - [2.3.1. JSON array level](#231-json-array-level)
-    - [2.3.2. Data set level](#232-data-set-level)
+    - [2.3.2. Dataset level](#232-data-set-level)
       - [Dataset Download Functionality](#dataset-download-functionality)
     - [2.3.3. Chart level](#233-chart-level)
   - [2.4 Deployment Process](#24-deployment-process)
@@ -41,10 +30,10 @@ as it's embedded iframe for the home tiles and not follow the standard chart lik
 The CITIES Dashboard offers interactive data visualizations on various aspects of living at NYU Abu Dhabi. Its prominent features include:
 
 ![homepage](/documentation/home-page.png)
-*The Home page of the dashboard where all data sets / projects are displayed*
+*The Home page of the dashboard where all datasets / projects are displayed*
 
 ![project-page](/documentation/project-page.png)
-*The project page showing the general description of the data set, dataset metadata (such as owner and last update date)...*
+*The project page showing the general description of the dataset, dataset metadata (such as owner and last update date)...*
 
 ![project-page-3](/documentation/project-page-3.png)
 *...raw dataset download and version control...*
@@ -124,14 +113,14 @@ The data in Google Sheets is fetched and queried using the [Google Visualization
 The current dashboard prototype uses a temporary JSON database on the front-end, [temp_database.json](./frontend/src/temp_database.json), which contains metadata for the Google Charts data visualization (charts). The data structure of the database is as below:
 ```
 [
-  // Data set 1:
+  // Dataset 1:
   {
-    // Properties of this data set:
+    // Properties of this dataset:
     "datasetProperty1": VALUE_1,
     "datasetProperty2": VALUE_2,
     ...
 
-    // Data visualizations of this data set:
+    // Data visualizations of this dataset:
     "charts": [
       // Chart 1:
       {
@@ -160,31 +149,32 @@ The current dashboard prototype uses a temporary JSON database on the front-end,
     ]
   },
 
-  // Data set n:
+  // Dataset n:
   ...
 ]
 ```
 ### 2.3.1. JSON array level
-The JSON file contains an array of object literals, each correspond to a data set or project.
+The JSON file contains an array of object literals, each correspond to a dataset or project.
 
-### 2.3.2. Data set level
+### 2.3.2. Dataset level
 
-Each data set contains several pairs of keys and values to describe the dataset. Below are the most common properties, with modifications and additions highlighted.
+Each dataset contains several pairs of keys and values to describe the dataset. Below are the most common properties, with modifications and additions highlighted.
 
 *Properties with an asterisk \* are mandatory, omissions of which will result in an error*
 
-- **`"id"`\***: Unique identifier of this data set, also used as its endpoint URL for routing. For example: "food-waste" → https://citiesdashboard.com/project/food-waste
-- **`"title"`**: Title of the data set, to be displayed on the home and project pages.
-- **`"sheetId"`\***: The *alphanumeric id* of the Google Sheets database for this data set: https://docs.google.com/spreadsheets/d/[sheetID]/edit#gid=[gid]
-- **`"publishedSheetId"`**: The *alphanumeric id* of a *__published__* Google Sheets database, only used together with **`"chartType"`**: `"HeatMap"`.
-- **`"description"`**: The description of this data set, to be displayed on its project page.
-- **`"owners"`**: An array of the names and/or URLs related to the data set's owner(s).
+- **`"id"`\***: Unique identifier of this dataset, also used as its endpoint URL for routing. For example: "food-waste" → https://citiesdashboard.com/project/food-waste
+- **`"title"`\***: Title of the dataset, to be displayed on the home and project pages.
+- **`"sheetId"`\***: The *alphanumeric id* of the Google Sheets database for this dataset: https://docs.google.com/spreadsheets/d/[sheetID]/edit#gid=[gid]
+- **`"publishedSheetId"`**: The *alphanumeric id* of a *__published__* Google Sheets database, only used together with **`"chartType"`**: `"GoogleSheetEmbedVisualization"`.
+- **`"description"`**: The description of this dataset, to be displayed on its project page.
+- **`"owner"``\***: A string of the dataset's owner name
 - **`"ownerContact"`**: Email address of the owner.
-- **`"chartCounts"`**: Specifies the number of charts associated with the dataset. A value of 6, for example, indicates there are six charts derived from the data set. It is used for the Air Quality project, which has been shifted to [citiesair.com](https://citiesair.com/nyuadmap).
-- **`"embeddedWebsite"`**: URL of an external website embedded as an iframe within the dataset's presentation on the home page. This is not a standard chart but serves as an interactive element. For example, the NYUAD Air Quality project embeds a map from [citiesair.com](https://citiesair.com/nyuadmap).
-- **`"externalWebsite"`**: Direct link to an external dashboard or website related to the dataset. This provides users with an option to explore the dataset in a more comprehensive or interactive manner outside the cities-dashboard environment. For example, the NYUAD Air Quality project links to [citiesair.com](https://citiesair.com/dashboard/nyuad?source=cities-dashboard).
-  
-**Note**: `rawDataTables` is no longer displayed within the project. It is now solely used for the dataset fetcher script to define sample data tables for internal use.
+- **`"rawDataTables"`\***: Only used for the fetcher script from [datasets repo](https://github.com/CITIES-Dashboard/datasets) for version controlling and raw dataset downloading. It is not used for any visualization on CITIES Dashboard. It is an array of object(s) each containing at least a `"gid"` and an optional `"query"` for the raw dataset, using the [Google Visualization Query language](https://developers.google.com/chart/interactive/docs/querylanguage) to fetch the data.
+
+For projects which are not hosted on CITIES Dashboard but instead an external website (only [Air Quality](https://citiesair.com) project currently), these are the additional parameters:
+- **`"externalWebsite"`\***: Direct link to the external website which hosts the project. For example, the Air Quality project links to [citiesair.com](https://citiesair.com/dashboard/nyuad?source=cities-dashboard).
+- **`"embeddedWebsite"`\***: URL of an external website embedded as an `<iframe>` to represent a visual reference for the externally hosted project on the homepage.
+- **`"chartCounts"`\***: This specifies the number of charts associated with the dataset so that it can be displayed on the tile on the homepage.
 
 #### Dataset Download Functionality
 
@@ -199,12 +189,12 @@ The Dataset Download feature is designed to enhance user engagement by providing
 Together, these components create a seamless Dataset Download experience, enabling users to easily access and utilize data for their specific requirements.
 
 ### 2.3.3. Chart level
-- **`"title"`**: the title of the chart, not to be confused with the title of the data set above
+- **`"title"`**: the title of the chart, not to be confused with the title of the dataset above
 - **`"subtitle"`**: the subtitle of the chart
 
 Google Sheets parameters:
 - **`"gid"`\***: the *numeric id* of the Google Sheets database for the sheet containing the raw data (https://docs.google.com/spreadsheets/d/[sheetID]/edit#gid=[gid])
-- **`"chartType"`\***: the type of the chart. For example: `"ColumnChart"`, `"LineChart"` ... In addition to all the charts supported by [React-Google-Chart](https://www.react-google-charts.com/examples), it can also be `"HeatMap"`. This is a custom-built chart by embedding a color-formatted sheet from Google Sheets for embedding; where `"HeatMap"` is used, **`"publishedSheetId"`** property must also be used.
+- **`"chartType"`\***: the type of the chart, for example: `"ColumnChart"`, `"LineChart"` ... In addition to all the charts supported by [React-Google-Chart](https://www.react-google-charts.com/examples), it can also be `"HeatMap"`. This is a custom-built chart by embedding a color-formatted sheet from Google Sheets for embedding; where `"HeatMap"` is used, **`"publishedSheetId"`** property must also be used. --> @Ritin: fix this. remove react-google-chart reference. HeatMap was changed to GoogleSheetEmbedVisualization. mention which one belongs to nivochart as well. the rest are google charts.
 - **`"headers"`**: the row number of the header in the Google Sheets database
 - **`"query"`**: to query the Google Sheets database and receive a  narrowed-down result of the fetched sheet. It works in a similar way compared to a database query language (MongoDB for example), see full [documentation](https://developers.google.com/chart/interactive/docs/querylanguage).
 - **`"columns"`**: an array of items to specify which column of the fetched Google Sheets database to visualize (after being queried on). If it is omitted, then all the non-empty columns in the Google Sheets will be visualized. Else, it can be used to narrow down the visualized columns or assign special roles to the columns. Each column item can either be:
