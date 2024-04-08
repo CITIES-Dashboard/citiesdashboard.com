@@ -101,26 +101,18 @@ const Project = ({ themePreference }) => {
   // Update the page's title
   useEffect(() => { if (project.title) document.title = `${project.title} | CITIES Dashboard`, [project] });
 
-  // Get the last update date of the project
+  // Update the project's last update date based on dataset versions
   useEffect(() => {
     if (!rawDatasetsMetadata) return;
 
     const projectDatasets = rawDatasetsMetadata[project.id];
     if (!projectDatasets) return;
 
-    console.log(projectDatasets);
+    // Get the latest version of each dataset
+    const datasetVersions = projectDatasets.flatMap(dataset => dataset.versions ? dataset.versions[0].version : [])
 
-    // Go through all the project's datasets and store the first version's date for each dataset
-    let lastUpdate = null;
-    for (const dataset of projectDatasets) {
-      if (!dataset.versions) continue;
-      const firstVersion = dataset.versions[0];
-      if (!firstVersion) continue;
-      console.log(firstVersion)
-      if (!lastUpdate || firstVersion.version > lastUpdate) {
-        lastUpdate = firstVersion.version;
-      }
-    }
+    // Find the latest version
+    const lastUpdate = datasetVersions.length > 0 ? datasetVersions.reduce((a, b) => a > b ? a : b) : null;
 
     setLastUpdate(lastUpdate);
 
