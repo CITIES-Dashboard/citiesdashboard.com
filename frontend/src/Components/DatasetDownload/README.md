@@ -1,26 +1,43 @@
-draft
+# Dataset Download Components
 
-DatasetFetcher.jsx
-fetchDataFromURL
-async function to fetch data from a given url and the known extension of that raw file
-included checks to ensure that the url given indeed points to a file (with an extension)
-supported extension: csv and json
-parse csv and json file and return accordingly
-any other file extension, return as-is
+This directory contains components essential to the Dataset Download functionality within the project. These components work together to provide a user-friendly interface for accessing and downloading different versions of datasets associated with a project.
 
+## Components Overview
 
+### DatasetCalendar.jsx
 
-DatasetDownloadDialog.jsx
-heart and soul of dataset download user interface
-purpose: allows the user to see the raw dataset(s) for a given project, including the possible multiple versions of those datasets, while displaying a preview of the raw datasets themselves
-implementation:
-- use a dialog for uninterrupted user experience
-- dialog has maxWidth of `lg` --> looks like a popup on desktop. on smaller devices: the dialog expands to fullscreen to optimize screen real estate
-- has several nested components (DatasetDownloadDialog, DatasetSelectorAndPreviewer, DatasetsTable...)
-- use metadata from RawDatasetsMetadataContext to fetch the appropriate raw datasets and their versions for a particular project
-- versions of a dataset is always defined as the date in format YYYY-MM-DD. rationale: most dataset only changes infrequently --> its date of modified can be used to denote its version. simple and understandable
-- intially when the dialog is opened for the first time, fetches and displays a preview of the first dataset, with its latest version (in DatasetSelectorAndPreviewer)
-- then, as the user interacts and chooses different datasets and/or different versions of a dataset --> fetched accordingly, with url taken from the RawDatasetsMetadataContext discussed above
-- if a dataset has more than 3 versions, dont list all of the versions out in the dropdown menu. instead, use DatasetCalendar to display a calendar that highlights the date of the dataset that has a distinct version
-- when the user clicks on the download button for a given dataset, use Blob to create a new download link for the fetched dataset --> no need to send the user to the actual raw file url to download it, nor requesting the dataset again
-- saves fetched dataset in memory in the object fetchedDatasets so that switching between different datasets and versions dont require re-fetching, if already been fetched before --> optimize performance and user experience.
+The `DatasetCalendar.jsx` component enriches the dataset download functionality by offering a visual interface for selecting dataset versions based on their modification dates. This component integrates seamlessly with the dataset download dialog, providing a user-friendly method to navigate through different versions of datasets.
+
+**Key Features:**
+
+- **Date Navigation**: Allows users to visually identify and select different versions of a dataset based on dates, highlighted within the calendar.
+- **Material-UI and dayjs**: Built using Material-UI components for consistency and aesthetics, and utilizes the `dayjs` library for efficient date manipulation.
+- **Highlighted Dates**: Dates with available dataset versions are highlighted, offering clear visual cues to users about the available data points.
+- **Adaptive Design**: Responsive to screen size, ensuring a coherent user experience across desktop and mobile devices.
+- **Seamless Integration**: Works in conjunction with `DatasetDownloadDialog` and `DatasetFetcher` to provide a cohesive workflow for dataset preview and download.
+- **Performance Optimization**: By highlighting only the dates with available versions and caching selected dates, it enhances the performance and user experience without redundant fetches.
+
+### DatasetFetcher.jsx
+
+The `DatasetFetcher.jsx` component is responsible for the retrieval of datasets from specified URLs. It is designed to handle different file formats and ensure the data is fetched and parsed correctly for use within the application.
+
+**Key Features:**
+
+- **`fetchDataFromURL`**: An asynchronous function that fetches data from a provided URL. It supports `.csv` and `.json` files, parsing them accordingly.
+- **File Extension Support**: Currently, it handles `.csv` and `.json` extensions, returning the content in a parsed format. Other file types are returned as-is, without parsing.
+- **Error Handling**: Includes checks to verify the URL points to a valid file, enhancing the robustness of the data fetching process.
+
+### DatasetDownloadDialog.jsx
+
+At the heart of the dataset download UI, `DatasetDownloadDialog.jsx` facilitates user interaction with the raw datasets, including versions and previews.
+
+**Key Features:**
+
+- **Dialog Interface**: Utilizes a Material-UI dialog with a `maxWidth` of `lg`, providing a pop-up experience on desktops and a full-screen display on smaller devices.
+- **Nested Components**: Incorporates several nested components for a cohesive experience, including `DatasetSelectorAndPreviewer` and `DatasetsTable`.
+- **Metadata Utilization**: Leverages metadata from `RawDatasetsMetadataContext` to display appropriate datasets and their versions.
+- **Version Handling**: Defines versions based on modification dates (YYYY-MM-DD) for simplicity and clarity.
+- **Initial Display and Interaction**: On initial dialog opening, displays a preview of the latest version of the first dataset, updating as users select different datasets or versions.
+- **DatasetCalendar Integration**: For datasets with more than three versions, a calendar component (`DatasetCalendar`) is used to navigate between versions effectively.
+- **Optimized Downloading**: Implements Blob for direct downloads without needing to redirect users or re-fetch data, enhancing efficiency.
+- **Memory Optimization**: Caches fetched datasets to minimize redundant fetches, improving performance and user experience.
