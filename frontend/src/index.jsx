@@ -8,7 +8,6 @@ import { LinkProvider } from './ContextProviders/LinkContext';
 import { HomePageProvider } from './ContextProviders/HomePageContext';
 import { CommentCountsProvider } from './ContextProviders/CommentCountsContext';
 import { TabProvider } from './ContextProviders/TabContext';
-import { SheetsDataProvider } from './ContextProviders/SheetsDataContext';
 import { RawDatasetsMetadataProvider } from './ContextProviders/RawDatasetsMetadataContext';
 
 ReactDOM.render(
@@ -17,13 +16,11 @@ ReactDOM.render(
       <HomePageProvider>
         <CommentCountsProvider>
           <RawDatasetsMetadataProvider>
-            <SheetsDataProvider>
-              <LinkProvider>
-                <TabProvider>
-                  <App />
-                </TabProvider>
-              </LinkProvider>
-            </SheetsDataProvider>
+            <LinkProvider>
+              <TabProvider>
+                <App />
+              </TabProvider>
+            </LinkProvider>
           </RawDatasetsMetadataProvider>
         </CommentCountsProvider>
       </HomePageProvider>
