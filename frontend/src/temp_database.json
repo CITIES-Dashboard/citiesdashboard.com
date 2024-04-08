@@ -3,9 +3,7 @@
     "isActive": true,
     "id": "air-quality",
     "title": "Air Quality",
-    "owners": [
-      "CITIESair - https://citiesair.com"
-    ],
+    "owner": "CITIESair - https://citiesair.com",
     "chartCounts": 6,
     "embeddedWebsite": "https://citiesair.com/nyuadmap",
     "externalWebsite": "https://citiesair.com/dashboard/nyuad?source=cities-dashboard"
@@ -16,9 +14,7 @@
     "title": "Athletics FABS Membership",
     "description": "This dataset visualizes the number of unique active memberships registered in the Fitness and Athletics Booking system (FABS) by academic year (AY). For FABS, an AY starts from <b>August 1</b> of the first calendar year to <b>July 31</b> of the second calendar year. After <b>July 31</b>, all existing memberships expire and members need to register again for the next AY. FABS members can register for sport classes, reserve lockers, and book and access Athletic facilities.<br><br>While there are 11 original types of FABS accounts, our data visualizations simplify them into <b>four distinct demographic groups</b>. For detailed data of the original 11 types of FABS accounts, you can download the raw dataset. <table><thead><tr><th>Simplified demographic groups</th><th>Original type(s) of FABS accounts</th></tr></thead><tbody><tr><td>Undergraduate students</td><td>Student</td></tr><tr><td>Graduate students and Alumni</td><td>Grad student and Alumni</td></tr><tr><td>Faculty and Staff</td><td>Faculty, Staff, and Family Member</td></tr><tr><td>External and Other</td><td>Community, Contract, External Instructor, Guest, and Others</td></tr></tbody></table>",
     "sheetId": "1mRberQXQI9uHCP_gGXgK8NfjbiA2DdQc-HH1c01eEDk",
-    "owners": [
-      "Department of Athletics"
-    ],
+    "owner": "Department of Athletics",
     "contact": "nyuad.athletics@nyu.edu",
     "rawDataTables": [
       {
@@ -154,9 +150,7 @@
     "title": "Athletic Facilities Check-in",
     "sheetId": "1iomqWbAsG75KBxiXPn76DBVGTes1PUnmB5tA0bgG5Jw",
     "description": "This dataset visualizes the number of check-ins throughout different Athletic facilities on campus, such as the fitness center, women's-only gym, faculty pool, 50m pool, 400m track, and indoor track. This dataset can serve as a proxy for estimating the community's fitness level and physical activity. Temporal data visualizations can help the community avoid peak times in indoor spaces and spread exercises evenly throughout the day or the week.",
-    "owners": [
-      "Department of Athletics"
-    ],
+    "owner": "Department of Athletics",
     "contact": "nyuad.athletics@nyu.edu",
     "rawDataTables": [
       {
@@ -451,9 +445,7 @@
     "title": "Food Waste",
     "sheetId": "1jQYr20b4c93RmIT4M014YY-qSC-n-qpNMysy6Oz3J6U",
     "description": "This dataset visualizes food waste in the East Dining Hall (D2). The amount of food waste is measured by weighing the <i>plate-waste</i> (leftover food from the customers) with calibrated scales operated by the Dining service provider. Past data visualizations, such as the calendar-style monthly food waste counter at the entrance of D2, have brought about awareness among the community. Not being constrained by the crowded space of the Dining Hall, this visualization allows for a more detailed and nuanced break-down of the dataset into timeline, monthly, by-meal statistics.<br><br>The data provided here is the absolute amount of food waste. The number of transactions per meal or the number of customers who eat in D2 at each meal still need to be considered to shed light on the food waste variability over time. We are currently working with the service provider to get this data. In more detail, we aim to collect aggregate, anonymized numbers of transactions to calculate per-transaction waste.",
-    "owners": [
-      "NYUAD Dining"
-    ],
+    "owner": "NYUAD Dining",
     "contact": "nyuad.dining@nyu.edu",
     "rawDataTables": [
       {
@@ -854,9 +846,7 @@
     "title": "Printing & Copying",
     "sheetId": "1O1X73cSXO1lQuiQ1lj7d9QdE3KgdIufFlurmAPeI1ek",
     "description": "This dataset visualizes printing and copying activities at NYUAD. It tracks the usage of black and white (B/W) and color printing data across various paper sizes like A3 and A4, segmented by different user categories. The visualizations offers a detailed breakdown including time trends and user category comparisons.<br><br>While there are 10+ original types of printing accounts, our data visualizations simplify them into <b>four distinct demographic groups</b>. For detailed data of the original types of printing accounts, you can download the raw dataset. <table><thead><tr><th>Simplified groups</th><th>Original types of printing accounts</th></tr></thead><tbody><tr><td>Student</td><td>admitted_student, legacy_student, degree, student_applicant, student on leave, abu_dhabi_smsp</td></tr><tr><td>Faculty and Researcher</td><td>adjunct faculty, faculty, researcher, research_affiliate, retired faculty, visiting_academic_other, visiting_scholar</td></tr><tr><td>Staff</td><td>ad_contingent, ad_employee_of_vendor, administrator, contractor, employee_of_vendor, prospective_employee, security_staff</td></tr><tr><td>Others</td><td>ad_executive_authority, employee_family_member, nyu_building_resident, account_sponsored_retiree, program_affiliate_other, nyu_commercial_tenant, unknown</td></tr></tbody></table>",
-    "owners": [
-      "NYUAD IT"
-    ],
+    "owner": "NYUAD IT",
     "contact": "nyuad.it@nyu.edu",
     "rawDataTables": [
       {
@@ -1332,9 +1322,7 @@
     "title": "Noise Pollution",
     "sheetId": "",
     "description": "",
-    "owners": [
-      "CITIES Research"
-    ],
+    "owner": "CITIES Research",
     "contact": "cities.nyuad@nyu.edu",
     "rawDataTables": [
       {}
@@ -1347,9 +1335,7 @@
     "title": "Weather Data at NYUAD",
     "sheetId": "",
     "description": "",
-    "owners": [
-      "CITIES Research"
-    ],
+    "owner": "CITIES Research",
     "contact": "cities.nyuad@nyu.edu",
     "rawDataTables": [
       {}

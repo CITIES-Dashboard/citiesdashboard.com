@@ -76,7 +76,7 @@ const Project = ({ themePreference }) => {
   useEffect(() => {
     // find the project with the matching id
     const project = data.find((project) => project.id === id);
-    
+
     let chartsTitles = [];
     if (project) {
       setProject({ ...project });
@@ -111,18 +111,13 @@ const Project = ({ themePreference }) => {
               <UppercaseTitle text={project.title} />
 
               <Grid container spacing={1} sx={{ pb: 3, mt: -3 }}>
-                {
-                  project.owners.map((owner, index) => (
-                    <Grid item>
-                      <CustomChip
-                        key={index}
-                        icon={<PersonIcon />}
-                        label={owner}
-                        tooltipTitle="Dataset Owner"
-                      />
-                    </Grid>
-                  ))
-                }
+                <Grid item>
+                  <CustomChip
+                    icon={<PersonIcon />}
+                    label={project.owner}
+                    tooltipTitle="Dataset Owner"
+                  />
+                </Grid>
 
                 <Grid item>
                   <CustomChip

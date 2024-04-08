@@ -33,20 +33,6 @@ export default function DatasetDownloadDialog(props) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  function getOwnerString(owners) {
-    if (!owners || owners.length === 0) {
-      return 'the relevant owners';
-    } else if (owners.length === 1) {
-      return owners[0];
-    } else if (owners.length === 2) {
-      return owners.join(' and ');
-    } else {
-      const lastOwner = owners.pop();
-      const oxfordCommaOwners = owners.join(', ');
-      return `${oxfordCommaOwners}, and ${lastOwner}`;
-    }
-  }
-
   return (
     <>
       <Button
@@ -95,7 +81,7 @@ export default function DatasetDownloadDialog(props) {
           {
             datasets &&
             <Typography variant="caption" sx={{ my: 3, fontStyle: 'italic' }} >
-              This dataset is provided by the CITIES Dashboard with the support of {getOwnerString(project.owners)}. Should you intend to utilize this dataset for your project, research, or publication, we kindly request that you notify us at <Link href='mailto:nyuad.cities@nyu.edu'>nyuad.cities@nyu.edu</Link> to discuss citation requirements.
+              This dataset is provided by the CITIES Dashboard with the support of {project.owner}. Should you intend to utilize this dataset for your project, research, or publication, we kindly request that you notify us at <Link href='mailto:nyuad.cities@nyu.edu'>nyuad.cities@nyu.edu</Link> to discuss citation requirements.
             </Typography>
           }
         </DialogContent>
@@ -170,7 +156,7 @@ const DatasetsTable = (props) => {
       <TableBody>
         {datasets?.map((dataset) => (
           <Dataset
-          key={dataset.id}
+            key={dataset.id}
             smallScreen={smallScreen}
             dataset={dataset}
             previewingDataset={previewingDataset}

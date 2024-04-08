@@ -39,7 +39,7 @@ export function HomePageProvider({ children }) {
         isActive: item.isActive,
         id: item.id,
         title: item.title,
-        owners: item.owners,
+        owner: item.owner,
         chartCounts: item.chartCounts || item.charts?.length,
         chart: returnTeaserChartForHomepage(item),
         embeddedWebsite: item.embeddedWebsite,

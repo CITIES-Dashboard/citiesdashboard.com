@@ -142,7 +142,7 @@ function Home({ themePreference, title }) {
                               pr: 1
                             }}
                           >
-                            {project?.owners?.join(', ')}
+                            {project.owner}
                           </Typography>
                         </Grid>
                         {
