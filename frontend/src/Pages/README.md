@@ -39,8 +39,6 @@ The `Project` component performs several key functions:
 
 - **Displaying Project Overview and Key Information**: The page leverages Material-UI for consistent styling across various components such as `Box`, `Typography`, and `Container`. Each project page has an `<h4>` heading rendered through the [UppercaseTitle](../Components/UppercaseTitle.jsx) component, along with dataset ownership, contact, and last update information presented via custom-styled `Chip` components with tooltips, and a count of charts and comments related to the project. This is followed by a `Typography` component for the project's description, sourced from the `temp_database.json` file, and converted to MUI format using our `replacePlainHTMLWithMuiComponents` utility function.
 
-  *To learn more about how each dataset's last update date is determined using the Sheets API, see the [SheetsDataContext.jsx](../ContextProviders/SheetsDataContext.jsx) file, and its [documentation](../ContextProviders/README.md).*
-
 - **State Management**: The `Project` component employs `useState` to manage the state of the project data (`project`), loading status (`loading`), and tab state for subcharts (`tab`). On Component mount, the project's state is updated with the found project data, triggering a re-render to display the newly loaded project details.
   
 - **Displaying Charts and Subcharts**: Each project may contain multiple charts, detailed in the project data under the `charts` array. The component maps over this array to render a `ChartComponent` for each chart, passing relevant data props, including chart details and the parent project's `sheetId` for data fetching.

@@ -17,7 +17,7 @@ Section 2. Make a quick sketch on draw.io that can help explain the overall arch
   - [2.2. Google Sheets database](#22-google-sheets-database)
   - [2.3. Front-end Database and Google Charts Data Visualization](#23-front-end-database-and-google-charts-data-visualization)
     - [2.3.1. JSON array level](#231-json-array-level)
-    - [2.3.2. Dataset level](#232-data-set-level)
+    - [2.3.2. Dataset level](#232-dataset-level)
       - [Dataset Download Functionality](#dataset-download-functionality)
     - [2.3.3. Chart level](#233-chart-level)
   - [2.4 Deployment Process](#24-deployment-process)
@@ -51,8 +51,6 @@ The CITIES Dashboard is built with [React.js](https://react.dev/) and [Material 
 
 Google Sheets are used as the database for all datasets, as a lot of departments, such as Dining and Printing, store their data in spreadsheets. This makes the pipeline for data entry and monthly data update much faster and more convenient for non-experts. The Dashboard implements [Google Visualization Query language](https://developers.google.com/chart/interactive/docs/querylanguage) to query chart data from said Google Sheets.
 
-At the same time, the dashboard also utilizes the [Google Sheets API](https://developers.google.com/sheets/api/reference/rest) (documentation: [SheetsDataContext](frontend/src/ContextProviders/README.md)) to fetch metadata such as dataset's last update timestamp.
-
 The Sheets API is also used for the raw dataset versioning (on GitHub) to allow users to download various versions of the raw datasets in CSV files. On the backend, the automatic dataset versioning and metadata generation process is implemented in a separate [GitHub datasets repo](https://github.com/CITIES-Dashboard/datasets). On the frontend, the raw dataset download feature is implemented via the [DatasetDownload](frontend/src/Components/DatasetDownload/README.md) components.
 
 The Dashboard is hosted on GitHub Pages. [Section 2.4](#24-deployment-process) explains how the deployment process works for the dashboard.
@@ -84,7 +82,7 @@ The Dashboard is hosted on GitHub Pages. [Section 2.4](#24-deployment-process) e
 - `Components` directory contains reusable components that are used across multiple pages and sections of the dashboard. These components enable functionalities like raw dataset downloading in CSV format, presenting comments under projects, providing navigational aids like Speed Dial Buttons, etc. *For detailed documentation of all components, click [here](frontend/src/Components/README.md)*.
 - `Pages` directory contains the main pages of the dashboard, including the `Home` page, a template `Project` page for each dataset, and a `404` page for undefined routes in the application. The `Routes` defined in [`App.jsx`](frontend/src/App.jsx) correspond to these pages. *For detailed documentation of all pages, click [here](frontend/src/Pages/README.md)*.
 - `Graphs` directory contains the components responsible for rendering data visualizations using Google Charts and Nivo Charts. These components fetch data from Google Sheets, process it, and render the charts on the dashboard. *For detailed documentation of all graph components, click [here](frontend/src/Graphs/README.md)*.
-- `ContextProviders` directory contains the context providers used to manage global state and share data across components. These providers include `LinkContext` for navigation state management and `SheetsDataContext` for fetching metadata from Google Sheets. *For detailed documentation of all context providers, click [here](frontend/src/ContextProviders/README.md)*.
+- `ContextProviders` directory contains the context providers used to manage global state and share data across components. These providers include `LinkContext` for navigation state management and `TabContext` for managing the current subchart tab. *For detailed documentation of all context providers, click [here](frontend/src/ContextProviders/README.md)*.
 - `Themes` directory contains the custom themes and color schemes used by the dashboard. *For detailed documentation of all themes, click [here](frontend/src/Themes/README.md)*.
 - `Utils` directory contains utility functions and helper methods used throughout the application. These utilities include an HTML-to-MUI parser, Google Analytics Tracker, etc. *For detailed documentation of all utility functions, click [here](frontend/src/Utils/README.md)*.
 
