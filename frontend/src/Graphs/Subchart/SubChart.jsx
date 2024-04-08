@@ -685,6 +685,7 @@ function SubChart(props) {
       position="relative"
       height="100%"
       minHeight={chartData.chartType === 'Calendar' && '200px'}
+      overflow={isHomepage ? 'hidden' : 'visible'}
     >
       {/* Conditionally display loading animation here */}
       {isFirstRender && (
