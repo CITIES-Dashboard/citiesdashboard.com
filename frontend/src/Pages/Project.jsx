@@ -34,7 +34,7 @@ import * as Tracking from '../Utils/Tracking';
 
 import { CommentCountsContext } from '../ContextProviders/CommentCountsContext';
 
-import { SheetsDataContext } from '../ContextProviders/SheetsDataContext';
+import { RawDatasetsMetadataContext } from '../ContextProviders/RawDatasetsMetadataContext';
 
 // Might be used in the future to display a customized table instead of the regular ChartComponent
 // import ChartSubstituteComponentLoader from '../../Graphs/ChartSubstituteComponents/ChartSubstituteComponentLoader';
@@ -66,8 +66,8 @@ const Project = ({ themePreference }) => {
   const [commentCounts] = useContext(CommentCountsContext);
   const commentCount = commentCounts[project.id];
 
-  const [sheetsData] = useContext(SheetsDataContext);
-  const lastUpdate = sheetsData[project.id];
+  const rawDatasetsMetadata = useContext(RawDatasetsMetadataContext);
+  const [lastUpdate, setLastUpdate] = useState(null);
 
   const theme = useTheme();
 
@@ -100,6 +100,31 @@ const Project = ({ themePreference }) => {
 
   // Update the page's title
   useEffect(() => { if (project.title) document.title = `${project.title} | CITIES Dashboard`, [project] });
+
+  // Get the last update date of the project
+  useEffect(() => {
+    if (!rawDatasetsMetadata) return;
+
+    const projectDatasets = rawDatasetsMetadata[project.id];
+    if (!projectDatasets) return;
+
+    console.log(projectDatasets);
+
+    // Go through all the project's datasets and store the first version's date for each dataset
+    let lastUpdate = null;
+    for (const dataset of projectDatasets) {
+      if (!dataset.versions) continue;
+      const firstVersion = dataset.versions[0];
+      if (!firstVersion) continue;
+      console.log(firstVersion)
+      if (!lastUpdate || firstVersion.version > lastUpdate) {
+        lastUpdate = firstVersion.version;
+      }
+    }
+
+    setLastUpdate(lastUpdate);
+
+  }, [rawDatasetsMetadata, project.id]);
 
   return (
     <>
