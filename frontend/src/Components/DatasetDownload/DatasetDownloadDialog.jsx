@@ -57,7 +57,7 @@ export default function DatasetDownloadDialog(props) {
       >
         {(
           smallScreen &&
-          <DialogActions justifyContent="flex-start">
+          <DialogActions sx={{ justifyContent: "start" }}>
             <Button autoFocus onClick={handleClose}>
               <ChevronLeftIcon sx={{ fontSize: '1rem' }} />Back
             </Button>
