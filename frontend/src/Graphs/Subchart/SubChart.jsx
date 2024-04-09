@@ -562,7 +562,7 @@ function SubChart(props) {
       sx={{
         height: `calc(${height} / 8)`,
         mt: 1,
-        opacity: 0.8,
+        opacity: chartControl?.controlType === 'ChartRangeFilter' ? 0.8 : 1,
         filter: 'saturate(0.3)'
       }}
       // Disable tooltip on click or drag

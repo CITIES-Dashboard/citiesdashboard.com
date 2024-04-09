@@ -35,6 +35,25 @@ const GoogleChartStyleWrapper = styled(Box)(({ theme, isPortrait }) => ({
     backgroundColor: `${theme.palette.primary} !important`
   },
 
+  '& .goog-combobox > input, .goog-combobox > span': {
+    backgroundColor: `${theme.palette.background.paper} !important`,
+    color: `${theme.palette.text.secondary} !important`,
+
+    paddingTop: theme.spacing(0.5),
+    paddingBottom: theme.spacing(0.5),
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+
+    border: 'solid',
+    borderWidth: '0.5px',
+    borderRadius: theme.spacing(0.5),
+    borderColor: theme.palette.text.secondary,
+  },
+
+  '& .goog-combobox > span': {
+    border: 'unset !important',
+  },
+
   // CategoryFilter
   '& .google-visualization-controls-categoryfilter': {
     fontSize: '0.85rem',
