@@ -19,7 +19,7 @@ import LoadingAnimation from './Components/LoadingAnimation';
 
 import { LinkContext } from './ContextProviders/LinkContext';
 import jsonData from './section_data.json';
-import SpeedDialButton from './Components/SpeedDialButton';
+import SpeedDialButton from './Components/SpeedDial/SpeedDialButton';
 
 // Lazy load pages
 const Home = lazy(() => import('./Pages/Home/Home'));
