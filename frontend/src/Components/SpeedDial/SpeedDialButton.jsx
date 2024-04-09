@@ -9,12 +9,11 @@ import NorthIcon from '@mui/icons-material/North';
 
 import HoverMenu from 'material-ui-popup-state/HoverMenu';
 import PopupState, { bindHover, bindFocus, bindMenu } from 'material-ui-popup-state';
-import MenuItemAsNavLink, { StyledMenuItem, scrollToSection } from './Header/MenuItemAsNavLink';
-import NavLinkBehavior from './Header/NavLinkBehavior';
-import * as Tracking from '../Utils/Tracking';
-import { FadeInButtonForSpeedDial } from './FadeInButtonForSpeedDial';
-
-import jsonData from '../section_data.json';
+import MenuItemAsNavLink, { StyledMenuItem, scrollToSection } from '../Header/MenuItemAsNavLink';
+import NavLinkBehavior from '../Header/NavLinkBehavior';
+import * as Tracking from '../../Utils/Tracking';
+import FadeInButtonForSpeedDial from './FadeInButtonForSpeedDial';
+import jsonData from '../../section_data.json';
 
 function HoverFocusMenu(props) {
   const { popupId, label, menuItems } = props;
