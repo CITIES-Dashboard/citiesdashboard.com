@@ -57,7 +57,7 @@ function ChartComponent({ chartData: passedChartData, chartHeight: passedChartHe
   let chartData = passedChartData;
 
   // use tab context
-  const [_, setTab] = useContext(TabContext);
+  const { setTab } = useContext(TabContext);
 
   // Props for tab panels (multiple data visualizations in the same chart area,
   // navigate with tab panels)

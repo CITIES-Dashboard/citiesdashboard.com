@@ -9,6 +9,7 @@ import { HomePageProvider } from './ContextProviders/HomePageContext';
 import { CommentCountsProvider } from './ContextProviders/CommentCountsContext';
 import { TabProvider } from './ContextProviders/TabContext';
 import { RawDatasetsMetadataProvider } from './ContextProviders/RawDatasetsMetadataContext';
+import { PreferenceProvider } from './ContextProviders/PreferenceContext';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -18,7 +19,9 @@ ReactDOM.render(
           <RawDatasetsMetadataProvider>
             <LinkProvider>
               <TabProvider>
-                <App />
+                <PreferenceProvider>
+                  <App />
+                </PreferenceProvider>
               </TabProvider>
             </LinkProvider>
           </RawDatasetsMetadataProvider>
