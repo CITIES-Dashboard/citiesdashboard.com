@@ -3,11 +3,11 @@
 ### TODO for documentation
 Section 2. Make a quick sketch on draw.io that can help explain the overall architecture of the dashboard better (interplay between frontend and sheet and raw dataset syncer for example) 
 
-2.3.3 remove react google chart references (btw, do this for everywhere)
+2.3.3 remove react google chart references (btw, do this for everywhere) ✅
 
-2.3.3 add the unique parameters for options that are not native to google charts, the one that we gradually added more because of nivo or stack/unstack button... try to be exhaustive here, all the custom parameters we added, perhaps also put a href link to the components that deal with each parameter as well
+2.3.3 add the unique parameters for options that are not native to google charts, the one that we gradually added more because of nivo or stack/unstack button... try to be exhaustive here, all the custom parameters we added, perhaps also put a href link to the components that deal with each parameter as well ✅
 
-2.3.3 add mentions for control as well, but just shortly
+2.3.3 add mentions for control as well, but just shortly ✅
 
 # CITIES DASHBOARD
 - [CITIES DASHBOARD](#cities-dashboard)
@@ -189,12 +189,10 @@ Together, these components create a seamless Dataset Download experience, enabli
 ### 2.3.3. Chart level
 - **`"title"`**: the title of the chart, not to be confused with the title of the dataset above
 - **`"subtitle"`**: the subtitle of the chart
-
-Google Sheets parameters:
 - **`"gid"`\***: the *numeric id* of the Google Sheets database for the sheet containing the raw data (https://docs.google.com/spreadsheets/d/[sheetID]/edit#gid=[gid])
-- **`"chartType"`\***: the type of the chart, for example: `"ColumnChart"`, `"LineChart"` ... In addition to all the charts supported by [React-Google-Chart](https://www.react-google-charts.com/examples), it can also be `"HeatMap"`. This is a custom-built chart by embedding a color-formatted sheet from Google Sheets for embedding; where `"HeatMap"` is used, **`"publishedSheetId"`** property must also be used. --> @Ritin: fix this. remove react-google-chart reference. HeatMap was changed to GoogleSheetEmbedVisualization. mention which one belongs to nivochart as well. the rest are google charts.
+- **`"chartType"`\***: the type of the chart, for example: `"ColumnChart"`, `"LineChart"`, etc. The application currently supports all visualizations from [Google Charts](https://developers.google.com/chart/interactive/docs/gallery). However, [Nivo Charts](https://nivo.rocks/components/) is used for the `Calendar` chart due to its vastly better performance. `HeatMap` is another visualization imported from Nivo Charts since it is not natively supported by Google Charts. Some visualizations, such as the last two charts in the [Athletics Facilities Check-In](https://citiesdashboard.com/project/athletic-facilities-check-in) page utilize the `GoogleSheetEmbedVisualization`. This is a custom-built chart by embedding a color-formatted sheet from Google Sheets for embedding. While using `GoogleSheetEmbedVisualization`, the **`"publishedSheetId"`** property must also be used.
 - **`"headers"`**: the row number of the header in the Google Sheets database
-- **`"query"`**: to query the Google Sheets database and receive a  narrowed-down result of the fetched sheet. It works in a similar way compared to a database query language (MongoDB for example), see full [documentation](https://developers.google.com/chart/interactive/docs/querylanguage).
+- **`"query"`**: to query the Google Sheets database and receive a  narrowed-down result of the fetched sheet. It utilizes the Google Visualization API Query Language. It works in a similar way compared to a database query language (MongoDB for example), see full [documentation](https://developers.google.com/chart/interactive/docs/querylanguage).
 - **`"columns"`**: an array of items to specify which column of the fetched Google Sheets database to visualize (after being queried on). If it is omitted, then all the non-empty columns in the Google Sheets will be visualized. Else, it can be used to narrow down the visualized columns or assign special roles to the columns. Each column item can either be:
   - *An integer:* used for a normal data column. It should be the index of the column. For example:
     - By default if no query is used, the columns A, B, C... in a Google Sheets correspond to indexes 0, 1, 2...
@@ -224,7 +222,7 @@ Google Sheets parameters:
     }
   ]
   ```
-- **`"options"`**: an object literal corresponds to the `options` parameter of stock Google Charts, see [documentation](https://developers.google.com/chart/interactive/docs/customizing_charts). Anything that works there should also work here. It is used to customized the appearance of the chart, for example, adjusting the `width` or the `vAxis`. 
+- **`"options"`**: an object literal corresponds to the `options` parameter of stock Google Charts, see [documentation](https://developers.google.com/chart/interactive/docs/customizing_charts). It is used to customized the appearance of the chart, for example, adjusting the `width` or the `vAxis`. 
 
   **Example:**
   ```
@@ -232,6 +230,34 @@ Google Sheets parameters:
     "isStacked": true,
     "vAxis": {
       "format": "#.##%"
+    }
+  }
+  ```
+
+  **Extra Options Not Natively Used by Google Charts**:  
+  The application has added some extra options that are not natively supported by Google Charts, but are instead used by Nivo Charts or to implement custom functionalities such as the series selector and the stack/unstack bars button. These are:
+  - **`"seriesSelector"`**: Used to enable the series selector for the chart. It has the following sub-properties:
+    - **`"allowMultiple"`**: A boolean value to allow multiple series to be selected at once.
+    - **`method`**: A string value to specify the method used by the series selector to show / hide series. More details can be found in the [SeriesSelector's documentation here](/frontend/src/Graphs/Subchart/README.md)
+  - **`"toggleStackedBars"`**: Used to enable the button to toggle between stacked and unstacked bars.
+  - **`"colorAxis"`**: Used to create gradient legends for [Nivo Calendar Charts](/frontend/src/Graphs/Subchart/NivoCharts/NivoCalendarChart.jsx).
+  - **`"nivoHeatMap"`**: Used to set the options for Nivo HeatMap charts. Details and editable examples can be found [here](https://nivo.rocks/heatmap/).
+
+- **`"control"`**: an object literal to specify the Google Chart Controls used by the chart. The controls enable users to interact with the graphs by selecting specific time ranges, categories, or other parameters. The control object has the following properties:
+  - **`"controlType"`**: the type of control to be used. Currently, the application uses the following control types:
+    - **`"ChartRangeFilter"`**: A control that enables users to filter data based on a specific date range.
+    - **`"CategoryFilter"`**: A control that enables users to filter data based on specific categories.
+  - **`"controlOptions"`**: an object literal containing the options for the control. The available options depend on the control type and are used to customize the control's appearance and behavior. Options for each control type are detailed [here](https://developers.google.com/chart/interactive/docs/gallery/controls).
+
+  **Example:**
+  ```
+  "control": {
+  "controlType": "ChartRangeFilter",
+  "options": {
+    "filterColumnIndex": 0,
+    "ui": {
+      "minRangeSize": 31536000000
+      }
     }
   }
   ```
