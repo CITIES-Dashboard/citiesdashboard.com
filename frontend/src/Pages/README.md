@@ -29,7 +29,7 @@ This page dynamically generates content based on the project selected by the use
 // Route for the project page, with the project ID as a parameter
 <Route
   path="/project/:id"
-  element={<Project themePreference={themePreference} />}
+  element={<Project />}
 />
 ```
 

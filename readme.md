@@ -1,7 +1,7 @@
 **Last Update:** April 2024
 
 ### TODO for documentation
-Section 2. Make a quick sketch on draw.io that can help explain the overall architecture of the dashboard better (interplay between frontend and sheet and raw dataset syncer for example) 
+Section 2. Make a quick sketch on draw.io that can help explain the overall architecture of the dashboard better (interplay between frontend and sheet and raw dataset syncer for example) ✅ 
 
 2.3.3 remove react google chart references (btw, do this for everywhere) ✅
 
@@ -64,7 +64,7 @@ The Dashboard is hosted on GitHub Pages. [Section 2.4](#24-deployment-process) e
   - **Lazy Loading of Pages**: Uses React's `lazy` and `Suspense` utilities to lazy-load `Home` and `Project` pages, improving load times by splitting the code at designated points and only loading the components when needed.
 
   - **Theme Management**:
-    - Uses `useState` to maintain `themePreference`, determining whether the app uses a dark or light theme based on user preference or system settings.
+    - Uses [PreferenceContext](frontend/src/ContextProviders/PreferenceContext.jsx) to get user theme preference, determining whether the app uses a dark or light theme based on user preference or system settings.
     - `useMemo` is applied to generate a theme object using `createTheme` and `getDesignTokens`, which adapts the theme based on the current `themePreference`.
     - Custom themes are defined in [`Themes/CustomThemes.jsx`](frontend/src/Themes/CustomThemes.jsx), allowing for a tailored look and feel that aligns with the CITIES Dashboard's aesthetic requirements.
 

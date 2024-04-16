@@ -8,6 +8,8 @@
 
 [LinkContext](./LinkContext.jsx): Manages the state and behavior of links within the application to keep track of the current page's location and a list of all the charts' title of a given project.
 
+[PreferenceContext](./PreferenceContext.jsx): Sets user theme preference based on localStorage or system preference, and ensures that theme preferences are stored and shared across the application.
+
 [RawDatasetsMetadataContext](./RawDatasetsMetadataContext.jsx): Offers an application-wide access point for accessing dataset metadata from the [`datasets`](https://github.com/CITIES-Dashboard/datasets) repo, facilitating efficient data fetching, caching, and sharing of dataset details across project pages.
 
 [SheetsDataContext](./SheetsDataContext.jsx) [DEPRECATED]: Provides access to the Google Sheets API, ensuring seamless integration and uniform access to spreadsheet data throughout the application. Supports accessing sheets metadata (to fetch the last update data of a project) and other services. **Deprecated** in favor of fetching the last update data from the [`datasets_metadata.json`](https://github.com/CITIES-Dashboard/datasets/blob/main/datasets_metadata.json) file from the datasets repo.
