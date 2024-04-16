@@ -6,7 +6,7 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import CommentIcon from '@mui/icons-material/Comment';
 import LaunchIcon from '@mui/icons-material/Launch';
 import { LinkContext } from '../../ContextProviders/LinkContext';
-import { DataContext } from '../../ContextProviders/HomePageContext';
+import { HomeDataContext } from '../../ContextProviders/HomePageContext';
 import { CommentCountsContext } from '../../ContextProviders/CommentCountsContext';
 
 import UppercaseTitle from '../../Components/UppercaseTitle';
@@ -19,18 +19,18 @@ import GetInTouch from './GetInTouch';
 import jsonData from '../../section_data.json';
 
 import * as Tracking from '../../Utils/Tracking';
+import { PreferenceContext } from '../../ContextProviders/PreferenceContext';
 
-function Home({ themePreference, title }) {
+function Home({ title }) {
+  const { themePreference } = useContext(PreferenceContext);
+  const { setCurrentPage, setChartsTitlesList } = useContext(LinkContext);
+  const { homeData } = useContext(HomeDataContext);
+  const commentCounts = useContext(CommentCountsContext);
+
   // Update the page's title
   useEffect(() => {
     document.title = title;
   }, [title]);
-
-  // useState for home page data
-  // eslint-disable-next-line no-unused-vars
-  const [_, setCurrentPage, __, setChartsTitlesList] = useContext(LinkContext);
-  const [homeData] = useContext(DataContext);
-  const [commentCounts] = useContext(CommentCountsContext);
 
   // set underline link to home
   useEffect(() => {

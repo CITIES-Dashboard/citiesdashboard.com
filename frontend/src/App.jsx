@@ -20,6 +20,7 @@ import LoadingAnimation from './Components/LoadingAnimation';
 import { LinkContext } from './ContextProviders/LinkContext';
 import jsonData from './section_data.json';
 import SpeedDialButton from './Components/SpeedDial/SpeedDialButton';
+import { PreferenceContext } from './ContextProviders/PreferenceContext';
 
 // Lazy load pages
 const Home = lazy(() => import('./Pages/Home/Home'));
@@ -44,12 +45,8 @@ const getDesignTokens = (themePreference) => ({
 });
 
 function App() {
-  // Set theme preference state based on localStorage or system preference
-  const [themePreference, setThemePreference] = useState(
-    localStorage.getItem('theme')
-    || (window.matchMedia('(prefers-color-scheme: dark)').matches
-      ? ThemePreferences.dark : ThemePreferences.light)
-  );
+  const { themePreference } = useContext(PreferenceContext);
+  const { chartsTitlesList } = useContext(LinkContext);
 
   // Create theme using getDesignTokens
   const theme = useMemo(
@@ -60,9 +57,6 @@ function App() {
   // set backgroundColor of 'body' element depending on theme.
   // this is to set bg-color of left/right padding on landscape iOS devices
   document.body.style.background = theme.palette.customAlternateBackground;
-
-  // eslint-disable-next-line no-unused-vars
-  const [currentPage, _, chartsTitlesList, __] = useContext(LinkContext);
 
   return (
     <BrowserRouter basename="/">
@@ -85,7 +79,7 @@ function App() {
 
           {useMemo(
             () => (
-              <Header setThemePreference={setThemePreference} />
+              <Header />
             ),
             []
           )}
@@ -94,11 +88,11 @@ function App() {
               <Routes>
                 <Route
                   path="/"
-                  element={<Home themePreference={themePreference} title="CITIES Dashboard" />}
+                  element={<Home title="CITIES Dashboard" />}
                 />
                 <Route
                   path="/project/:id"
-                  element={<Project themePreference={themePreference} />}
+                  element={<Project />}
                 />
                 <Route path="/404" element={<FourOhFour title="Page Not Found | CITIES Dashboard" />} />
                 <Route path="*" element={<Navigate replace to="/404" />} />

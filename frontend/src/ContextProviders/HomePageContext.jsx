@@ -6,12 +6,12 @@ import ChartComponent from '../Graphs/ChartComponent';
 import JSONData from '../temp_database.json';
 
 // create context
-export const DataContext = createContext();
+export const HomeDataContext = createContext();
 
 // context provider
 export function HomePageProvider({ children }) {
   // state to store data
-  const [data, setData] = useState({});
+  const [homeData, setHomeData] = useState({});
 
   const returnTeaserChartForHomepage = (item) => {
     if (!item.embeddedWebsite) {
@@ -32,10 +32,10 @@ export function HomePageProvider({ children }) {
   };
 
   useEffect(() => {
-    const homeData = {};
+    const data = {};
     // loop through temp_database.json
     JSONData.forEach((item) => {
-      homeData[item.id] = {
+      data[item.id] = {
         isActive: item.isActive,
         id: item.id,
         title: item.title,
@@ -46,18 +46,18 @@ export function HomePageProvider({ children }) {
         externalWebsite: item.externalWebsite
       };
 
-      setData(homeData);
+      setHomeData(data);
     });
   }, []);
 
   // Memoize the value to be provided to avoid unnecessary re-renders
-  const providerValue = useMemo(() => [data, setData], [data]);
+  const providerValue = useMemo(() => ({ homeData, setHomeData }), [homeData]);
 
   // return context provider
   return (
-    <DataContext.Provider value={providerValue}>
+    <HomeDataContext.Provider value={providerValue}>
       {children}
-    </DataContext.Provider>
+    </HomeDataContext.Provider>
   );
 }
 

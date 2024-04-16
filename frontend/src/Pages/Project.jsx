@@ -40,6 +40,7 @@ import { RawDatasetsMetadataContext } from '../ContextProviders/RawDatasetsMetad
 // import ChartSubstituteComponentLoader from '../../Graphs/ChartSubstituteComponents/ChartSubstituteComponentLoader';
 
 import CollapsibleSubtitle from '../Components/CollapsibleSubtitle';
+import { PreferenceContext } from '../ContextProviders/PreferenceContext';
 
 // Custom Chip component to display metadata
 const CustomChip = (props) => {
@@ -54,17 +55,18 @@ const CustomChip = (props) => {
   );
 }
 
-const Project = ({ themePreference }) => {
-  const [_, setCurrentPage, chartsTitlesList, setChartsTitlesList] = useContext(LinkContext);
+const Project = () => {
+  const { themePreference } = useContext(PreferenceContext);
+  const { setCurrentPage, chartsTitlesList, setChartsTitlesList } = useContext(LinkContext);
+  const { tab, setTab } = useContext(TabContext);
 
   const { id } = useParams();
   const [project, setProject] = useState({});
   const [loading, setLoading] = useState(false);
-  const [tab, setTab] = useContext(TabContext);
   const navigate = useNavigate();
 
-  const [commentCounts] = useContext(CommentCountsContext);
-  const commentCount = commentCounts[project.id];
+  const commentCounts = useContext(CommentCountsContext);
+  const thisProjectCommentCount = commentCounts[project.id];
 
   const rawDatasetsMetadata = useContext(RawDatasetsMetadataContext);
   const [lastUpdate, setLastUpdate] = useState(null);
@@ -174,11 +176,11 @@ const Project = ({ themePreference }) => {
                   </Grid>
                 }
 
-                {commentCount != null &&
+                {thisProjectCommentCount != null &&
                   <Grid item>
                     <CustomChip
                       icon={<CommentIcon />}
-                      label={`${commentCount} Comment${commentCount > 1 ? "s" : ""}`}
+                      label={`${thisProjectCommentCount} Comment${thisProjectCommentCount > 1 ? "s" : ""}`}
                       tooltipTitle="Number of Comments"
                       onClick={() => {
                         scrollToSection(jsonData.commentSection.id);

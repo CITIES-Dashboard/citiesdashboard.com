@@ -16,6 +16,7 @@ import ThemeSelector from './ThemeSelector';
 import jsonData from '../../section_data.json';
 import { replacePlainHTMLWithMuiComponents } from '../../Utils/Utils';
 import CITIESlogoLinkToHome from './CITIESlogoLinkToHome';
+import { PreferenceContext } from '../../ContextProviders/PreferenceContext';
 
 export const showInMobile = (defaultDisplay) => ({ display: { xs: (defaultDisplay || 'block'), lg: 'none' } });
 export const showInDesktop = (defaultDisplay) => ({ display: { xs: 'none', lg: (defaultDisplay || 'block') } });
@@ -38,11 +39,9 @@ const StyledDrawer = styled(Drawer)(({ theme }) => ({
   }
 }));
 
-export default function Header(props) {
-  const { setThemePreference } = props;
-
-  // eslint-disable-next-line no-unused-vars
-  const [currentPage, _, __, ___] = useContext(LinkContext);
+export default function Header() {
+  const { setThemePreference } = useContext(PreferenceContext);
+  const { currentPage } = useContext(LinkContext);
 
   // trigger for hiding/showing the AppBar
   const triggerHideAppBar = useScrollTrigger({
