@@ -167,9 +167,9 @@
       {
         "subcharts": [
           {
-            "subchartTitle": "All time average (2020-2023)",
+            "subchartTitle": "All time average (2020-2024)",
             "subchartSubtitle": "As the typical workday draws to a close at around <b>5-6pm</b> for students, faculty, and staff, this time window is the busiest period for fitness activities. There is another relatively smaller peak in the morning from 8-9am; however, its magnitude doesn't usually surpass half of the afternoon rush's. For those who prefer a quieter workout, aim for <b>early-morning or midday</b> time slots where the occupancy rate is only a quarter of the busiest time.",
-            "query": "SELECT A, G, I, J",
+            "query": "SELECT A, H, J, K",
             "columns": [
               0,
               1,
@@ -198,7 +198,7 @@
           {
             "subchartTitle": "By year",
             "subchartSubtitle": "Due to COVID-19 restrictions, there was a limit on how many people could be in the same facilities during 2020-2022. Take the fitness center, for example, the cap was 15 people in 2020, which was gradually loosened to 25 people in 2022.",
-            "query": "SELECT A, B, C, D, E",
+            "query": "SELECT A, B, C, D, E, F",
             "options": {
               "seriesType": "line"
             }
@@ -321,6 +321,12 @@
             "role": "annotation",
             "type": "string",
             "sourceColumn": 8
+          },
+          9,
+          {
+            "role": "annotation",
+            "type": "string",
+            "sourceColumn": 10
           }
         ],
         "options": {
@@ -342,6 +348,10 @@
           "maxWidth": "350px",
           "height": "620px",
           "subcharts": [
+            {
+              "subchartTitle": "2024",
+              "range": "AS2:BB21"
+            },
             {
               "subchartTitle": "2023",
               "range": "AH2:AQ21"
@@ -365,6 +375,10 @@
           "maxWidth": "580px",
           "height": "350px",
           "subcharts": [
+            {
+              "subchartTitle": "2024",
+              "range": "A54:S64"
+            },
             {
               "subchartTitle": "2023",
               "range": "A41:S51"
@@ -395,6 +409,10 @@
           "height": "500px",
           "subcharts": [
             {
+              "subchartTitle": "2024",
+              "range": "AS2:BB21"
+            },
+            {
               "subchartTitle": "2023",
               "range": "AH2:AQ21"
             },
@@ -414,9 +432,13 @@
         },
         "subchartsLandscape": {
           "gid": 1248059258,
-          "maxWidth": "480px",
+          "maxWidth": "460px",
           "height": "350px",
           "subcharts": [
+            {
+              "subchartTitle": "2024",
+              "range": "A54:S64"
+            },
             {
               "subchartTitle": "2023",
               "range": "A41:S51"
