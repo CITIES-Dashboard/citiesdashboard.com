@@ -1,8 +1,8 @@
 import { Box, useScrollTrigger, Fade } from '@mui/material';
 
-export const { innerHeight } = window;
+const { innerHeight } = window;
 
-export function FadeInButtonForSpeedDial(props) {
+function FadeInButtonForSpeedDial(props) {
   const { children, window, distanceFromBottomOfWindow, triggerThreshold } = props;
 
   const trigger = useScrollTrigger({
