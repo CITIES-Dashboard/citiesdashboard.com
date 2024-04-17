@@ -1,13 +1,6 @@
 **Last Update:** April 2024
 
 ### TODO for documentation
-Section 2. Make a quick sketch on draw.io that can help explain the overall architecture of the dashboard better (interplay between frontend and sheet and raw dataset syncer for example) ✅ 
-
-2.3.3 remove react google chart references (btw, do this for everywhere) ✅
-
-2.3.3 add the unique parameters for options that are not native to google charts, the one that we gradually added more because of nivo or stack/unstack button... try to be exhaustive here, all the custom parameters we added, perhaps also put a href link to the components that deal with each parameter as well ✅
-
-2.3.3 add mentions for control as well, but just shortly ✅
 
 # CITIES DASHBOARD
 - [CITIES DASHBOARD](#cities-dashboard)
@@ -46,6 +39,9 @@ The CITIES Dashboard offers interactive data visualizations on various aspects o
 
 
 # 2. General Technical Description
+
+![architecture-overview-of-cities-dashboard](/documentation/architecture-overview.svg)  
+[Draw.io File](https://app.diagrams.net/#G1WD_R6JVBDlY9cISDI0uoL2_1Dygzi-XJ#%7B%22pageId%22%3A%22C5RBs43oDa-KdzZeNtuy%22%7D)
 
 The CITIES Dashboard is built with [React.js](https://react.dev/) and [Material UI](https://mui.com/material-ui/all-components/). It utilizes (mostly) [Google Charts](https://developers.google.com/chart/interactive/docs/gallery) and (sometimes) [Nivo Charts](https://nivo.rocks/) for generating interactive data visualizations for different datasets.
 
