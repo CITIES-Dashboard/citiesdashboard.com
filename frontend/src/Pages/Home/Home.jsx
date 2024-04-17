@@ -46,7 +46,7 @@ function Home({ title }) {
           <Chip
             sx={{ position: 'absolute', top: '0.5rem', right: '0.5rem' }}
             size="small"
-            label="EXTERNAL SITE"
+            label="External Site"
             icon={<LaunchIcon />}
             color="primary"
           />

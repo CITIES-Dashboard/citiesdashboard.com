@@ -1,7 +1,5 @@
 **Last Update:** April 2024
 
-### TODO for documentation
-
 # CITIES DASHBOARD
 - [CITIES DASHBOARD](#cities-dashboard)
 - [1. Introduction](#1-introduction)
