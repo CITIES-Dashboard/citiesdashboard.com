@@ -329,6 +329,8 @@ Both of these domains are managed in [name.com](https://www.name.com/).
 
 To deploy changes from this development repo to the production website, the [push-to-prod-repo.yml](.github/workflows/push-to-prod-repo.yml) workflow must be manually triggered. It transfers the production-ready files from the `main` branch of this development repo to the production repo. There, the [deploy-to-gh-pages.yml](https://github.com/CITIES-Dashboard/citiesdashboard.com/blob/main/.github/workflows/deploy-to-gh-pages.yml) workflow is automatically triggered to deploy the changes to the production website on GitHub Pages.
 
+To deploy changes to the beta website, simply run `npm run deploy` in the development repo. This will automatically deploy the changes to the beta website on GitHub Pages.
+
 Finally, as Google Sheets are used as database for the datasets, no separate backend is needed. Separately, as mentioned, another GitHub repo ([datasets repo](https://github.com/CITIES-Dashboard/datasets)) is implemented to fetch raw datasets on Google Sheets daily for version controlling.
 
 # 3. Build and Test Locally
