@@ -80,7 +80,7 @@ function SubChart(props) {
   }, [props, theme, chartData.chartType]);
   // State to store transformed data for CalendarChart
   const [calendarData, setCalendarData] = useState(null);
-  const [yearRange, setYearRange] = useState([new Date('01-01-2021').getFullYear(), new Date().getFullYear()])
+  const [yearRange, setYearRange] = useState([])
   const [calendarHeight, setCalendarHeight] = useState(200);
   const [containerWidth, setContainerWidth] = useState(1200); // max width of the chart container
   // Early exit for 'Calendar' chartType
@@ -109,9 +109,9 @@ function SubChart(props) {
           const transformedData = transformDataForNivo(rawData, dataColumn, tooltipColumn);
           setCalendarData({ ...transformedData, options: options });
 
-          // Get the number of years the calendar chart has data for
-          const startYear = new Date(transformedData.dateRange.min).getFullYear();
+          // Get the number of years to display
           const endYear = new Date(transformedData.dateRange.max).getFullYear();
+          const startYear = isPortrait ? endYear - 3 : endYear - 2;
 
           setYearRange([startYear, endYear]);
         })
