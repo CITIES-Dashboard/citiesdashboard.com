@@ -166,7 +166,12 @@ function SubChart(props) {
             options={options}
           />
         </GoogleChartStyleWrapper>
-        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', mt: 2 }}>
+        <Box sx={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          mt: isPortrait ? 2 : 3
+        }}>
           <Slider
             value={yearRange}
             min={new Date(calendarData.dateRange.min).getFullYear()}
@@ -176,7 +181,7 @@ function SubChart(props) {
             aria-labelledby="calendar-chart-year-slider"
             marks={marks}
             size='small'
-            sx={{ width: '80%' }}
+            sx={{ width: '75%' }}
           />
         </Box>
       </>
