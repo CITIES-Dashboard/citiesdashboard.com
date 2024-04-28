@@ -1,8 +1,8 @@
 /* eslint-disable */
 import { ResponsiveCalendar } from '@nivo/calendar';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useTheme } from '@mui/material/styles';
-import { Box, Chip, Slider } from '@mui/material';
+import { Box, Chip } from '@mui/material';
 
 import parse from 'html-react-parser';
 import { replacePlainHTMLWithMuiComponents } from '../../../Utils/Utils';
