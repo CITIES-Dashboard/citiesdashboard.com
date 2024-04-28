@@ -1,8 +1,8 @@
 /* eslint-disable */
 import { ResponsiveCalendar } from '@nivo/calendar';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
-import { Box, Chip } from '@mui/material';
+import { Box, Chip, Slider } from '@mui/material';
 
 import parse from 'html-react-parser';
 import { replacePlainHTMLWithMuiComponents } from '../../../Utils/Utils';
@@ -15,12 +15,31 @@ export const getCalendarChartMargin = (isPortrait) => {
         : { top: 30, right: 40, bottom: 0, left: 40 }
 }
 
+export const calculateCalendarChartHeight = (yearRange, yearHeight, calendarChartMargin) => {
+    const numberOfYears = yearRange[1] - yearRange[0] + 1;
+
+    if (numberOfYears === 1) {
+        return yearHeight + yearSpacing + calendarChartMargin.top + calendarChartMargin.bottom;
+    } else {
+        return numberOfYears * (yearHeight + yearSpacing) + calendarChartMargin.top + calendarChartMargin.bottom;
+    }
+};
+
 export const CalendarChart = (props) => {
-    const { data, dateRange, valueRange, isPortrait, options } = props;
+    const { data, dateRange, valueRange, yearRange, isPortrait, options } = props;
 
     const calendarChartMargin = getCalendarChartMargin(isPortrait);
 
     const theme = useTheme();
+
+    // Filter data based on the selected year range
+    const filteredData = data.filter(item => {
+        const year = new Date(item.day).getFullYear();
+        return year >= yearRange[0] && year <= yearRange[1];
+    });
+
+    const dynamicFrom = `${yearRange[0]}-01-01`
+    const dynamicTo = `${yearRange[1]}-12-31`
 
     // Function to extract tooltip text from HTML tooltip
     const extractTooltipText = (tooltip) => {
@@ -67,9 +86,9 @@ export const CalendarChart = (props) => {
         <>
             {options?.legend?.position !== "none" && showLegend()}
             <ResponsiveCalendar
-                data={data}
-                from={dateRange?.min}
-                to={dateRange?.max}
+                data={filteredData}
+                from={dynamicFrom}
+                to={dynamicTo}
                 emptyColor={'transparent'}
                 theme={{
                     text: {

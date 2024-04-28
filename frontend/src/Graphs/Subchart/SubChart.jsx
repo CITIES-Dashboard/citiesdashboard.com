@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useContext, useMemo, useCallback, memo } f
 
 import { GoogleContext } from '../../ContextProviders/GoogleContext';
 
-import { Box, Stack, Tooltip, Typography } from '@mui/material/';
+import { Box, Stack, Tooltip, Typography, Slider } from '@mui/material/';
 
 import { useTheme } from '@mui/material/styles';
 import GoogleSheetEmbedVisualization from '../GoogleSheetEmbedVisualization';
@@ -24,7 +24,7 @@ import { isMobile } from 'react-device-detect';
 
 import { transformDataForNivo, convertToNivoHeatMapData } from '../NivoChartHelper';
 
-import { CalendarChart, getCalendarChartMargin, yearSpacing } from './NivoCharts/NivoCalendarChart';
+import { CalendarChart, getCalendarChartMargin, calculateCalendarChartHeight } from './NivoCharts/NivoCalendarChart';
 
 import { NivoHeatMap } from './NivoCharts/NivoHeatMap';
 import ModifiedCategoryFilterForTimeline from './SubchartUtils/ModifiedCategoryFilterForTimeline';
@@ -80,6 +80,7 @@ function SubChart(props) {
   }, [props, theme, chartData.chartType]);
   // State to store transformed data for CalendarChart
   const [calendarData, setCalendarData] = useState(null);
+  const [yearRange, setYearRange] = useState([new Date('01-01-2021').getFullYear(), new Date().getFullYear()])
   const [calendarHeight, setCalendarHeight] = useState(200);
   const [containerWidth, setContainerWidth] = useState(1200); // max width of the chart container
   // Early exit for 'Calendar' chartType
@@ -111,27 +112,31 @@ function SubChart(props) {
           // Get the number of years the calendar chart has data for
           const startYear = new Date(transformedData.dateRange.min).getFullYear();
           const endYear = new Date(transformedData.dateRange.max).getFullYear();
-          const numberOfYear = endYear - startYear + 1;
 
-          // Calculate the size of each cell
-          const cellSize = Math.min(containerWidth / 60, 20); // max cell size of 20
-          const yearHeight = cellSize * 7; // Height for one year
-
-          const calendarChartMargin = getCalendarChartMargin(isPortrait);
-
-          // Calculate the total height based on the number of years and margins
-          let totalHeight;
-          if (numberOfYear === 1) {
-            totalHeight = yearHeight + yearSpacing + calendarChartMargin.top + calendarChartMargin.bottom
-          } else {
-            totalHeight = numberOfYear * (yearHeight + yearSpacing) + calendarChartMargin.top + calendarChartMargin.bottom;
-          }
-          setCalendarHeight(totalHeight);
+          setYearRange([startYear, endYear]);
         })
         .catch(error => {
           console.log(error);
         });
     }, [google]);
+
+    // Generate marks for the slider
+    const marks = Array.from(
+      { length: yearRange[1] - yearRange[0] + 1 },
+      (_, i) => ({ value: yearRange[0] + i, label: yearRange[0] + i })
+    );
+
+    // Effect to adjust the height based on the yearRange
+    useEffect(() => {
+      if (calendarData) {
+        const calendarChartMargin = getCalendarChartMargin(isPortrait);
+        const cellSize = Math.min(containerWidth / 60, 20); // max cell size of 20
+        const yearHeight = cellSize * 7; // Height for one year
+
+        const totalHeight = calculateCalendarChartHeight(yearRange, yearHeight, calendarChartMargin);
+        setCalendarHeight(totalHeight);
+      }
+    }, [yearRange, calendarData, containerWidth, isPortrait]);
 
     if (!calendarData) {
       return (
@@ -142,23 +147,39 @@ function SubChart(props) {
     }
 
     return (
-      <GoogleChartStyleWrapper
-        isPortrait={isPortrait}
-        className={className}
-        position="relative"
-        minWidth="700px"
-        height={calendarHeight + 'px'}
-        minHeight={isPortrait ? '200px' : calendarHeight + 'px'}
-        maxHeight={isPortrait && '550px'}
-      >
-        <CalendarChart
-          data={calendarData.data}
-          dateRange={calendarData.dateRange}
-          valueRange={calendarData.valueRange}
+      <>
+        <GoogleChartStyleWrapper
           isPortrait={isPortrait}
-          options={options}
-        />
-      </GoogleChartStyleWrapper>
+          className={className}
+          position="relative"
+          minWidth="700px"
+          height={calendarHeight + 'px'}
+          minHeight={isPortrait ? '200px' : calendarHeight + 'px'}
+          maxHeight={isPortrait && '550px'}
+        >
+          <CalendarChart
+            data={calendarData.data}
+            dateRange={{ min: `${yearRange[0]}-01-01`, max: `${yearRange[1]}-12-31` }}
+            valueRange={calendarData.valueRange}
+            yearRange={yearRange}
+            isPortrait={isPortrait}
+            options={options}
+          />
+        </GoogleChartStyleWrapper>
+        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', mt: 2 }}>
+          <Slider
+            value={yearRange}
+            min={new Date(calendarData.dateRange.min).getFullYear()}
+            max={new Date(calendarData.dateRange.max).getFullYear()}
+            onChange={(event, newValue) => setYearRange(newValue)}
+            valueLabelDisplay="auto"
+            aria-labelledby="calendar-chart-year-slider"
+            marks={marks}
+            size='small'
+            sx={{ width: '80%' }}
+          />
+        </Box>
+      </>
     );
   }
 
