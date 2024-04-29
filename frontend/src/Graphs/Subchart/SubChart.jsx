@@ -148,7 +148,7 @@ function SubChart(props) {
 
     return (
       <>
-        {(new Date(calendarData.dateRange.min).getFullYear() !== new Date(calendarData.dateRange.max).getFullYear()) && (
+        {(new Date(calendarData.dateRange.min).getFullYear() <= new Date(calendarData.dateRange.max).getFullYear() - 2) && (
           <Box sx={{
             width: '100%',
             display: 'flex',
