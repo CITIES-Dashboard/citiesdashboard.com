@@ -148,6 +148,27 @@ function SubChart(props) {
 
     return (
       <>
+        {(new Date(calendarData.dateRange.min).getFullYear() !== new Date(calendarData.dateRange.max).getFullYear()) && (
+          <Box sx={{
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            mt: isPortrait ? 1 : 2,
+            mb: isPortrait ? 3 : 4,
+          }}>
+            <Slider
+              value={yearRange}
+              min={new Date(calendarData.dateRange.min).getFullYear()}
+              max={new Date(calendarData.dateRange.max).getFullYear()}
+              onChange={(event, newValue) => setYearRange(newValue)}
+              valueLabelDisplay="off"
+              aria-labelledby="calendar-chart-year-slider"
+              marks={marks}
+              size='small'
+              sx={{ width: '75%' }}
+            />
+          </Box>
+        )}
         <GoogleChartStyleWrapper
           isPortrait={isPortrait}
           className={className}
@@ -166,24 +187,6 @@ function SubChart(props) {
             options={options}
           />
         </GoogleChartStyleWrapper>
-        <Box sx={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          mt: isPortrait ? 2 : 3
-        }}>
-          <Slider
-            value={yearRange}
-            min={new Date(calendarData.dateRange.min).getFullYear()}
-            max={new Date(calendarData.dateRange.max).getFullYear()}
-            onChange={(event, newValue) => setYearRange(newValue)}
-            valueLabelDisplay="auto"
-            aria-labelledby="calendar-chart-year-slider"
-            marks={marks}
-            size='small'
-            sx={{ width: '75%' }}
-          />
-        </Box>
       </>
     );
   }
