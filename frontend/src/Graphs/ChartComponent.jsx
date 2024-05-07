@@ -184,6 +184,7 @@ function ChartComponent({ chartData: passedChartData, chartHeight: passedChartHe
                       ? ''
                       : chartMaxHeight
                   }
+                  currentSubchart={indexValue}
                 />
               </Box>
             ))}

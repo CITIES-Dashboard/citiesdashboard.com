@@ -31,7 +31,7 @@ import ModifiedCategoryFilterForTimeline from './SubchartUtils/ModifiedCategoryF
 
 function SubChart(props) {
   // Props
-  const { chartData, subchartIndex, windowSize, isPortrait, isHomepage, height, maxHeight } = props;
+  const { chartData, subchartIndex, windowSize, isPortrait, isHomepage, height, maxHeight, currentSubchart } = props;
 
   // // Early return if this doesn't contain a normal Google Chart but a chartSubstituteComponent
   // const chartSubstituteComponentName = chartData.subcharts?.[subchartIndex].chartSubstituteComponentName;
@@ -81,8 +81,9 @@ function SubChart(props) {
   // State to store transformed data for CalendarChart
   const [calendarData, setCalendarData] = useState(null);
   const [yearRange, setYearRange] = useState([])
-  const [calendarHeight, setCalendarHeight] = useState(200);
+  const [calendarHeight, setCalendarHeight] = useState(600);
   const [containerWidth, setContainerWidth] = useState(1200); // max width of the chart container
+  const calendarRef = useRef(null);
   // Early exit for 'Calendar' chartType
   if (chartData.chartType === 'Calendar') {
     useEffect(() => {
@@ -126,6 +127,15 @@ function SubChart(props) {
       (_, i) => ({ value: yearRange[0] + i, label: yearRange[0] + i })
     );
 
+    // Effect to reset the yearRange when the currentSubchart changes
+    useEffect(() => {
+      if (calendarData) {
+        const endYear = new Date(calendarData.dateRange.max).getFullYear();
+        const startYear = isPortrait ? endYear - 3 : endYear - 2;
+        setYearRange([startYear, endYear]);
+      }
+    }, [currentSubchart]);
+
     // Effect to adjust the height based on the yearRange
     useEffect(() => {
       if (calendarData) {
@@ -135,8 +145,38 @@ function SubChart(props) {
 
         const totalHeight = calculateCalendarChartHeight(yearRange, yearHeight, calendarChartMargin);
         setCalendarHeight(totalHeight);
+
+        if (calendarRef.current) {
+          let element = calendarRef.current; // Start with the current ref
+
+          // Search for the highest MuiBox-root that has a MuiTabs-root sibling
+          let targetElement = null;
+
+          while (element) {
+            // Check if this element is a MuiBox-root
+            if (element.classList.contains('MuiBox-root')) {
+              // Check if any sibling is a MuiTabs-root
+              let sibling = element.parentElement.firstChild;
+              while (sibling) {
+                if (sibling !== element && sibling.classList.contains('MuiTabs-root')) {
+                  targetElement = element; // Found the target element
+                  break;
+                }
+                sibling = sibling.nextSibling;
+              }
+            }
+
+            if (targetElement) break; // Stop if we've found our target
+            element = element.parentElement; // Continue searching upwards
+          }
+
+          if (targetElement) {
+            // targetElement.style.border = "2px solid red";
+            targetElement.style.height = `${calendarHeight + 100}px`
+          }
+        }
       }
-    }, [yearRange, calendarData, containerWidth, isPortrait]);
+    }, [yearRange, isPortrait]);
 
     if (!calendarData) {
       return (
@@ -149,13 +189,15 @@ function SubChart(props) {
     return (
       <>
         {(new Date(calendarData.dateRange.min).getFullYear() <= new Date(calendarData.dateRange.max).getFullYear() - 2) && (
-          <Box sx={{
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-            mt: isPortrait ? 1 : 2,
-            mb: isPortrait ? 3 : 4,
-          }}>
+          <Box
+            ref={calendarRef}
+            sx={{
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+              mt: isPortrait ? 1 : 2,
+              mb: isPortrait ? 3 : 4,
+            }}>
             <Slider
               value={yearRange}
               min={new Date(calendarData.dateRange.min).getFullYear()}
