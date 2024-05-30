@@ -347,27 +347,30 @@ function SubChart(props) {
 
   // Set new options prop and re-render the chart if theme or isPortrait changes
   useEffect(() => {
-    if (!seriesSelector) {
+    if (seriesSelector) handleSeriesSelection({ newDataColumns: dataColumns }); // this function set new options, too
+    else {
       chartWrapper?.setOptions({
         ...options,
         ...(chartData.chartType === 'Calendar' && { height: chartTotalHeight })
       });
-      chartWrapper?.draw();
 
+      chartWrapper?.draw();
       if (hasChartControl) {
         controlWrapper?.setOptions(chartControlOptions);
         controlWrapper?.draw();
       }
-    } else {
-      handleSeriesSelection(dataColumns);
-    }
-
-    // Set new initialColumnsColors if the theme changes
-    // This only applies to when seriesSelector.method == "setViewColumn"
-    if (dataColumns && seriesSelector?.method === "setViewColumn") {
-      setInitialColumnsColors(dataColumns);
     }
   }, [theme, isPortrait, windowSize, chartTotalHeight]);
+
+  // Set new initialColumnsColors if the theme changes
+  // This only applies to when seriesSelector.method == "setViewColumn"
+  useEffect(() => {
+    if (!dataColumns) return;
+    if (seriesSelector && seriesSelector.method == "setViewColumn") {
+      setInitialColumnsColors({ dataColumns: dataColumns });
+      handleSeriesSelection({ newDataColumns: dataColumns });
+    }
+  }, [theme]);
 
   const getInitialColumns = useCallback(({ chartWrapper, dataTable, seriesSelector }) => {
     // Update the initial DataView's columns (often, all of the series are displayed initially)
@@ -418,7 +421,7 @@ function SubChart(props) {
     if (dataColumns && seriesSelector.method === "setViewColumn") setInitialColumnsColors({ dataColumns: dataColumns });
 
     setDataColumns(dataColumns);
-    return dataColumns;
+    return { initAllInitialColumns: allInitialColumns, initDataColumns: dataColumns };
   }, [google, options, seriesSelector]);
 
   // Utility function for setting colors to dataColumns
@@ -442,8 +445,13 @@ function SubChart(props) {
     return { min: vAxisMin, max: vAxisMax };
   }, []);
 
-  const handleSeriesSelection = useCallback((newDataColumns, _chartWrapper = chartWrapper) => {
-    if (!allInitialColumns) return;
+  const handleSeriesSelection = useCallback((
+    newDataColumns,
+    _allInitialColumns = allInitialColumns,
+    _chartWrapper = chartWrapper,
+    _controlWrapper = controlWrapper
+  ) => {
+    if (!_allInitialColumns) return;
 
     setDataColumns(newDataColumns);
 
@@ -465,18 +473,35 @@ function SubChart(props) {
           ...hiddenSeriesObject
         }
       });
+
+      if (hasChartControl) {
+        const currentControlOptions = _controlWrapper?.getOptions();
+        _controlWrapper?.setOptions({
+          ...currentControlOptions,
+          ui: {
+            ...currentControlOptions.ui,
+            chartOptions: {
+              ...currentControlOptions.ui.chartOptions,
+              series: {
+                ...options.series,
+                ...hiddenSeriesObject
+              }
+            }
+          }
+        });
+      }
     }
     else if (seriesSelector.method === "setViewColumn") {
       let newViewColumns = [];
-      newViewColumns.push(chartData.columns?.[0] || 0); // this is the domain column
+      newViewColumns.push(0); // this is the domain column
       newDataColumns.forEach((dataColumn) => {
         if (dataColumn.selected) {
           newViewColumns.push(dataColumn);
           // Find this dataColumn's supporting columns (whose role !== 'data')
           // A dataColumn has its supporting columns (can be many) follow it immediately
-          for (let i = dataColumn.indexInAllInitialColumns + 1; i < allInitialColumns.length; i++) {
-            if (allInitialColumns[i].role !== 'data') {
-              newViewColumns.push(allInitialColumns[i]);
+          for (let i = dataColumn.indexIn_ + 1; i < _allInitialColumns.length; i++) {
+            if (_allInitialColumns[i].role !== 'data') {
+              newViewColumns.push(_allInitialColumns[i]);
             }
             // If this loop encounter the next dataColumn, break the loop, all supporting columns for this dataColumn have been discovered
             else {
@@ -508,13 +533,31 @@ function SubChart(props) {
       })
       newOptions.series = series;
       _chartWrapper?.setOptions(newOptions);
+
+      if (hasChartControl) {
+        const currentControlOptions = _controlWrapper?.getOptions();
+        _controlWrapper?.setOptions({
+          ...currentControlOptions,
+          ui: {
+            ...currentControlOptions.ui,
+            chartOptions: {
+              ...currentControlOptions.ui.chartOptions,
+              colors: newOptions.colors,
+              series: newOptions.series
+            },
+            chartView: {
+              columns: newViewColumns
+            }
+          }
+        });
+      }
     }
 
     // Call draw to apply the new DataView and 'refresh' the chart
     _chartWrapper?.draw();
 
     if (hasChartControl) {
-      controlWrapper?.draw();
+      _controlWrapper?.draw();
     }
   }, [allInitialColumns, options, seriesSelector, chartWrapper, controlWrapper, initialVAxisRange, hasChartControl]);
 
@@ -571,13 +614,14 @@ function SubChart(props) {
           });
           setChartWrapper(thisChartWrapper);
 
+          let thisControlWrapper;
           if (hasChartControl) {
             const thisDashboardWrapper = new google.visualization.Dashboard(
               document.getElementById(`dashboard-${chartID}`));
             setDashboardWrapper(thisDashboardWrapper);
             google.visualization.events.addListener(thisDashboardWrapper, 'ready', onChartReady);
 
-            const thisControlWrapper = new google.visualization.ControlWrapper({
+            thisControlWrapper = new google.visualization.ControlWrapper({
               controlType: chartControl.controlType,
               options: chartControlOptions,
               containerId: `control-${chartID}`
@@ -606,8 +650,13 @@ function SubChart(props) {
 
           // Run the seriesSelector for the first time
           if (seriesSelector) {
-            const initColumns = getInitialColumns({ chartWrapper: thisChartWrapper, dataTable: thisDataTable, seriesSelector: seriesSelector });
-            handleSeriesSelection(initColumns, thisChartWrapper);
+            const { initAllInitialColumns, initDataColumns } = getInitialColumns({ chartWrapper: thisChartWrapper, dataTable: thisDataTable, seriesSelector: seriesSelector });
+            handleSeriesSelection({
+              _allInitialColumns: initAllInitialColumns,
+              newDataColumns: initDataColumns,
+              _chartWrapper: thisChartWrapper,
+              _controlWrapper: thisControlWrapper
+            });
           }
 
         })
