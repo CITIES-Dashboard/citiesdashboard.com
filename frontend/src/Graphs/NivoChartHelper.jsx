@@ -1,3 +1,8 @@
+export const calculateValueRange = (data) => {
+  const values = data.map((item) => item.value);
+  return { min: Math.min(...values), max: Math.max(...values) };
+};
+
 export const transformDataForNivo = (dataTable, dataColumn, tooltipColumn) => {
   const data = JSON.parse(dataTable.toJSON());
   const transformed = [];
@@ -38,9 +43,7 @@ export const transformDataForNivo = (dataTable, dataColumn, tooltipColumn) => {
     max: dateStrings.reduce((max, current) => (current > max ? current : max))
   };
 
-  // Get valueRange (min - max)
-  const values = transformed.map((item) => item.value);
-  const valueRange = { min: Math.min(...values), max: Math.max(...values) };
+  const valueRange = calculateValueRange(transformed);
 
   return {
     data: transformed,

@@ -172,7 +172,7 @@ function SubChart(props) {
 
           if (targetElement) {
             // targetElement.style.border = "2px solid red";
-            targetElement.style.height = `${calendarHeight + 100}px`
+            targetElement.style.height = `${calendarHeight + 125}px`
           }
         }
       }
