@@ -4,6 +4,7 @@ import { Box, Tabs, Tab, useMediaQuery } from '@mui/material/';
 import { TabContext } from '../ContextProviders/TabContext';
 
 import SubChart from './Subchart/SubChart';
+import { YearRangeProvider } from '../ContextProviders/YearRangeContext';
 
 const debounceMilliseconds = 100;
 
@@ -217,7 +218,9 @@ function ChartComponent({ chartData: passedChartData, chartHeight: passedChartHe
         overflowY: 'hidden',
       }}
     >
-      {renderedComponent}
+      <YearRangeProvider>
+        {renderedComponent}
+      </YearRangeProvider>
     </ChartStyleWrapper>
   );
 }

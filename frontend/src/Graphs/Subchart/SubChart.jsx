@@ -28,6 +28,7 @@ import { CalendarChart, getCalendarChartMargin, calculateCalendarChartHeight } f
 
 import { NivoHeatMap } from './NivoCharts/NivoHeatMap';
 import ModifiedCategoryFilterForTimeline from './SubchartUtils/ModifiedCategoryFilterForTimeline';
+import { useYearRange } from '../../ContextProviders/YearRangeContext';
 
 function SubChart(props) {
   // Props
@@ -80,7 +81,7 @@ function SubChart(props) {
   }, [props, theme, chartData.chartType]);
   // State to store transformed data for CalendarChart
   const [calendarData, setCalendarData] = useState(null);
-  const [yearRange, setYearRange] = useState([])
+  const {yearRange, setYearRange} = useYearRange();
   const [calendarHeight, setCalendarHeight] = useState(600);
   const [containerWidth, setContainerWidth] = useState(1200); // max width of the chart container
   const calendarRef = useRef(null);
@@ -127,14 +128,14 @@ function SubChart(props) {
       (_, i) => ({ value: yearRange[0] + i, label: yearRange[0] + i })
     );
 
-    // Effect to reset the yearRange when the currentSubchart changes
-    useEffect(() => {
-      if (calendarData) {
-        const endYear = new Date(calendarData.dateRange.max).getFullYear();
-        const startYear = isPortrait ? endYear - 3 : endYear - 2;
-        setYearRange([startYear, endYear]);
-      }
-    }, [currentSubchart]);
+    // // Effect to reset the yearRange when the currentSubchart changes
+    // useEffect(() => {
+    //   if (calendarData) {
+    //     const endYear = new Date(calendarData.dateRange.max).getFullYear();
+    //     const startYear = isPortrait ? endYear - 3 : endYear - 2;
+    //     setYearRange([startYear, endYear]);
+    //   }
+    // }, [currentSubchart]);
 
     // Effect to adjust the height based on the yearRange
     useEffect(() => {
