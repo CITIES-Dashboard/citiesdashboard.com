@@ -128,7 +128,8 @@ function SubChart(props) {
       (_, i) => ({ value: yearRange[0] + i, label: yearRange[0] + i })
     );
 
-    // // Effect to reset the yearRange when the currentSubchart changes
+    // Effect to reset the yearRange when the currentSubchart changes
+    // Leaving this in for future reference. Feel free to remove
     // useEffect(() => {
     //   if (calendarData) {
     //     const endYear = new Date(calendarData.dateRange.max).getFullYear();
