@@ -79,11 +79,24 @@ function SubChart(props) {
     let opts = returnGenericOptions({ ...props, theme });
     return opts;
   }, [props, theme, chartData.chartType]);
+
+  // Debounce function to prevent ResizeObserver loop
+  // (from MUI Slider) from crashing the app
+  const debounce = (func, wait) => {
+    let timeout;
+    return (...args) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+  };
+
   // State to store transformed data for CalendarChart
   const [calendarData, setCalendarData] = useState(null);
-  const {yearRange, setYearRange} = useYearRange();
+  const { yearRange, setYearRange } = useYearRange();
   const [calendarHeight, setCalendarHeight] = useState(600);
   const [containerWidth, setContainerWidth] = useState(1200); // max width of the chart container
+  const [shouldDisplaySlider, setshouldDisplaySlider] = useState(false);
+  const [sliderMarks, setSliderMarks] = useState([]);
   const calendarRef = useRef(null);
   // Early exit for 'Calendar' chartType
   if (chartData.chartType === 'Calendar') {
@@ -111,22 +124,24 @@ function SubChart(props) {
           const transformedData = transformDataForNivo(rawData, dataColumn, tooltipColumn);
           setCalendarData({ ...transformedData, options: options });
 
-          // Get the number of years to display
-          const endYear = new Date(transformedData.dateRange.max).getFullYear();
-          const startYear = isPortrait ? endYear - 3 : endYear - 2;
+          // Get the number of years we have data for and the number of years to display
+          const lastYear = new Date(transformedData.dateRange.max).getFullYear();
+          const firstYear = new Date(transformedData.dateRange.min).getFullYear();
+          const firstVisibleYear = isPortrait ? lastYear - 3 : lastYear - 2;
+          setYearRange([firstVisibleYear, lastYear]);
 
-          setYearRange([startYear, endYear]);
+          const marks = Array.from(
+            { length: lastYear - firstYear + 1 },
+            (_, i) => ({ value: firstYear + i, label: firstYear + i })
+          );
+          setSliderMarks(marks);
+
+          setshouldDisplaySlider((firstYear <= lastYear - 2));
         })
         .catch(error => {
           console.log(error);
         });
     }, [google]);
-
-    // Generate marks for the slider
-    const marks = Array.from(
-      { length: yearRange[1] - yearRange[0] + 1 },
-      (_, i) => ({ value: yearRange[0] + i, label: yearRange[0] + i })
-    );
 
     // Effect to reset the yearRange when the currentSubchart changes
     // Leaving this in for future reference. Feel free to remove
@@ -138,26 +153,20 @@ function SubChart(props) {
     //   }
     // }, [currentSubchart]);
 
-    // Effect to adjust the height based on the yearRange
-    useEffect(() => {
+    const updateHeight = () => {
       if (calendarData) {
         const calendarChartMargin = getCalendarChartMargin(isPortrait);
         const cellSize = Math.min(containerWidth / 60, 20); // max cell size of 20
         const yearHeight = cellSize * 7; // Height for one year
-
         const totalHeight = calculateCalendarChartHeight(yearRange, yearHeight, calendarChartMargin);
         setCalendarHeight(totalHeight);
 
         if (calendarRef.current) {
           let element = calendarRef.current; // Start with the current ref
-
-          // Search for the highest MuiBox-root that has a MuiTabs-root sibling
           let targetElement = null;
 
           while (element) {
-            // Check if this element is a MuiBox-root
             if (element.classList.contains('MuiBox-root')) {
-              // Check if any sibling is a MuiTabs-root
               let sibling = element.parentElement.firstChild;
               while (sibling) {
                 if (sibling !== element && sibling.classList.contains('MuiTabs-root')) {
@@ -168,17 +177,22 @@ function SubChart(props) {
               }
             }
 
-            if (targetElement) break; // Stop if we've found our target
-            element = element.parentElement; // Continue searching upwards
+            if (targetElement) break;
+            element = element.parentElement;
           }
 
           if (targetElement) {
-            // targetElement.style.border = "2px solid red";
-            targetElement.style.height = `${calendarHeight + 125}px`
+            targetElement.style.height = `${totalHeight + 125}px`;
           }
         }
       }
-    }, [yearRange, isPortrait]);
+    };
+
+    const debouncedUpdateHeight = debounce(updateHeight, 100);
+
+    useEffect(() => {
+      debouncedUpdateHeight();
+    }, [yearRange, isPortrait, calendarData]);
 
     if (!calendarData) {
       return (
@@ -190,15 +204,16 @@ function SubChart(props) {
 
     return (
       <>
-        {(new Date(calendarData.dateRange.min).getFullYear() <= new Date(calendarData.dateRange.max).getFullYear() - 2) && (
+        {shouldDisplaySlider && (
           <Box
-            ref={calendarRef}
             sx={{
               width: '100%',
               display: 'flex',
               justifyContent: 'center',
               mt: isPortrait ? 1 : 2,
               mb: isPortrait ? 3 : 4,
+              position: 'sticky',
+              left: 0,
             }}>
             <Slider
               value={yearRange}
@@ -207,13 +222,14 @@ function SubChart(props) {
               onChange={(event, newValue) => setYearRange(newValue)}
               valueLabelDisplay="off"
               aria-labelledby="calendar-chart-year-slider"
-              marks={marks}
+              marks={sliderMarks}
               size='small'
               sx={{ width: '75%' }}
             />
           </Box>
         )}
         <GoogleChartStyleWrapper
+          ref={calendarRef}
           isPortrait={isPortrait}
           className={className}
           position="relative"
@@ -224,9 +240,9 @@ function SubChart(props) {
         >
           <CalendarChart
             data={calendarData.data}
-            dateRange={{ min: `${yearRange[0]}-01-01`, max: `${yearRange[1]}-12-31` }}
+            dateRange={calendarData.dateRange}
             valueRange={calendarData.valueRange}
-            yearRange={yearRange}
+            yearRange={shouldDisplaySlider ? yearRange : [new Date(calendarData.dateRange.min), new Date(calendarData.dateRange.max)]}
             isPortrait={isPortrait}
             options={options}
           />

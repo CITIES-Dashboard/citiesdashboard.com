@@ -636,7 +636,8 @@
             "options": {
               "colorAxis": {
                 "isGradient": true,
-                "colors": "default"
+                "colors": "default",
+                "gradientSteps": 20
               }
             }
           },
@@ -658,7 +659,8 @@
               "colorAxis": {
                 "isGradient": true,
                 "colors": "matchingColor",
-                "colorIndex": 0
+                "colorIndex": 0,
+                "gradientSteps": 20
               }
             }
           },
@@ -680,7 +682,8 @@
               "colorAxis": {
                 "isGradient": true,
                 "colors": "matchingColor",
-                "colorIndex": 1
+                "colorIndex": 1,
+                "gradientSteps": 20
               }
             }
           },
@@ -702,7 +705,8 @@
               "colorAxis": {
                 "isGradient": true,
                 "colors": "matchingColor",
-                "colorIndex": 2
+                "colorIndex": 2,
+                "gradientSteps": 20
               }
             }
           }

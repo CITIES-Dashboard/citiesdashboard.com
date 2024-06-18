@@ -20,12 +20,14 @@ export const getCalendarChartMargin = (isPortrait) => {
 
 export const calculateCalendarChartHeight = (yearRange, yearHeight, calendarChartMargin) => {
     const numberOfYears = yearRange[1] - yearRange[0] + 1;
+    /**
+     * The height of the calendar chart's container should be made to fit at least two years of data
+     * This way, even if the yearRange (from the slider) is < 2 years, and the following subcharts
+     * don't make use of this yearRange (since they have <= 2 years of data), they will still render properly
+     */
+    const minYearsForHeightCalculation = 2;
 
-    if (numberOfYears === 1) {
-        return yearHeight + yearSpacing + calendarChartMargin.top + calendarChartMargin.bottom;
-    } else {
-        return numberOfYears * (yearHeight + yearSpacing) + calendarChartMargin.top + calendarChartMargin.bottom;
-    }
+    return Math.max(numberOfYears, minYearsForHeightCalculation) * (yearHeight + yearSpacing) + calendarChartMargin.top + calendarChartMargin.bottom;
 };
 
 export const CalendarChart = (props) => {
@@ -35,14 +37,14 @@ export const CalendarChart = (props) => {
 
     const theme = useTheme();
 
+    const dynamicFrom = `${yearRange[0]}-01-01`
+    const dynamicTo = `${yearRange[1]}-12-31`
+
     // Filter data based on the selected year range
     const filteredData = data.filter(item => {
         const year = new Date(item.day).getFullYear();
         return year >= yearRange[0] && year <= yearRange[1];
     });
-
-    const dynamicFrom = `${yearRange[0]}-01-01`
-    const dynamicTo = `${yearRange[1]}-12-31`
 
     // Adjust the value range based on the filtered data
     let filteredValueRange = valueRange
@@ -78,7 +80,7 @@ export const CalendarChart = (props) => {
 
     const colors = generateDiscreteColorGradientArray({
         colors: options?.colorAxis?.colors,
-        numSteps: 20
+        numSteps: options?.colorAxis?.gradientSteps
     });
 
     const showLegend = () => {
@@ -96,7 +98,7 @@ export const CalendarChart = (props) => {
         <>
             {options?.legend?.position !== "none" && showLegend()}
             <ResponsiveCalendar
-                data={filteredData}
+                data={data}
                 from={dynamicFrom}
                 to={dynamicTo}
                 emptyColor={'transparent'}
@@ -185,25 +187,30 @@ const CustomTooltip = ({ day, color, tooltipText, dateRange, inFirstTwoRowsOfCha
 const ValueRangeBox = ({ valueRange, filteredValueRange, colorAxis, isPortrait }) => {
     if (valueRange?.min === null || valueRange?.max === null) return null;
 
-    let { colors, minValue, maxValue } = colorAxis;
+    const { colors, minValue, maxValue } = colorAxis;
+    let rangeBoxMinValue = minValue, rangeBoxMaxValue = maxValue;
 
-    if (minValue === undefined) minValue = valueRange.min;
-    if (maxValue === undefined) maxValue = valueRange.max;
+    if (minValue === undefined) rangeBoxMinValue = valueRange.min;
+    if (maxValue === undefined) rangeBoxMaxValue = valueRange.max;
+
+    if (valueRange.min < rangeBoxMinValue) rangeBoxMinValue = valueRange.min;
+    if (valueRange.max > rangeBoxMaxValue) rangeBoxMaxValue = valueRange.max;
 
     const theme = useTheme();
 
     const calculateMarkerPositionOnRangeBox = (value) => {
-        const position = ((value - minValue) / (maxValue - minValue)) * 100;
+        const position = ((value - rangeBoxMinValue) / (rangeBoxMaxValue - rangeBoxMinValue)) * 100;
         return `${position}%`;
     };
-
-    const minPosition = calculateMarkerPositionOnRangeBox(filteredValueRange.min);
-    const maxPosition = calculateMarkerPositionOnRangeBox(filteredValueRange.max);
 
     const labelStyle = {
         position: 'absolute',
         fontSize: '0.75rem',
         color: theme.palette.text.secondary,
+        lineHeight: 1,
+        textAlign: 'center',
+        transform: 'translateX(-50%)',
+        minWidth: '75px',
         whiteSpace: 'nowrap',
     };
     const topLabelStyle = {
@@ -211,7 +218,7 @@ const ValueRangeBox = ({ valueRange, filteredValueRange, colorAxis, isPortrait }
         transform: 'translateX(-50%)'
     };
     const bottomLabelStyle = {
-        bottom: '-1.5rem',
+        bottom: '-1.25rem',
         transform: isPortrait ? 'translateX(-100%)' : 'translateX(-50%)'
     };
 
@@ -238,21 +245,21 @@ const ValueRangeBox = ({ valueRange, filteredValueRange, colorAxis, isPortrait }
             width: 'fit-content',
             marginTop: '1.5rem',
             float: 'right',
-            right: (isPortrait ? '0' : '5%')
+            right: (isPortrait ? '5px' : '50px')
         }}>
             <Box sx={{
-                background: generateCssBackgroundGradient({ gradientDirection: 'to right', colors: colors }),
+                background: generateCssBackgroundGradient({ gradientDirection: 'to right', colors: colors, optionalMaxValue: rangeBoxMaxValue }),
                 color: theme.palette.text.secondary,
                 border: `1px solid ${theme.palette.text.secondary}`,
-                width: '300px',
+                width: isPortrait ? '250px' : '300px',
                 height: '1rem',
                 position: 'relative',
                 justifyContent: 'space-between',
             }}>
-                <span style={{ ...labelStyle, ...topLabelStyle, left: minPosition }}>min: {Math.round(filteredValueRange.min)}</span>
-                <span style={{ ...labelStyle, ...bottomLabelStyle, left: maxPosition }}>max: {Math.round(filteredValueRange.max)}</span>
-                <div style={{ ...triangleStyle, ...topTriangleStyle, left: minPosition }}></div>
-                <div style={{ ...triangleStyle, ...bottomTriangleStyle, left: maxPosition }}></div>
+                <span style={{ ...labelStyle, ...topLabelStyle, left: calculateMarkerPositionOnRangeBox(filteredValueRange.min) }}>min: {Math.round(filteredValueRange.min)}</span>
+                <span style={{ ...labelStyle, ...bottomLabelStyle, left: calculateMarkerPositionOnRangeBox(filteredValueRange.max) }}>max: {Math.round(filteredValueRange.max)}</span>
+                <div style={{ ...triangleStyle, ...topTriangleStyle, left: calculateMarkerPositionOnRangeBox(filteredValueRange.min) }}></div>
+                <div style={{ ...triangleStyle, ...bottomTriangleStyle, left: calculateMarkerPositionOnRangeBox(filteredValueRange.max) }}></div>
             </Box>
         </Box>
     );
