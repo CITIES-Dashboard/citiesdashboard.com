@@ -2,7 +2,7 @@
   {
     "isActive": true,
     "id": "air-quality",
-    "title": "Air Quality",
+    "title": "Air Quality and Weather",
     "owner": "CITIESair - https://citiesair.com",
     "chartCounts": 6,
     "embeddedWebsite": "https://citiesair.com/nyuadmap",
@@ -1346,19 +1346,6 @@
     "isActive": false,
     "id": "noise-pollution",
     "title": "Noise Pollution",
-    "sheetId": "",
-    "description": "",
-    "owner": "CITIES Research",
-    "contact": "cities.nyuad@nyu.edu",
-    "rawDataTables": [
-      {}
-    ],
-    "charts": []
-  },
-  {
-    "isActive": false,
-    "id": "weather",
-    "title": "Weather Data at NYUAD",
     "sheetId": "",
     "description": "",
     "owner": "CITIES Research",
