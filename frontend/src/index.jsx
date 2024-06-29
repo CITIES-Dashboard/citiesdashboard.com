@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 import './index.css';
 import App from './App';
@@ -11,7 +11,10 @@ import { TabProvider } from './ContextProviders/TabContext';
 import { RawDatasetsMetadataProvider } from './ContextProviders/RawDatasetsMetadataContext';
 import { PreferenceProvider } from './ContextProviders/PreferenceContext';
 
-ReactDOM.render(
+const container = document.getElementById('root');
+const root = createRoot(container);
+
+root.render(
   <React.StrictMode>
     <GoogleProvider>
       <HomePageProvider>
@@ -28,6 +31,5 @@ ReactDOM.render(
         </CommentCountsProvider>
       </HomePageProvider>
     </GoogleProvider>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 );
