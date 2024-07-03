@@ -64,14 +64,7 @@ export default function DatasetDownloadDialog(props) {
           </DialogActions>
         )}
 
-        <DialogContent sx={{
-          px: smallScreen ? 2 : 3,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'start',
-          height: '100%'
-        }}>
+        <DialogContent>
           <Chip label={project.title} size="small" sx={{ mb: 1 }} />
           <Typography variant="h6" >
             Preview and download raw dataset(s)
@@ -80,7 +73,7 @@ export default function DatasetDownloadDialog(props) {
           <DatasetSelectorAndPreviewer datasets={datasets} smallScreen={smallScreen} project={project} />
           {
             datasets &&
-            <Typography variant="caption" sx={{ my: 3, fontStyle: 'italic' }} >
+            <Typography variant="caption" sx={{ my: 2, fontStyle: 'italic', display: 'block' }} >
               This dataset is provided by the CITIES Dashboard with the support of {project.owner}. Should you intend to utilize this dataset for your project, research, or publication, we kindly request that you notify us at <Link href='mailto:nyuad.cities@nyu.edu'>nyuad.cities@nyu.edu</Link> to discuss citation requirements.
             </Typography>
           }
