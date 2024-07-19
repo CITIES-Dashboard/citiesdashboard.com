@@ -1,7 +1,6 @@
 **Last Update:** April 2024
 
 # CITIES DASHBOARD
-- [CITIES DASHBOARD](#cities-dashboard)
 - [1. Introduction](#1-introduction)
 - [2. General Technical Description](#2-general-technical-description)
   - [2.1. Main Files and Directories](#21-main-files-and-directories)
@@ -39,13 +38,13 @@ The CITIES Dashboard offers interactive data visualizations on various aspects o
 # 2. General Technical Description
 
 ![architecture-overview-of-cities-dashboard](/documentation/architecture-overview.svg)  
-[Draw.io File](https://app.diagrams.net/#G1WD_R6JVBDlY9cISDI0uoL2_1Dygzi-XJ#%7B%22pageId%22%3A%22C5RBs43oDa-KdzZeNtuy%22%7D)
+[Draw.io File](https://app.diagrams.net/#G14UseXBSi7wS0fH_Pmvbw34cnagGL8UO3#%7B%22pageId%22%3A%22ERlV1A4QeSJnuMmJJLtW%22%7D)
 
 The CITIES Dashboard is built with [React.js](https://react.dev/) and [Material UI](https://mui.com/material-ui/all-components/). It utilizes (mostly) [Google Charts](https://developers.google.com/chart/interactive/docs/gallery) and (sometimes) [Nivo Charts](https://nivo.rocks/) for generating interactive data visualizations for different datasets.
 
 Google Sheets are used as the database for all datasets, as a lot of departments, such as Dining and Printing, store their data in spreadsheets. This makes the pipeline for data entry and monthly data update much faster and more convenient for non-experts. The Dashboard implements [Google Visualization Query language](https://developers.google.com/chart/interactive/docs/querylanguage) to query chart data from said Google Sheets.
 
-The Sheets API is also used for the raw dataset versioning (on GitHub) to allow users to download various versions of the raw datasets in CSV files. On the backend, the automatic dataset versioning and metadata generation process is implemented in a separate [GitHub datasets repo](https://github.com/CITIES-Dashboard/datasets). On the frontend, the raw dataset download feature is implemented via the [DatasetDownload](frontend/src/Components/DatasetDownload/README.md) components.
+The Sheets API is also used for the raw dataset versioning (on GitHub) to allow users to download various versions of the raw datasets in CSV files. On the backend, the automatic dataset versioning and metadata generation process is implemented in a separate [GitHub datasets repo](https://github.com/CITIES-Dashboard/datasets). On the frontend, the raw dataset download feature is implemented via the [DatasetDownload](src/Components/DatasetDownload/README.md) components.
 
 The Dashboard is hosted on GitHub Pages. [Section 2.4](#24-deployment-process) explains how the deployment process works for the dashboard.
 
@@ -58,13 +57,13 @@ The Dashboard is hosted on GitHub Pages. [Section 2.4](#24-deployment-process) e
   - **Lazy Loading of Pages**: Uses React's `lazy` and `Suspense` utilities to lazy-load `Home` and `Project` pages, improving load times by splitting the code at designated points and only loading the components when needed.
 
   - **Theme Management**:
-    - Uses [PreferenceContext](frontend/src/ContextProviders/PreferenceContext.jsx) to get user theme preference, determining whether the app uses a dark or light theme based on user preference or system settings.
+    - Uses [PreferenceContext](src/ContextProviders/PreferenceContext.jsx) to get user theme preference, determining whether the app uses a dark or light theme based on user preference or system settings.
     - `useMemo` is applied to generate a theme object using `createTheme` and `getDesignTokens`, which adapts the theme based on the current `themePreference`.
-    - Custom themes are defined in [`Themes/CustomThemes.jsx`](frontend/src/Themes/CustomThemes.jsx), allowing for a tailored look and feel that aligns with the CITIES Dashboard's aesthetic requirements.
+    - Custom themes are defined in [`Themes/CustomThemes.jsx`](src/Themes/CustomThemes.jsx), allowing for a tailored look and feel that aligns with the CITIES Dashboard's aesthetic requirements.
 
   - **Global Style Adjustments**: Programmatically sets the background color of the `body` element to match the theme, enhancing the visual coherence of the application on devices with landscape orientation.
 
-  - **Context Providers**: Utilizes the `LinkContext` to share state across components, particularly for managing navigation and dynamically updating the UI based on the current page or section. Documentation on the `LinkContext` can be found [here](frontend/src/ContextProviders/README.md).
+  - **Context Providers**: Utilizes the `LinkContext` to share state across components, particularly for managing navigation and dynamically updating the UI based on the current page or section. Documentation on the `LinkContext` can be found [here](src/ContextProviders/README.md).
 
   - **Main Application Structure**:
     - Encapsulates the application's main layout within a `Box` component, setting up a flex container that stretches to the viewport's height. This layout includes the `Header`, followed by the main content area (from the specific page based on the current `Route`), with the `Footer` occupying the bottom of the viewport.
@@ -73,12 +72,12 @@ The Dashboard is hosted on GitHub Pages. [Section 2.4](#24-deployment-process) e
     - The `Header` and `Footer` are rendered using `useMemo` to optimize performance, ensuring that they are only recalculated if specific dependencies change.
     - These components provide consistent navigation and information architecture across the dashboard, contributing to a cohesive user experience.
 
-- `Components` directory contains reusable components that are used across multiple pages and sections of the dashboard. These components enable functionalities like raw dataset downloading in CSV format, presenting comments under projects, providing navigational aids like Speed Dial Buttons, etc. *For detailed documentation of all components, click [here](frontend/src/Components/README.md)*.
-- `Pages` directory contains the main pages of the dashboard, including the `Home` page, a template `Project` page for each dataset, and a `404` page for undefined routes in the application. The `Routes` defined in [`App.jsx`](frontend/src/App.jsx) correspond to these pages. *For detailed documentation of all pages, click [here](frontend/src/Pages/README.md)*.
-- `Graphs` directory contains the components responsible for rendering data visualizations using Google Charts and Nivo Charts. These components fetch data from Google Sheets, process it, and render the charts on the dashboard. *For detailed documentation of all graph components, click [here](frontend/src/Graphs/README.md)*.
-- `ContextProviders` directory contains the context providers used to manage global state and share data across components. These providers include `LinkContext` for navigation state management and `TabContext` for managing the current subchart tab. *For detailed documentation of all context providers, click [here](frontend/src/ContextProviders/README.md)*.
-- `Themes` directory contains the custom themes and color schemes used by the dashboard. *For detailed documentation of all themes, click [here](frontend/src/Themes/README.md)*.
-- `Utils` directory contains utility functions and helper methods used throughout the application. These utilities include an HTML-to-MUI parser, Google Analytics Tracker, etc. *For detailed documentation of all utility functions, click [here](frontend/src/Utils/README.md)*.
+- `Components` directory contains reusable components that are used across multiple pages and sections of the dashboard. These components enable functionalities like raw dataset downloading in CSV format, presenting comments under projects, providing navigational aids like Speed Dial Buttons, etc. *For detailed documentation of all components, click [here](src/Components/README.md)*.
+- `Pages` directory contains the main pages of the dashboard, including the `Home` page, a template `Project` page for each dataset, and a `404` page for undefined routes in the application. The `Routes` defined in [`App.jsx`](src/App.jsx) correspond to these pages. *For detailed documentation of all pages, click [here](src/Pages/README.md)*.
+- `Graphs` directory contains the components responsible for rendering data visualizations using Google Charts and Nivo Charts. These components fetch data from Google Sheets, process it, and render the charts on the dashboard. *For detailed documentation of all graph components, click [here](src/Graphs/README.md)*.
+- `ContextProviders` directory contains the context providers used to manage global state and share data across components. These providers include `LinkContext` for navigation state management and `TabContext` for managing the current subchart tab. *For detailed documentation of all context providers, click [here](src/ContextProviders/README.md)*.
+- `Themes` directory contains the custom themes and color schemes used by the dashboard. *For detailed documentation of all themes, click [here](src/Themes/README.md)*.
+- `Utils` directory contains utility functions and helper methods used throughout the application. These utilities include an HTML-to-MUI parser, Google Analytics Tracker, etc. *For detailed documentation of all utility functions, click [here](src/Utils/README.md)*.
 
 ## 2.2. Google Sheets database
 The dashboard utilizes Google Sheets as a database. This is because the raw datasets for the projects come from different university departments who:
@@ -99,10 +98,10 @@ Google Sheets also allows us to perform data analysis on the raw dataset through
 ![google-sheets-pivot-table](/documentation/google-sheets-pivot-table.png)  
 *__Example__: A pivot table grouping the food waste by week and a draft of the line chart in the same sheet. This sheet is hidden by default; it can only be seen and edited by the developers, not the public nor the university departments.*
 
-The data in Google Sheets is fetched and queried using the [Google Visualization Query language](https://developers.google.com/chart/interactive/docs/querylanguage) via the `fetchDataFromSheet` function [(more on it here)](frontend/src/Graphs/readme.md). The data can then be used by a Google Chart, or processed further for a Nivo Chart.
+The data in Google Sheets is fetched and queried using the [Google Visualization Query language](https://developers.google.com/chart/interactive/docs/querylanguage) via the `fetchDataFromSheet` function [(more on it here)](src/Graphs/readme.md). The data can then be used by a Google Chart, or processed further for a Nivo Chart.
 
 ## 2.3. Front-end Database and Google Charts Data Visualization
-The current dashboard prototype uses a temporary JSON database on the front-end, [temp_database.json](./frontend/src/temp_database.json), which contains metadata for the Google Charts data visualization (charts). The data structure of the database is as below:
+The current dashboard prototype uses a temporary JSON database on the front-end, [temp_database.json](./src/temp_database.json), which contains metadata for the Google Charts data visualization (charts). The data structure of the database is as below:
 ```
 [
   // Dataset 1:
@@ -232,9 +231,9 @@ Together, these components create a seamless Dataset Download experience, enabli
   The application has added some extra options that are not natively supported by Google Charts, but are instead used by Nivo Charts or to implement custom functionalities such as the series selector and the stack/unstack bars button. These are:
   - **`"seriesSelector"`**: Used to enable the series selector for the chart. It has the following sub-properties:
     - **`"allowMultiple"`**: A boolean value to allow multiple series to be selected at once.
-    - **`method`**: A string value to specify the method used by the series selector to show / hide series. More details can be found in the [SeriesSelector's documentation here](/frontend/src/Graphs/Subchart/README.md)
+    - **`method`**: A string value to specify the method used by the series selector to show / hide series. More details can be found in the [SeriesSelector's documentation here](/src/Graphs/Subchart/README.md)
   - **`"toggleStackedBars"`**: Used to enable the button to toggle between stacked and unstacked bars.
-  - **`"colorAxis"`**: Used to create gradient legends for [Nivo Calendar Charts](/frontend/src/Graphs/Subchart/NivoCharts/NivoCalendarChart.jsx).
+  - **`"colorAxis"`**: Used to create gradient legends for [Nivo Calendar Charts](/src/Graphs/Subchart/NivoCharts/NivoCalendarChart.jsx).
   - **`"nivoHeatMap"`**: Used to set the options for Nivo HeatMap charts. Details and editable examples can be found [here](https://nivo.rocks/heatmap/).
 
 - **`"control"`**: an object literal to specify the Google Chart Controls used by the chart. The controls enable users to interact with the graphs by selecting specific time ranges, categories, or other parameters. The control object has the following properties:
