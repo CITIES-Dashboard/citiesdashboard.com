@@ -29,6 +29,7 @@ import { CalendarChart, getCalendarChartMargin, calculateCalendarChartHeight } f
 import { NivoHeatMap } from './NivoCharts/NivoHeatMap';
 import ModifiedCategoryFilterForTimeline from './SubchartUtils/ModifiedCategoryFilterForTimeline';
 import { useYearRange } from '../../ContextProviders/YearRangeContext';
+import { isValidArray } from '../../Utils/Utils';
 
 function SubChart(props) {
   // Props
@@ -463,18 +464,19 @@ function SubChart(props) {
     return { min: vAxisMin, max: vAxisMax };
   }, []);
 
-  const handleSeriesSelection = useCallback((
+  const handleSeriesSelection = useCallback(({
     newDataColumns,
     _allInitialColumns = allInitialColumns,
     _chartWrapper = chartWrapper,
     _controlWrapper = controlWrapper
-  ) => {
+  }) => {
     if (!_allInitialColumns) return;
 
     setDataColumns(newDataColumns);
 
     if (seriesSelector.method === "toggleVisibility" || seriesSelector.method === null) {
       const hiddenSeriesObject = {};
+
       newDataColumns.forEach((col) => {
         if (!col.selected)
           hiddenSeriesObject[col.seriesIndex] = {
