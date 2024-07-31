@@ -5,7 +5,7 @@ The `SubChart` component is an integral part of the CITIES dashboard, designed t
 ### Imports
 - **React Hooks and Contexts**: Utilizes standard React hooks (`useState`, `useRef`, `useEffect`, `useContext`, `useMemo`, `useCallback`, `memo`) for state management, referencing DOM elements, performing side effects, memoization, and optimizing re-renders. The `memo` function wraps the component to prevent unnecessary re-renders.
 - **ContextProviders**: `GoogleContext` is used to load the Google Charts library and provide access to Google Charts components and functions. The library can only be loaded once during the entire life cycle of the web app; therefore, it is implemented in a Context Provider.
-- **Chart Components and Helpers**: ([Detailed documentation for these functions](../readme.md))
+- **Chart Components and Helpers**: ([Detailed documentation for these functions](../README.md))
   1.  `fetchDataFromSheet`: Fetches data from a Google Sheet for chart rendering. This data is then used by Google Charts and Nivo Charts to generate visualizations.
 
   2. **Google Charts Components and Helpers**:

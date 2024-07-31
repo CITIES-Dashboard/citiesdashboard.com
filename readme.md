@@ -1,4 +1,4 @@
-**Last Update:** April 2024
+**Last Update:** July 2024
 
 # CITIES DASHBOARD
 - [1. Introduction](#1-introduction)
@@ -46,7 +46,7 @@ Google Sheets are used as the database for all datasets, as a lot of departments
 
 The Sheets API is also used for the raw dataset versioning (on GitHub) to allow users to download various versions of the raw datasets in CSV files. On the backend, the automatic dataset versioning and metadata generation process is implemented in a separate [GitHub datasets repo](https://github.com/CITIES-Dashboard/datasets). On the frontend, the raw dataset download feature is implemented via the [DatasetDownload](src/Components/DatasetDownload/README.md) components.
 
-The Dashboard is hosted on GitHub Pages. [Section 2.4](#24-deployment-process) explains how the deployment process works for the dashboard.
+The Dashboard is hosted on GitHub Pages. [Section 2.4](#24-deployment-process) explains how the deployment process works for the dashboard. Finally, as Google Sheets are used as database for the datasets, no separate backend is needed.
 
 ## 2.1. Main Files and Directories
 
@@ -98,7 +98,7 @@ Google Sheets also allows us to perform data analysis on the raw dataset through
 ![google-sheets-pivot-table](/documentation/google-sheets-pivot-table.png)  
 *__Example__: A pivot table grouping the food waste by week and a draft of the line chart in the same sheet. This sheet is hidden by default; it can only be seen and edited by the developers, not the public nor the university departments.*
 
-The data in Google Sheets is fetched and queried using the [Google Visualization Query language](https://developers.google.com/chart/interactive/docs/querylanguage) via the `fetchDataFromSheet` function [(more on it here)](src/Graphs/readme.md). The data can then be used by a Google Chart, or processed further for a Nivo Chart.
+The data in Google Sheets is fetched and queried using the [Google Visualization Query language](https://developers.google.com/chart/interactive/docs/querylanguage) via the `fetchDataFromSheet` function [(more on it here)](src/Graphs/README.md). The data can then be used by a Google Chart, or processed further for a Nivo Chart.
 
 ## 2.3. Front-end Database and Google Charts Data Visualization
 The current dashboard prototype uses a temporary JSON database on the front-end, [temp_database.json](./src/temp_database.json), which contains metadata for the Google Charts data visualization (charts). The data structure of the database is as below:
@@ -320,49 +320,48 @@ Together, these components create a seamless Dataset Download experience, enabli
 
 ## 2.4 Deployment Process
 
+Simply run `npm run deploy` in this repo to build the page [citiesdashboard.com](https://citiesdashboard.com)
+
+    As of July 2024, the below description for development-production repo does not hold true anymore. It was implemented in a time where lots of changes were happening to the CITIES Dashboard and requires a separate beta website to test internally and a stable production public facing website. However, this setup is not necessary anymore. We keep it here in case in the future we might implement it back. 
+
 The front-end application is deployed on GitHub, in two separate but linked repositories:
-- [Development repo](https://github.com/CITIES-Dashboard/cities-dashboard.github.io): for the **beta** frontend [website](https://beta.citiesdashboard.com/), redirected from [cities-dashboard.github.io](cities-dashboard.github.io).
-- [Production repo](https://github.com/CITIES-Dashboard/citiesdashboard.com): for the main frontend [website](https://citiesdashboard.com/)
+- Development repo (cities-dashboard.github.io): for the **beta** website [beta.citiesdashboard.com](https://beta.citiesdashboard.com/), redirected from [cities-dashboard.github.io](cities-dashboard.github.io).
+- Production repo (citiesdashboard.com): for the main frontend [website](https://citiesdashboard.com/)
 
 Both of these domains are managed in [name.com](https://www.name.com/).
 
-To deploy changes from this development repo to the production website, the [push-to-prod-repo.yml](.github/workflows/push-to-prod-repo.yml) workflow must be manually triggered. It transfers the production-ready files from the `main` branch of this development repo to the production repo. There, the [deploy-to-gh-pages.yml](https://github.com/CITIES-Dashboard/citiesdashboard.com/blob/main/.github/workflows/deploy-to-gh-pages.yml) workflow is automatically triggered to deploy the changes to the production website on GitHub Pages.
+To deploy changes from this development repo to the production website, the [push-to-prod-repo.yml](./.github/workflows/push-to-prod-repo.yml) workflow must be manually triggered. It transfers the production-ready files from the `main` branch of this development repo to the production repo. There, on production repo, the `deploy-to-gh-pages.yml` workflow is automatically triggered to deploy the changes to the production website on GitHub Pages.
 
 To deploy changes to the beta website, simply run `npm run deploy` in the development repo. This will automatically deploy the changes to the beta website on GitHub Pages.
-
-Finally, as Google Sheets are used as database for the datasets, no separate backend is needed. Separately, as mentioned, another GitHub repo ([datasets repo](https://github.com/CITIES-Dashboard/datasets)) is implemented to fetch raw datasets on Google Sheets daily for version controlling.
 
 # 3. Build and Test Locally
 
 ## 3.1. Prerequisites
 
 - [Node.js](https://nodejs.org/en/download/)
-- [Yarn](https://classic.yarnpkg.com/en/docs/install/#windows-stable)
+- [Python](https://www.python.org/)
 
 ## 3.2. Install Dependencies and Run the Application
 
 1. Clone the repository from GitHub.
 
-2. Navigate to the `src/frontend` directory of the project and run the following command to install the dependencies:
+2. Run the following command to install the dependencies:
 
-  ```
-  npm install
-  ```
-
-  or
-
-  ```
-  yarn install
-  ```
+    ```
+    npm install
+    ```
 
 3. Run the following command to start the application.
 
-  ```
-  npm start
-  ```
+    ```
+    npm start
+    ```
 
-  or
+4. If you want to run a stable build (more optimized and faster compared to the dev application in Step 3, but 404 page doesn't work in this case), run the below instead:
 
-  ```
-  yarn start
-  ```
+    ```
+    npm run build
+    cd build
+    python3 -m http.server
+    ```
+

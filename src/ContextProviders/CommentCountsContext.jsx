@@ -1,5 +1,5 @@
 import React, { useState, useEffect, createContext, useMemo } from 'react';
-import { fetchDataFromURL } from '../Components/DatasetDownload/DatasetFetcher';
+import { fetchDataFromURL } from "../API/ApiFetch";
 import { WEBSITE_ID } from '../Components/CommentSection';
 
 // create context

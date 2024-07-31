@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { isValidArray } from '../../../Utils/Utils';
+import { isValidArray } from '../UtilFunctions';
 
 const normalizeColorStopOffsets = ({ offsets, minOffset, maxOffset }) => offsets.map((offset) => (offset - minOffset) / (maxOffset - minOffset));
 

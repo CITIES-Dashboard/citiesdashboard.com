@@ -5,7 +5,7 @@ import { useTheme } from '@mui/material/styles';
 import { Box, Chip } from '@mui/material';
 
 import parse from 'html-react-parser';
-import { replacePlainHTMLWithMuiComponents } from '../../../Utils/Utils';
+import { replacePlainHTMLWithMuiComponents } from '../../../Utils/UtilFunctions';
 
 const addCommasToNumber = (number) => number.toLocaleString();
 
@@ -44,7 +44,7 @@ const findRangeOfYValues = (data) => {
     return { minValue, maxValue };
 };
 
-export const NivoHeatMap = ({ data, width, isPortrait, options, tooltipTemplate }) => {
+const NivoHeatMap = ({ data, width, isPortrait, options, tooltipTemplate }) => {
     const theme = useTheme();
 
     // --- Get Range of Data (Currently, for coloring labels for readability) ---
@@ -160,3 +160,5 @@ export const NivoHeatMap = ({ data, width, isPortrait, options, tooltipTemplate 
         />
     );
 };
+
+export default NivoHeatMap;

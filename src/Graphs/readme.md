@@ -42,14 +42,14 @@ If subcharts are available, `Tabs` are shown and their navigation logic is imple
 If subcharts are not available, one single chart is displayed instead, without any `Tabs`.
 
 *Special methods:*
-- handleWindowResize: added to a `resize` event listener, together with a debounce of 100ms, to resize the chart container upon window resize. This is due to the fact that Google Charts are not 100% responsive out of the box, and requires further customization, such as determining if the current window is portrait or not, to improve the charts' readability in small screen devices.
-- handleChange: listen to changes in the selected tab for a given chart to update the display of its subcharts accordingly, via TabContext.
+- `handleWindowResize`: added to a `resize` event listener, together with a debounce of 100ms, to resize the chart container upon window resize. This is due to the fact that Google Charts are not 100% responsive out of the box, and requires further customization, such as determining if the current window is portrait or not, to improve the charts' readability in small screen devices.
+- `handleChange`: listen to changes in the selected tab for a given chart to update the display of its subcharts accordingly, via TabContext.
 
 ### [`GoogleSheetEmbedVisualization.jsx`](GoogleSheetEmbedVisualization.jsx)
 This component is only currently used for Athletic checkin project, in charts 3 and 4. Barely a chart, it simply provides a re-usable component to visually embed a Google Sheet on the dashboard. Any formatting (such as color, row and column size, text style...) must be done on the Google Sheet, as this component only embed the sheet via an `<iframe>` tag.
 
 This component requires 3 simple prop:
-- publishedSheetId: the ID of the entire Google Sheet document containing the desired sheet to be embedded
-- gid: the id of the specific sheet to be embedded 
-- range: the range of the cells to be embedded, following Google's format (insert link here)
+- `publishedSheetId`: the ID of the entire Google Sheet document containing the desired sheet to be embedded
+- `gid`: the id of the specific sheet to be embedded 
+- `range`: the range of the cells to be embedded, following Google's format (insert link here)
 ... All of which can be added in and parsed from the `temp_database.json` file file, similar to any other different kinds of charts.

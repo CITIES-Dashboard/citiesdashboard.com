@@ -14,7 +14,7 @@ import FullWidthBox from '../FullWidthBox';
 import ThemeSelector from './ThemeSelector';
 
 import jsonData from '../../section_data.json';
-import { replacePlainHTMLWithMuiComponents } from '../../Utils/Utils';
+import { replacePlainHTMLWithMuiComponents } from '../../Utils/UtilFunctions';
 import CITIESlogoLinkToHome from './CITIESlogoLinkToHome';
 import { PreferenceContext } from '../../ContextProviders/PreferenceContext';
 

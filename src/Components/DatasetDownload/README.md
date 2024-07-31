@@ -11,21 +11,8 @@ The `DatasetCalendar.jsx` component enriches the dataset download functionality 
 **Key Features:**
 
 - **Date Navigation**: Allows users to visually identify and select different versions of a dataset based on dates, highlighted within the calendar.
-- **Material-UI and dayjs**: Built using Material-UI components for consistency and aesthetics, and utilizes the `dayjs` library for efficient date manipulation.
-- **Highlighted Dates**: Dates with available dataset versions are highlighted, offering clear visual cues to users about the available data points.
-- **Adaptive Design**: Responsive to screen size, ensuring a coherent user experience across desktop and mobile devices.
-- **Seamless Integration**: Works in conjunction with `DatasetDownloadDialog` and `DatasetFetcher` to provide a cohesive workflow for dataset preview and download.
-- **Performance Optimization**: By highlighting only the dates with available versions and caching selected dates, it enhances the performance and user experience without redundant fetches.
-
-### DatasetFetcher.jsx
-
-The `DatasetFetcher.jsx` component is responsible for the retrieval of datasets from specified URLs. It is designed to handle different file formats and ensure the data is fetched and parsed correctly for use within the application.
-
-**Key Features:**
-
-- **`fetchDataFromURL`**: An asynchronous function that fetches data from a provided URL. It supports `.csv` and `.json` files, parsing them accordingly.
-- **File Extension Support**: Currently, it handles `.csv` and `.json` extensions, returning the content in a parsed format. Other file types are returned as-is, without parsing.
-- **Error Handling**: Includes checks to verify the URL points to a valid file, enhancing the robustness of the data fetching process.
+- **Material-UI and `dayjs`**: Built using Material-UI components for consistency and aesthetics, and utilizes the `dayjs` library for efficient date manipulation.
+- **Highlighted Dates**: Dates with available dataset versions are highlighted, offering clear visual cues to users about the available data points. By highlighting only the dates with available versions and caching selected dates, it enhances the performance and user experience without redundant fetches.
 
 ### DatasetDownloadDialog.jsx
 

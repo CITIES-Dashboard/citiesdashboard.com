@@ -14,7 +14,7 @@ This directory contains utility files that provide essential functionalities and
   - Event listeners for user actions (clicks, page navigation, etc.).
   - Functions to log and send these interactions to analytics services.
 
-- **Utils.jsx**
+- **UtilFunctions.jsx**
 
   A collection of miscellaneous utility functions that support various aspects of the application. This file serves as a toolkit for common tasks, ranging from data formatting and validation to UI helpers and performance optimizations.
 

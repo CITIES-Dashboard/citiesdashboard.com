@@ -13,7 +13,7 @@ import EventIcon from '@mui/icons-material/Event';
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 
 import * as Tracking from '../../Utils/Tracking';
-import { fetchDataFromURL } from './DatasetFetcher';
+import { fetchDataFromURL } from "../../API/ApiFetch";
 import DatasetCalendar from './DatasetCalendar';
 
 export default function DatasetDownloadDialog(props) {

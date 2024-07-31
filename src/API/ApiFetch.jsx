@@ -1,5 +1,3 @@
-// disable eslint for this file
-/* eslint-disable */
 export const fetchDataFromURL = async (url, extension) => {
   try {
     const response = await fetch(url);

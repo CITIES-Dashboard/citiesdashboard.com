@@ -14,7 +14,6 @@ import CustomThemes from './Themes/CustomThemes';
 import Header from './Components/Header/Header';
 import Footer from './Components/Footer';
 import FourOhFour from './Pages/404';
-import DeviceOrientationNotification from './Components/SnackBarNotifications';
 import LoadingAnimation from './Components/LoadingAnimation';
 
 import { LinkContext } from './ContextProviders/LinkContext';
@@ -70,8 +69,6 @@ function App() {
             backgroundColor: 'customBackground',
           }}
         >
-          <DeviceOrientationNotification />
-
           <SpeedDialButton
             chartsTitlesList={chartsTitlesList}
             topAnchorID={jsonData.topAnchor.id}

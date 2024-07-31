@@ -7,7 +7,7 @@ import DataObjectIcon from '@mui/icons-material/DataObject';
 import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
 import UppercaseTitle from '../../Components/UppercaseTitle';
 import jsonData from '../../section_data.json';
-import { replacePlainHTMLWithMuiComponents, capitalizePhrase } from '../../Utils/Utils';
+import { replacePlainHTMLWithMuiComponents, capitalizePhrase } from '../../Utils/UtilFunctions';
 
 const googleFormLink = 'https://docs.google.com/forms/d/e/1FAIpQLSenxtTIizWED0PT3hBOn3IU6fwmj4sr1yhjU70mjmK4R-ipsw/';
 

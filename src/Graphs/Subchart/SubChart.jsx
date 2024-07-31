@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useContext, useMemo, useCallback, memo } f
 
 import { GoogleContext } from '../../ContextProviders/GoogleContext';
 
-import { Box, Stack, Tooltip, Typography, Slider } from '@mui/material/';
+import { Box, Stack, Tooltip, Typography } from '@mui/material/';
 
 import { useTheme } from '@mui/material/styles';
 import GoogleSheetEmbedVisualization from '../GoogleSheetEmbedVisualization';
@@ -22,14 +22,12 @@ import LoadingAnimation from '../../Components/LoadingAnimation';
 
 import { isMobile } from 'react-device-detect';
 
-import { transformDataForNivo, convertToNivoHeatMapData } from '../NivoChartHelper';
+import { transformDataForNivoCalendarChart, transformDataForNivoHeatMap } from './NivoCharts/NivoChartHelper';
 
-import { CalendarChart, getCalendarChartMargin, calculateCalendarChartHeight } from './NivoCharts/NivoCalendarChart';
+import NivoCalendarChart from './NivoCharts/NivoCalendarChart/NivoCalendarChart';
+import NivoHeatMap from './NivoCharts/NivoHeatMap';
 
-import { NivoHeatMap } from './NivoCharts/NivoHeatMap';
 import ModifiedCategoryFilterForTimeline from './SubchartUtils/ModifiedCategoryFilterForTimeline';
-import { useYearRange } from '../../ContextProviders/YearRangeContext';
-import { isValidArray } from '../../Utils/Utils';
 
 function SubChart(props) {
   // Props
@@ -76,29 +74,13 @@ function SubChart(props) {
   const theme = useTheme();
 
   // Get the options object for chart
-  let options = useMemo(() => {
-    let opts = returnGenericOptions({ ...props, theme });
-    return opts;
+  const options = useMemo(() => {
+    return returnGenericOptions({ ...props, theme });
   }, [props, theme, chartData.chartType]);
 
-  // Debounce function to prevent ResizeObserver loop
-  // (from MUI Slider) from crashing the app
-  const debounce = (func, wait) => {
-    let timeout;
-    return (...args) => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(this, args), wait);
-    };
-  };
-
   // State to store transformed data for CalendarChart
-  const [calendarData, setCalendarData] = useState(null);
-  const { yearRange, setYearRange } = useYearRange();
-  const [calendarHeight, setCalendarHeight] = useState(600);
-  const [containerWidth, setContainerWidth] = useState(1200); // max width of the chart container
-  const [shouldDisplaySlider, setshouldDisplaySlider] = useState(false);
-  const [sliderMarks, setSliderMarks] = useState([]);
-  const calendarRef = useRef(null);
+  const [calendarDataArray, setCalendarDataArray] = useState(null);
+
   // Early exit for 'Calendar' chartType
   if (chartData.chartType === 'Calendar') {
     useEffect(() => {
@@ -122,80 +104,17 @@ function SubChart(props) {
           }
 
           const tooltipColumn = getTooltipColumn(chartData, subchartIndex).sourceColumn;
-          const transformedData = transformDataForNivo(rawData, dataColumn, tooltipColumn);
-          setCalendarData({ ...transformedData, options: options });
 
-          // Get the number of years we have data for and the number of years to display
-          const lastYear = new Date(transformedData.dateRange.max).getFullYear();
-          const firstYear = new Date(transformedData.dateRange.min).getFullYear();
-          const firstVisibleYear = isPortrait ? lastYear - 3 : lastYear - 2;
-          setYearRange([firstVisibleYear, lastYear]);
-
-          const marks = Array.from(
-            { length: lastYear - firstYear + 1 },
-            (_, i) => ({ value: firstYear + i, label: firstYear + i })
+          setCalendarDataArray(
+            transformDataForNivoCalendarChart(rawData, dataColumn, tooltipColumn)
           );
-          setSliderMarks(marks);
-
-          setshouldDisplaySlider((firstYear <= lastYear - 2));
         })
         .catch(error => {
           console.log(error);
         });
     }, [google]);
 
-    // Effect to reset the yearRange when the currentSubchart changes
-    // Leaving this in for future reference. Feel free to remove
-    // useEffect(() => {
-    //   if (calendarData) {
-    //     const endYear = new Date(calendarData.dateRange.max).getFullYear();
-    //     const startYear = isPortrait ? endYear - 3 : endYear - 2;
-    //     setYearRange([startYear, endYear]);
-    //   }
-    // }, [currentSubchart]);
-
-    const updateHeight = () => {
-      if (calendarData) {
-        const calendarChartMargin = getCalendarChartMargin(isPortrait);
-        const cellSize = Math.min(containerWidth / 60, 20); // max cell size of 20
-        const yearHeight = cellSize * 7; // Height for one year
-        const totalHeight = calculateCalendarChartHeight(yearRange, yearHeight, calendarChartMargin);
-        setCalendarHeight(totalHeight);
-
-        if (calendarRef.current) {
-          let element = calendarRef.current; // Start with the current ref
-          let targetElement = null;
-
-          while (element) {
-            if (element.classList.contains('MuiBox-root')) {
-              let sibling = element.parentElement.firstChild;
-              while (sibling) {
-                if (sibling !== element && sibling.classList.contains('MuiTabs-root')) {
-                  targetElement = element; // Found the target element
-                  break;
-                }
-                sibling = sibling.nextSibling;
-              }
-            }
-
-            if (targetElement) break;
-            element = element.parentElement;
-          }
-
-          if (targetElement) {
-            targetElement.style.height = `${totalHeight + 125}px`;
-          }
-        }
-      }
-    };
-
-    const debouncedUpdateHeight = debounce(updateHeight, 100);
-
-    useEffect(() => {
-      debouncedUpdateHeight();
-    }, [yearRange, isPortrait, calendarData]);
-
-    if (!calendarData) {
+    if (!calendarDataArray) {
       return (
         <Box sx={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
           <LoadingAnimation />
@@ -204,51 +123,11 @@ function SubChart(props) {
     }
 
     return (
-      <>
-        {shouldDisplaySlider && (
-          <Box
-            sx={{
-              width: '100%',
-              display: 'flex',
-              justifyContent: 'center',
-              mt: isPortrait ? 1 : 2,
-              mb: isPortrait ? 3 : 4,
-              position: 'sticky',
-              left: 0,
-            }}>
-            <Slider
-              value={yearRange}
-              min={new Date(calendarData.dateRange.min).getFullYear()}
-              max={new Date(calendarData.dateRange.max).getFullYear()}
-              onChange={(event, newValue) => setYearRange(newValue)}
-              valueLabelDisplay="off"
-              aria-labelledby="calendar-chart-year-slider"
-              marks={sliderMarks}
-              size='small'
-              sx={{ width: '75%' }}
-            />
-          </Box>
-        )}
-        <GoogleChartStyleWrapper
-          ref={calendarRef}
-          isPortrait={isPortrait}
-          className={className}
-          position="relative"
-          minWidth="700px"
-          height={calendarHeight + 'px'}
-          minHeight={isPortrait ? '200px' : calendarHeight + 'px'}
-          maxHeight={isPortrait && '550px'}
-        >
-          <CalendarChart
-            data={calendarData.data}
-            dateRange={calendarData.dateRange}
-            valueRange={calendarData.valueRange}
-            yearRange={shouldDisplaySlider ? yearRange : [new Date(calendarData.dateRange.min), new Date(calendarData.dateRange.max)]}
-            isPortrait={isPortrait}
-            options={options}
-          />
-        </GoogleChartStyleWrapper>
-      </>
+      <NivoCalendarChart
+        dataArray={calendarDataArray}
+        isPortrait={isPortrait}
+        options={options}
+      />
     );
   }
 
@@ -261,7 +140,7 @@ function SubChart(props) {
       fetchDataFromSheet({ chartData: chartData, subchartIndex: subchartIndex })
         .then(response => {
           const rawData = response.getDataTable();
-          const heatMapData = convertToNivoHeatMapData(rawData);
+          const heatMapData = transformDataForNivoHeatMap(rawData);
           setNivoHeatMapData(heatMapData);
         }
         )

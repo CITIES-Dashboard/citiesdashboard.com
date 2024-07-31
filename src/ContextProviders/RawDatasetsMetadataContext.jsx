@@ -1,5 +1,5 @@
 import { useState, useEffect, createContext, useMemo } from 'react';
-import { fetchDataFromURL } from '../Components/DatasetDownload/DatasetFetcher';
+import { fetchDataFromURL } from "../API/ApiFetch";
 
 export const RawDatasetsMetadataContext = createContext();
 
