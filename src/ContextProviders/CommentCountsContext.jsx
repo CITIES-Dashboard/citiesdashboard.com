@@ -5,7 +5,7 @@ import { WEBSITE_ID } from '../Components/CommentSection';
 // create context
 export const CommentCountsContext = createContext();
 
-const hyvorTalkApiUrl = `https://talk.hyvor.com/api/v1/pages?website_id=${WEBSITE_ID}`;
+const hyvorTalkApiUrl = `https://talk.hyvor.com/api/data/v1/pages?website_id=${WEBSITE_ID}`;
 
 // context provider
 export function CommentCountsProvider({ children }) {
@@ -16,8 +16,8 @@ export function CommentCountsProvider({ children }) {
     const commentCountsForAllPages = {};
     try {
       const jsonData = await fetchDataFromURL(hyvorTalkApiUrl, 'json');
-      jsonData.data.forEach((item) => {
-        commentCountsForAllPages[item.page_identifier] = item.comments_count;
+      jsonData.forEach((item) => {
+        commentCountsForAllPages[item.identifier] = item.comments_count;
       });
       return commentCountsForAllPages;
     } catch (error) {
