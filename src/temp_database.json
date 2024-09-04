@@ -28,7 +28,7 @@
     "charts": [
       {
         "title": "Number of Unique FABS Memberships",
-        "subtitle": "As the <a href='./student-population'>university population</a> continues to grow, FABS membership registrations have generally exhibited an upward trend, except for a 40% decline in AY20-21. During this period, the university introduced remote working policies and campus access restrictions to combat the COVID-19 pandemic. As a result, there was a significant decrease in Faculty and Staff together with External and Other memberships; meanwhile, undergraduate student memberships only decreased by 14% in AY20-21 as most students were allowed to stay on-campus.<br><br>From March 2020 to June 2022, access to the Fitness Center, Women's Only-Gym, Indoor and Outdoor Tracks, and the 50m Pool required advanced booking on FABS' Capacity Management portal. Thus, those who wished to use these facilities must have a FABS membership. <br><br>AY21-22 and AY22-23 saw a remarkable rebounce in the number of memberships that exceeded pre-COVID figures across all demographic categories. Notably, the number of External and Other memberships (consisting of guests and other external communities) almost quadrupled in AY21-22, following the relaxation of most COVID restrictions for indoor places.",
+        "subtitle": "As the university population grew over the past few years, FABS membership registrations have generally exhibited an upward trend, except for a 40% decline in AY20-21. During this period, the university introduced remote working policies and campus access restrictions to combat the COVID-19 pandemic. As a result, there was a significant decrease in Faculty and Staff together with External and Other memberships; meanwhile, undergraduate student memberships only decreased by 14% in AY20-21 as most students were allowed to stay on-campus.<br><br>From March 2020 to June 2022, access to the Fitness Center, Women's Only-Gym, Indoor and Outdoor Tracks, and the 50m Pool required advanced booking on FABS' Capacity Management portal. Thus, those who wished to use these facilities must have a FABS membership. <br><br>AY21-22 and AY22-23 saw a remarkable rebound in the number of memberships that exceeded pre-COVID figures across all demographic categories. Notably, the number of External and Other memberships (consisting of guests and other external communities) almost quadrupled in AY21-22, following the relaxation of most COVID restrictions for indoor places. <br><br>AY23-24 (up to April 2024) shows a continuation of this upward trend, maintaining strong membership numbers across all categories. The data indicates steady engagement from Undergraduate students, Faculty and Staff, and External communities, suggesting that memberships may reach or exceed AY22-23 levels by the end of the academic year, reflecting continued interest and engagement in FABS facilities.",
         "gid": 337720664,
         "chartType": "ComboChart",
         "headers": 1,
@@ -105,7 +105,7 @@
       },
       {
         "title": "Percentage of Demographic Groups in FABS",
-        "subtitle": "Undergraduate students have remained the largest group of FABS in recent years, representing around two-thirds of all memberships.",
+        "subtitle": "Undergraduate students have consistently remained the largest group in FABS, but their percentage has varied over the years. During AY20-21, they represented nearly two-thirds (63.9%) of all memberships due to the impact of COVID-19 restrictions that limited campus access primarily to students. In subsequent years, the proportion of undergraduate student memberships decreased slightly but remained above 50%, reaching 56.2% in AY23-24 (up to April 2024). Meanwhile, the share of Faculty and Staff memberships has increased steadily, reaching 35.5% in AY23-24, while memberships from External and Other groups have shown a gradual increase, indicating diversified engagement in FABS facilities.",
         "gid": 337720664,
         "query": "SELECT A, B, C, D, E, I, J, K , L",
         "headers": 1,
@@ -168,7 +168,7 @@
         "subcharts": [
           {
             "subchartTitle": "All time average (2020-2024)",
-            "subchartSubtitle": "As the typical workday draws to a close at around <b>5-6pm</b> for students, faculty, and staff, this time window is the busiest period for fitness activities. There is another relatively smaller peak in the morning from 8-9am; however, its magnitude doesn't usually surpass half of the afternoon rush's. For those who prefer a quieter workout, aim for <b>early-morning or midday</b> time slots where the occupancy rate is only a quarter of the busiest time.",
+            "subchartSubtitle": "As the typical workday draws to a close at around <b>5-6pm</b> for students, faculty, and staff, this time window remains the busiest period for facility check-ins. The graph shows a significant peak in activity during this period, with an average hourly check-in number reaching nearly 35. There is also a smaller peak in the morning from <b>8-9am</b>, with check-ins averaging around half the volume of the late afternoon rush. For those who prefer a quieter workout, the <b>early-morning (6-7am) or midday (11am-1pm)</b> time slots offer a more relaxed experience, with the occupancy rate being only a quarter of the peak time.",
             "query": "SELECT A, H, J, K",
             "columns": [
               0,
@@ -197,7 +197,7 @@
           },
           {
             "subchartTitle": "By year",
-            "subchartSubtitle": "Due to COVID-19 restrictions, there was a limit on how many people could be in the same facilities during 2020-2022. Take the fitness center, for example, the cap was 15 people in 2020, which was gradually loosened to 25 people in 2022.",
+            "subchartSubtitle": "With the easing of COVID-19 restrictions, the limits on facility occupancy were gradually lifted between 2022 and 2023, allowing more people to use the facilities simultaneously. This change is evident in the increased check-in numbers, especially in 2023 and early 2024. The fitness center, which had a cap of 15 people in 2020 and 25 in 2022, saw a significant rise in usage as restrictions were removed. By 2024 (till March), the average check-in numbers peaked around 5-6pm, showing the highest activity levels compared to previous years.",
             "query": "SELECT A, B, C, D, E, F",
             "options": {
               "seriesType": "line"
@@ -221,7 +221,7 @@
       },
       {
         "title": "Facilities Check-in Per Week Day, Normalized to the Max Value of Each Year",
-        "subtitle": "While the number of check-ins exhibits a clear diurnal variation, it remains more stable throughout the weekdays than on the weekends. The second day of the weekend and the first work day of the week have historically been off-peak days, where attendance is around 10-30% lower than the busiest day. Interestingly, this pattern still holds even after the UAE changed its weekend days on January 1, 2022 (from Fri-Sat to Sat-Sun). 2021's off-peak days are Sat and Sun, whereas 2022's and 2023's off-peak days are Sun and Mon.",
+        "subtitle": "While the number of check-ins shows a diurnal variation, it remains relatively stable throughout the weekdays in both 2023 and 2024 (till March). The data indicates that Sunday and Monday continue to be off-peak days, with attendance approximately 10-30% lower than the busiest day of the week. This trend suggests that, even after the UAE's weekend change, the pattern of lower attendance on the second day of the weekend (Sunday) and the first workday of the week (Monday) remains consistent in recent years. Weekend check-ins, particularly on Saturdays, show a slight increase compared to Sundays, reflecting a preference for weekend fitness activities earlier in the weekend.",
         "gid": 654076094,
         "headers": 1,
         "columns": [
@@ -293,7 +293,7 @@
       },
       {
         "title": "Total Monthly Facilities Check-in, Historical",
-        "subtitle": "This visualization shows how much fitness activity has increased since the introduction of FABS. This can be attributed to the gradual relaxation of COVID-19 restrictions and the increase in on-campus residents over the period of 2020-2023.",
+        "subtitle": "This visualization illustrates the steady growth in fitness activity on campus over the years, particularly from 2022 onwards. The data shows a notable increase in monthly check-ins throughout 2023, with peaks in September, October, and November. This trend aligns with the rise in campus population, reflecting a growing interest and participation in fitness activities among students, faculty, and staff. The latest data for 2024 (till March) indicates a strong start to the year, suggesting that the demand for fitness facilities will continue to grow as the campus community expands.",
         "gid": 1045014031,
         "headers": 1,
         "columns": [
