@@ -2,7 +2,6 @@ import { Link, List, ListItem, ListItemText, Table, TableBody, TableCell, TableH
 import { domToReact } from 'html-react-parser';
 
 // Function to check if an array has valid data
-// eslint-disable-next-line max-len
 export const isValidArray = (array) => Array.isArray(array) && array.length > 0 && !array.every((item) => item == null);
 
 // Function to replace characters like "-" with " " from a string and capitalize it

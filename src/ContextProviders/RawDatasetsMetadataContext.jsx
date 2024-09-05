@@ -21,7 +21,6 @@ export function RawDatasetsMetadataProvider({ children }) {
     }
   }, []);
 
-  // eslint-disable-next-line max-len
   const providerValue = useMemo(() => rawDatasetsMetadata, [rawDatasetsMetadata]);
 
   // return context provider

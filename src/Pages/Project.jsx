@@ -1,5 +1,3 @@
-// disable eslint for this file
-/* eslint-disable */
 import { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { LinkContext } from '../ContextProviders/LinkContext';
@@ -101,7 +99,11 @@ const Project = () => {
   }, [id, setCurrentPage, setChartsTitlesList]);
 
   // Update the page's title
-  useEffect(() => { if (project.title) document.title = `${project.title} | CITIES Dashboard`, [project] });
+  useEffect(() => {
+    if (project.title) {
+      document.title = `${project.title} | CITIES Dashboard`;
+    }
+  }, [project]);
 
   // Update the project's last update date based on dataset versions
   useEffect(() => {
@@ -223,7 +225,7 @@ const Project = () => {
                 id={chartsTitlesList[index].chartID} // set the chartWrapper's ID to help Navbar in Header scroll to
                 key={index}
                 backgroundColor={
-                  index % 2 != 0 && 'customAlternateBackground'
+                  index % 2 !== 0 && 'customAlternateBackground'
                 }
               >
                 <Container
@@ -269,7 +271,7 @@ const Project = () => {
                           reference={element.reference ? element.reference : undefined}
                         />
                       }
-                      {Object.keys(tab)[index] == index &&
+                      {Object.keys(tab)[index] === index &&
                         element.subcharts &&
                         element.subcharts[Object.values(tab)[index]].subchartSubtitle &&
                         <CollapsibleSubtitle

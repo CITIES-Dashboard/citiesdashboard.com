@@ -1,6 +1,3 @@
-// disable eslint for this file
-/* eslint-disable */
-
 import { useState, createContext, useMemo } from 'react';
 import ThemePreferences from '../Themes/ThemePreferences';
 
@@ -14,7 +11,6 @@ export function PreferenceProvider({ children }) {
       ? ThemePreferences.dark : ThemePreferences.light)
   );
 
-  // eslint-disable-next-line max-len
   const providerValue = useMemo(() => ({
     themePreference, setThemePreference
   }), [themePreference]);

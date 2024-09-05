@@ -1,3 +1,5 @@
+// disable eslint for this file
+
 /* eslint-disable */
 
 import { useState, useRef, useEffect, useContext, useMemo, useCallback, memo } from 'react';
@@ -31,7 +33,47 @@ import ModifiedCategoryFilterForTimeline from './SubchartUtils/ModifiedCategoryF
 
 function SubChart(props) {
   // Props
-  const { chartData, subchartIndex, windowSize, isPortrait, isHomepage, height, maxHeight, currentSubchart } = props;
+  const { chartData, subchartIndex, windowSize, isPortrait, isHomepage, height, maxHeight } = props;
+
+  // Use GoogleContext for loading and manipulating the Google Charts
+  const google = useContext(GoogleContext);
+  // Get the current theme
+  const theme = useTheme();
+
+  // State to store transformed data for CalendarChart
+  const [calendarDataArray, setCalendarDataArray] = useState(null);
+
+  const [NivoHeatMapData, setNivoHeatMapData] = useState(null);
+  const [NivoHeatMapWidth, setNivoHeatMapWidth] = useState(500);
+
+  // States of the Google Charts
+  const [dataTable, setDataTable] = useState();
+  const [chartWrapper, setChartWrapper] = useState();
+  const [dashboardWrapper, setDashboardWrapper] = useState();
+  const [controlWrapper, setControlWrapper] = useState();
+
+  // To determine the first time the chart renders to show/hide the LoadingAnimation
+  const [isFirstRender, setIsFirstRender] = useState(true);
+
+  // Keep track of the columns (series) of the chart
+  const [allInitialColumns, setAllInitialColumns] = useState();
+  const [dataColumns, setDataColumns] = useState();
+  const [initialVAxisRange, setInitialVAxisRage] = useState();
+
+  // Define the DOM container's ID for drawing the google chart inside
+  const [chartID, __] = useState(generateRandomID());
+
+  // Calendar chart's properties
+  const [chartTotalHeight, setChartTotalHeight] = useState(200);
+
+  // Hooks for CategoryFilter to be a timeline slider
+  const [allCategoriesForCategoryFilter, setAllCategoriesForCategoryFilter] = useState([]);
+  const [currentCategoryIndexForCategoryFilter, setCurrentCategoryIndexForCategoryFilter] = useState([]);
+
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+  const [tooltipClosed, setTooltipClosed] = useState(false);
+
+  const isMounted = useRef(true);
 
   // // Early return if this doesn't contain a normal Google Chart but a chartSubstituteComponent
   // const chartSubstituteComponentName = chartData.subcharts?.[subchartIndex].chartSubstituteComponentName;
@@ -67,25 +109,16 @@ function SubChart(props) {
     );
   }
 
-  // Use GoogleContext for loading and manipulating the Google Charts
-  const google = useContext(GoogleContext);
-
-  // Get the current theme
-  const theme = useTheme();
-
   // Get the options object for chart
   const options = useMemo(() => {
     return returnGenericOptions({ ...props, theme });
   }, [props, theme, chartData.chartType]);
 
-  // State to store transformed data for CalendarChart
-  const [calendarDataArray, setCalendarDataArray] = useState(null);
-
   // Early exit for 'Calendar' chartType
   if (chartData.chartType === 'Calendar') {
     useEffect(() => {
       if (!google) return;
-      fetchDataFromSheet({ chartData: chartData, subchartIndex: subchartIndex })
+      fetchDataFromSheet({ chartData: chartData, subchartIndex: subchartIndex, google: google })
         .then(response => {
           const rawData = response.getDataTable();
           const dataColumn = chartData.columns ? chartData.columns[1] : 1
@@ -130,14 +163,11 @@ function SubChart(props) {
       />
     );
   }
-
-  const [NivoHeatMapData, setNivoHeatMapData] = useState(null);
-  const [NivoHeatMapWidth, setNivoHeatMapWidth] = useState(500);
   // Early return for 'HeatMap' chartType
   if (chartData.chartType === 'HeatMap') {
     useEffect(() => {
       if (!google) return;
-      fetchDataFromSheet({ chartData: chartData, subchartIndex: subchartIndex })
+      fetchDataFromSheet({ chartData: chartData, subchartIndex: subchartIndex, google: google })
         .then(response => {
           const rawData = response.getDataTable();
           const heatMapData = transformDataForNivoHeatMap(rawData);
@@ -175,28 +205,6 @@ function SubChart(props) {
       </GoogleChartStyleWrapper>
     );
   }
-
-
-
-  // States of the Google Charts
-  const [dataTable, setDataTable] = useState();
-  const [chartWrapper, setChartWrapper] = useState();
-  const [dashboardWrapper, setDashboardWrapper] = useState();
-  const [controlWrapper, setControlWrapper] = useState();
-
-  // To determine the first time the chart renders to show/hide the LoadingAnimation
-  const [isFirstRender, setIsFirstRender] = useState(true);
-
-  // Keep track of the columns (series) of the chart
-  const [allInitialColumns, setAllInitialColumns] = useState();
-  const [dataColumns, setDataColumns] = useState();
-  const [initialVAxisRange, setInitialVAxisRage] = useState();
-
-  // Define the DOM container's ID for drawing the google chart inside
-  const [chartID, __] = useState(generateRandomID());
-
-  // Calendar chart's properties
-  const [chartTotalHeight, setChartTotalHeight] = useState(200);
 
   // Properties for chart control (if existed)
   const chartControl = chartData.control || chartData.subcharts?.[subchartIndex].control;
@@ -240,8 +248,6 @@ function SubChart(props) {
 
   // Properties for CategoryFilter to be a timeline slider
   const isSlider = hasChartControl ? chartControl.options?.isSlider : false;
-  const [allCategoriesForCategoryFilter, setAllCategoriesForCategoryFilter] = useState([]);
-  const [currentCategoryIndexForCategoryFilter, setCurrentCategoryIndexForCategoryFilter] = useState([]);
 
   // Set new options prop and re-render the chart if theme or isPortrait changes
   useEffect(() => {
@@ -264,7 +270,7 @@ function SubChart(props) {
   // This only applies to when seriesSelector.method == "setViewColumn"
   useEffect(() => {
     if (!dataColumns) return;
-    if (seriesSelector && seriesSelector.method == "setViewColumn") {
+    if (seriesSelector && seriesSelector.method === "setViewColumn") {
       setInitialColumnsColors({ dataColumns: dataColumns });
       handleSeriesSelection({ newDataColumns: dataColumns });
     }
@@ -489,7 +495,7 @@ function SubChart(props) {
   // Call this function to fetch the data and draw the initial chart
   useEffect(() => {
     if (google && !chartWrapper) {
-      fetchDataFromSheet({ chartData: chartData, subchartIndex: subchartIndex })
+      fetchDataFromSheet({ chartData: chartData, subchartIndex: subchartIndex, google: google })
         .then(response => {
           const thisDataTable = response.getDataTable();
           setDataTable(thisDataTable);
@@ -564,9 +570,6 @@ function SubChart(props) {
         });
     }
   }, [google]);
-
-  const [tooltipOpen, setTooltipOpen] = useState(false);
-  const [tooltipClosed, setTooltipClosed] = useState(false);
 
   const handleControlBoxClick = useCallback(() => {
     setTooltipOpen(false);
@@ -682,8 +685,6 @@ function SubChart(props) {
     }
     return <Box id={chartID} sx={{ height: height, maxHeight: maxHeight }} />;
   };
-
-  const isMounted = useRef(true);
 
   useEffect(() => {
     isMounted.current = true;

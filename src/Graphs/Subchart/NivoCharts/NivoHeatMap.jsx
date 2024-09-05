@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { useEffect, useState } from 'react';
 import { ResponsiveHeatMap } from '@nivo/heatmap';
 import { useTheme } from '@mui/material/styles';

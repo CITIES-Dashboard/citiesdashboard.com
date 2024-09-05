@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { ResponsiveCalendar } from '@nivo/calendar';
 import { useTheme } from '@mui/material/styles';
 import { generateDiscreteColorGradientArray } from '../../../../Utils/Gradient/GradientUtils';
