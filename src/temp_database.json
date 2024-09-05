@@ -484,7 +484,7 @@
         "subcharts": [
           {
             "subchartTitle": "Total (3 meals)",
-            "subchartSubtitle": "From this visualization of average daily food waste by month, it is evident that the absolute amount of food waste is on the rise. This might be due to several factors:<ul><li>The loosening of COVID restrictions in 2022, which allowed more people to come back to campus</li><li>An absolute increase in the number of people eating at D2 as the student population increases year-by-year</li><li>Operational changes during the hand-over period between the catering providers (ADNH: prior to July 2022, RCS: after July 2022)</li></ul>",
+            "subchartSubtitle": "From this visualization of average daily food waste by week, it is clear that food waste levels have seen a significant increase, especially in 2024. Several factors might contribute to this rise in food waste: <ul><li>An absolute increase in the campus population, resulting in more people dining at the facilities over the years.</li><li>Operational changes and adjustments following the transition to a new service provider (RCS) in July 2022, which may have impacted food preparation and waste management practices.</li><li>Seasonal patterns such as breaks (e.g., fall, spring, and winter breaks) and the start and end of semesters, which influence the number of meals prepared and consumed, causing fluctuations in waste levels.</li></ul> These factors collectively indicate that managing food waste remains a challenge, and further measures may be needed to address this growing concern.",
             "query": "SELECT C, N, O, P, T, U WHERE A IS NOT NULL",
             "columns": [
               0,
@@ -532,7 +532,7 @@
           },
           {
             "subchartTitle": "by Meal (Stacked)",
-            "subchartSubtitle": "When the data is broken down into the three constituent meals, the majority of food waste comes from lunch and dinner",
+            "subchartSubtitle": "When the data is broken down by meal, it is evident that the majority of food waste is generated during lunch and dinner. Throughout the recorded period, lunch consistently contributes the most to food waste, followed closely by dinner. Both meals show noticeable peaks around key periods such as breaks and the start or end of academic terms. In contrast, breakfast contributes significantly less to the total food waste, maintaining a relatively stable trend over time.",
             "query": "SELECT C, E, Q, H, R, K, S, U WHERE A IS NOT NULL",
             "columns": [
               0,
@@ -714,7 +714,7 @@
       },
       {
         "title": "Percentage of Food Waste By Meal",
-        "subtitle": "Lunch and dinner make up the majority of the food waste in D2. Each accounts for roughly two-fifths of the total waste for a given day.",
+        "subtitle": "Lunch and dinner consistently account for the majority of food waste at D2. Over the observed quarters, dinner generally contributes the largest portion of food waste, ranging from around 37% to over 54%. Lunch also makes up a significant share, fluctuating between approximately 35% to 46% of the total waste. Meanwhile, breakfast waste, though relatively smaller, shows a gradual increase in its share, rising from about 13% to 23% in recent quarters. This distribution highlights that most waste reduction efforts could be effectively targeted at lunch and dinner services, where the most waste occurs.",
         "gid": 387300968,
         "headers": 1,
         "chartType": "ColumnChart",
