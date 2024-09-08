@@ -11,7 +11,13 @@ const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 
 export default function SeriesSelector(props) {
-  const { items: itemsFromChart, selectorID, allowMultiple, onSeriesSelection } = props;
+  const { items: itemsFromChart,
+    selectorID,
+    allowMultiple,
+    seriesLabel,
+    onSeriesSelection,
+    displayChip = true
+  } = props;
 
   const theme = useTheme();
 
@@ -24,11 +30,11 @@ export default function SeriesSelector(props) {
       }
     },
     anchorOrigin: {
-      vertical: -6,
+      vertical: "bottom",
       horizontal: "left"
     },
     transformOrigin: {
-      vertical: "bottom",
+      vertical: "top",
       horizontal: "left"
     },
     getContentAnchorEl: null
@@ -53,9 +59,8 @@ export default function SeriesSelector(props) {
     setItems(itemsFromChart);
   }, [itemsFromChart]);
 
-  // set selectAll if all items are selected
   useEffect(() => {
-    setSelectAll(items.every(item => item.selected));
+    setSelectAll(items.every(item => item.selected)); // set selectAll if all items are selected
   }, [items]);
 
   const handleChange = (event) => {
@@ -71,7 +76,7 @@ export default function SeriesSelector(props) {
     // (to make sure there's always at least 1 item being selected)
     if (value.includes(SELECT_ALL)) {
       const updatedItems = items.map((item, index) => ({ ...item, selected: index == 0 ? true : !selectAll }));
-      onSeriesSelection(updatedItems);
+      onSeriesSelection({ newDataColumns: updatedItems });
       setSelectAll(!selectAll);
     }
     // Else, if an ordinary item is selected/de-selected:
@@ -81,7 +86,7 @@ export default function SeriesSelector(props) {
         ...item,
         selected: selectedItems.some(selectedItem => selectedItem.label === item.label)
       }));
-      onSeriesSelection(updatedItems);
+      onSeriesSelection({ newDataColumns: updatedItems });
       setSelectAll(false);
     }
   };
@@ -90,12 +95,12 @@ export default function SeriesSelector(props) {
     const updatedItems = items.map(existingItem =>
       existingItem.label === item.label ? { ...existingItem, selected: !existingItem.selected } : existingItem
     );
-    onSeriesSelection(updatedItems);
+    onSeriesSelection({ newDataColumns: updatedItems });
   };
 
   const renderedLabel = (selected) => {
     const returnNumSeriesDisplayed = () => {
-      return `${selected.length}/${items.length} series displayed`;
+      return `${selected.length}/${items.length} ${seriesLabel || ""} displayed`;
     };
 
     return (
@@ -111,11 +116,14 @@ export default function SeriesSelector(props) {
 
   return (
     <Stack spacing={1} direction="row" alignItems="center">
-      <FormControl sx={{
-        [theme.breakpoints.down('sm')]: { width: '100%' },
-        minWidth: '200px',
-        '& .MuiInputBase-root': { mt: 1, borderRadius: theme.spacing(1) }
-      }} size="small">
+      <FormControl
+        sx={{
+          [theme.breakpoints.down('sm')]: { width: '100%' },
+          minWidth: '200px',
+          '& .MuiInputBase-root': { borderRadius: `${theme.shape.borderRadius}px` }
+        }}
+        size="small"
+      >
         <Select
           labelId={`${selectorID}-label`}
           id={selectorID}
@@ -161,29 +169,36 @@ export default function SeriesSelector(props) {
           ))}
 
           {/* Show the option to select all if multiSelect is true*/}
-          {allowMultiple && <MenuItem key={SELECT_ALL} value={SELECT_ALL} sx={{
-            borderTop: 'solid 0.5px', borderColor: theme.palette.text.secondary,
-            position: 'sticky', bottom: 0, zIndex: 9999, marginBottom: theme.spacing(-1),
-            background: theme.palette.customAlternateBackground,
-            "&:hover": {
-              background: theme.palette.customAlternateBackground
-            }
-          }}>
-            <Stack direction='row' width='100%' alignItems='center' justifyContent='space-between'>
-              <Typography fontWeight={500} variant='caption' sx={{ pl: 1 }}>{SELECT_ALL}</Typography>
-              <Switch
-                checked={selectAll}
-                onClick={() => handleItemToggle(SELECT_ALL)}
-                sx={{ transform: 'scale(0.8)' }}
-              />
-            </Stack>
-          </MenuItem>
+          {allowMultiple ?
+            (
+              <MenuItem
+                key={SELECT_ALL}
+                value={SELECT_ALL}
+                sx={{
+                  borderTop: 'solid 0.5px', borderColor: theme.palette.text.secondary,
+                  position: 'sticky', bottom: 0, zIndex: 1, marginBottom: theme.spacing(-1),
+                  background: theme.palette.customAlternateBackground,
+                  "&:hover": {
+                    background: theme.palette.customAlternateBackground
+                  }
+                }}
+              >
+                <Stack direction='row' width='100%' alignItems='center' justifyContent='space-between'>
+                  <Typography fontWeight={500} variant='caption' sx={{ pl: 1 }}>{SELECT_ALL}</Typography>
+                  <Switch
+                    checked={selectAll}
+                    onClick={() => handleItemToggle(SELECT_ALL)}
+                    sx={{ transform: 'scale(0.8)' }}
+                  />
+                </Stack>
+              </MenuItem>
+            ) : null
           }
         </Select>
       </FormControl>
 
       {/* Display only selected items in the Grids, and only in landscape mode and if multiSelect is true*/}
-      {allowMultiple && <Grid container spacing={1}
+      {(displayChip && allowMultiple) && <Grid container spacing={1}
         sx={{
           [theme.breakpoints.down('sm')]: {
             display: 'none'
