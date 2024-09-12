@@ -881,23 +881,79 @@
     ],
     "charts": [
       {
-        "title": "Total Number of Pages by User Category by Month",
+        "title": "Total Number of Pages",
         "headers": 1,
         "chartType": "ComboChart",
-        "gid": 1705611582,
         "subcharts": [
           {
-            "subchartTitle": "Total Per User Category",
+            "gid": 1705611582,
+            "query": "SELECT A, B, I, P, W, AD",
+            "subchartTitle": "By Month",
             "subchartSubtitle": "<p>The graph above presents a monthly analysis of the total number of pages consumed by different user categories. <b>Faculty & Researcher</b> and <b>Student</b> are the two biggest contributors in campus' paper usage, followed by <b>Staff</b> and <b>Others</b>. </p><p>Additionally, the visualization highlights fluctuations in overall paper consumption across <b>All Categories</b>, represented by the grey line, with the highest usage occurring during the academic semesters, exceeding <b>270,000 pages</b> printed per month. There is also a noticeable decrease of usage during winter and summer breaks, with the lowest months clocking in at only around <b>1/4</b> of peak-usage months. This pattern underscores the direct impact of academic cycles on paper consumption behaviors across different user groups.</p>",
-            "columns": [
-              0,
-              1,
-              8,
-              15,
-              22,
-              29
-            ],
             "options": {
+              "trendlines": {
+                "4": {
+                  "type": "linear",
+                  "labelInLegend": "Linear trend",
+                  "visibleInLegend": true,
+                  "showR2": true,
+                  "lineWidth": 2,
+                  "enableInteractivity": false
+                }
+              },
+              "seriesSelector": {
+                "allowMultiple": true,
+                "method": "setViewColumn",
+                "allowedMultiple": false
+              },
+              "isStacked": true,
+              "seriesType": "bars",
+              "series": {
+                "4": {
+                  "type": "line",
+                  "lineWidth": 3,
+                  "pointSize": 5
+                }
+              },
+              "bar": {
+                "groupWidth": "40%"
+              },
+              "vAxis": {
+                "title": "Number of Pages",
+                "format": "short"
+              },
+              "hAxis": {
+                "title": "Month - Year",
+                "minorGridlines": {
+                  "count": 0
+                }
+              }
+            },
+            "control": {
+              "controlType": "ChartRangeFilter",
+              "options": {
+                "filterColumnIndex": 0,
+                "ui": {
+                  "minRangeSize": 7884000000
+                }
+              }
+            }
+          },
+          {
+            "gid": 858079617,
+            "subchartTitle": "By Academic Year",
+            "subchartSubtitle": "",
+            "options": {
+              "trendlines": {
+                "4": {
+                  "type": "linear",
+                  "labelInLegend": "Linear trend",
+                  "visibleInLegend": true,
+                  "showR2": true,
+                  "lineWidth": 2,
+                  "enableInteractivity": false
+                }
+              },
               "seriesSelector": {
                 "allowMultiple": true,
                 "method": "setViewColumn"
@@ -916,12 +972,19 @@
                 "groupWidth": "40%"
               },
               "vAxis": {
-                "title": "Number of Pages (in Thousands)",
+                "title": "Number of Pages",
                 "format": "short"
+              },
+              "hAxis": {
+                "title": "Academic Year",
+                "minorGridlines": {
+                  "count": 0
+                }
               }
             }
           },
           {
+            "gid": 1705611582,
             "subchartTitle": "Percentage by User Category",
             "subchartSubtitle": "<p>This stacked bar graph illustrates the <b>distribution</b> of paper consumption among four distinct user categories on a month-by-month basis since September 2022. <b>Faculty & Researcher</b> consistently represents the largest group of paper usage, accounting for around 30% - 40% of all papers printed. <b>Student</b> follows closely behind. <b>Staff</b>, although representing a lower proportion than the previous two demographic groups during most months, exhibits a surge during the summer months from June to August, where their usage exceeds 60% of the entire university, surpassing all other categories. This is due to the majority of the student body not residing on campus during such periods. <b>Others</b> consistently shows the smallest portion of usage across all months, only accounting for 5 - 10% of all papers printed.</p>",
             "columns": [
@@ -940,35 +1003,72 @@
               "vAxis": {
                 "title": "Percentage",
                 "format": "#.#%"
+              },
+              "hAxis": {
+                "title": "Month - Year",
+                "minorGridlines": {
+                  "count": 0
+                }
+              }
+            },
+            "control": {
+              "controlType": "ChartRangeFilter",
+              "options": {
+                "filterColumnIndex": 0,
+                "ui": {
+                  "minRangeSize": 7884000000
+                }
+              }
+            }
+          },
+          {
+            "gid": 1762464764,
+            "subchartTitle": "Versus Soft Cap",
+            "subchartSubtitle": "",
+            "options": {
+              "seriesSelector": {
+                "allowMultiple": true,
+                "method": "setViewColumn"
+              },
+              "seriesType": "bars",
+              "series": {
+                "4": {
+                  "type": "line",
+                  "lineWidth": 3,
+                  "pointSize": 5
+                },
+                "5": {
+                  "type": "line",
+                  "lineWidth": 3,
+                  "enableInteractivity": false
+                }
+              },
+              "bar": {
+                "groupWidth": "40%"
+              },
+              "vAxis": {
+                "title": "Number of Pages",
+                "format": "short",
+                "viewWindow": {
+                  "max": 1200
+                }
+              },
+              "hAxis": {
+                "title": "Academic Year",
+                "minorGridlines": {
+                  "count": 0
+                }
               }
             }
           }
-        ],
-        "options": {
-          "hAxis": {
-            "title": "Month - Year",
-            "minorGridlines": {
-              "count": 0
-            }
-          }
-        },
-        "control": {
-          "controlType": "ChartRangeFilter",
-          "options": {
-            "filterColumnIndex": 0,
-            "ui": {
-              "minRangeSize": 7884000000
-            }
-          }
-        }
+        ]
       },
       {
         "title": "Boxplot Distribution of Pages Printed by User Category by Month",
         "headers": 1,
-        "chartType": "BarChart",
+        "chartType": "ColumnChart",
         "gid": 1705611582,
-        "query": "SELECT * ORDER BY A DESC",
-        "subchartTitle": "Median and Mean Per User Category",
+        "query": "SELECT * WHERE B IS NOT NULL",
         "subtitle": "<p>These boxplots illustrate the distribution of pages printed by different user categories, showcasing data variability on a month-by-month basis via <b>a controllable slider</b>. For each category, the large dot represents the mean (average) number of pages printed by a user from that category, while the line inside each box marks the median, the box marks the 25th and 75th percentile, and the whiskers represent min and max values. More information on how to read a boxplot can be found <a href='https://en.wikipedia.org/wiki/Box_plot'>here</a>.</p><p>Consistently across all user categories, the mean is higher than the median, indicating a right-skewed distribution. This suggests that within each user category, <b>there are outliers or a subset of heavy users who print significantly more pages than the average person</b>, thereby pulling the mean upwards. <b>Faculty & Researcher</b> category, in particular, exhibits the greatest spread, highlighting a broad range of printing behaviors, from minimal to very high usage. The presence of such skewness across all categories indicates that a majority of users print a moderate number of pages, but the overall average is much higher, caused by few individuals printing large quantities.</p>",
         "columns": [
           36,
@@ -1244,9 +1344,6 @@
           }
         ],
         "options": {
-          "bar": {
-            "groupWidth": "100%"
-          },
           "dataOpacity": 0,
           "interval": {
             "iqr1": {
@@ -1273,26 +1370,11 @@
           },
           "seriesType": "bars",
           "vAxis": {
-            "textPosition": "none"
+            "title": "Number of Pages"
           },
           "hAxis": {
-            "title": "Number of Pages",
             "minorGridlines": {
               "count": 0
-            }
-          }
-        },
-        "control": {
-          "controlType": "CategoryFilter",
-          "options": {
-            "isSlider": true,
-            "filterColumnIndex": 36,
-            "ui": {
-              "label": "Filter by Month: ",
-              "allowTyping": false,
-              "allowNone": false,
-              "allowMultiple": false,
-              "sortValues": false
             }
           }
         }

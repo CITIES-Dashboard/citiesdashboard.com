@@ -146,6 +146,7 @@ export const returnGenericOptions = (props) => {
     title: options.vAxis?.title ?? '',
     viewWindow: {
       min: options.vAxis?.viewWindow?.min ?? 0,
+      max: options.vAxis?.viewWindow?.max ?? null,
     },
   };
   options.hAxis = {
@@ -174,7 +175,7 @@ export const returnGenericOptions = (props) => {
     });
   }
   // 4.3. Color of the trendline
-  if (options.trendlines) {
+  if (options.trendlines && Array.isArray(options.trendlines)) {
     options.trendlines.forEach((_item) => {
       const item = _item;
       item.color = theme.palette.primary.main;
