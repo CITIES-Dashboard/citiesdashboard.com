@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { ResponsiveCalendar } from '@nivo/calendar';
 import { useTheme } from '@mui/material/styles';
 import { generateDiscreteColorGradientArray } from '../../../../Utils/Gradient/GradientUtils';
@@ -8,7 +7,7 @@ import TooltipCalendarChart from './TooltipCalendarChart';
 import YearRangeSlider from './YearRangeSlider';
 import { useYearRange } from '../../../../ContextProviders/YearRangeContext';
 import { calculateCalendarChartHeight, calculateValueRange, getCalendarChartMargin, getDateRangeForCalendarChart, getValueRangeForCalendarChart } from '../NivoChartHelper';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { isValidArray } from '../../../../Utils/UtilFunctions';
 import GoogleChartStyleWrapper from '../../SubchartUtils/GoogleChartStyleWrapper';
 
@@ -86,7 +85,7 @@ const NivoCalendarChart = (props) => {
 
     const ref = useRef();
 
-    const updateHeight = () => {
+    const updateHeight = useCallback(() => {
         if (!isValidArray(dataArray)) return;
 
         const calendarChartMargin = getCalendarChartMargin(isPortrait);
@@ -119,7 +118,7 @@ const NivoCalendarChart = (props) => {
         if (targetElement) {
             targetElement.style.height = `${totalHeight + 125}px`;
         }
-    };
+    }, [yearRange, isPortrait, dataArray]);
 
     // Debounce function to prevent ResizeObserver loop
     // (from MUI Slider) from crashing the app
@@ -131,11 +130,17 @@ const NivoCalendarChart = (props) => {
         };
     };
 
-    const debouncedUpdateHeight = debounce(updateHeight, 20);
+    const debouncedUpdateHeight = useCallback(
+        () => {
+            const debouncedFn = debounce(updateHeight, 20);
+            debouncedFn();
+        },
+        [updateHeight]
+    );
 
     useEffect(() => {
         debouncedUpdateHeight();
-    }, [yearRange, isPortrait]);
+    }, [debouncedUpdateHeight]);
 
     return (
         <>

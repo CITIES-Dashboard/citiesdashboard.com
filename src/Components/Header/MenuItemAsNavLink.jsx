@@ -41,7 +41,6 @@ export const scrollToSection = (scrollToSectionID) => {
 };
 
 export default function MenuItemAsNavLink(props) {
-  // eslint-disable-next-line max-len
   const { behavior, to, scrollToSectionID, icon, sx, analyticsOriginID, analyticsDestinationLabel } = props;
   let { label } = props;
 

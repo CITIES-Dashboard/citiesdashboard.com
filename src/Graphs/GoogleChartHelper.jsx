@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 export const ChartControlType = {
   CategoryFilter: { position: 'bottom', stackDirection: 'column-reverse' },
   DateRangeFilter: { position: 'bottom', stackDirection: 'column-reverse' },
@@ -7,7 +5,11 @@ export const ChartControlType = {
   NumberRangeFilter: { position: 'top', stackDirection: 'column' }
 }
 // Async function to fetch data from sheet using Google Visualization query language
-export const fetchDataFromSheet = ({ chartData, subchartIndex }) => {
+export const fetchDataFromSheet = ({ chartData, subchartIndex, google }) => {
+  if (!google) {
+    return Promise.reject(new Error('Google Visualization API is not available'));
+  }
+
   const urlParams =
     subchartIndex == null
       ? {
@@ -366,7 +368,6 @@ export const addTouchEventListenerForChartControl = ({ controlWrapper, chartID }
     event.preventDefault();
   }
 
-  let isMounted = true; // Flag to track component's mount status
   if (!controlWrapper) return;
 
   const controlDOM = document.querySelector(`#control-${chartID}`);
@@ -378,7 +379,6 @@ export const addTouchEventListenerForChartControl = ({ controlWrapper, chartID }
     });
 
   return () => {
-    isMounted = false; // Component is unmounting
 
     ['touchstart', 'touchmove', 'touchend', 'touchcancel'].forEach((touchEvent) => {
       controlDOM.removeEventListener(touchEvent, touchHandler, { capture: true });

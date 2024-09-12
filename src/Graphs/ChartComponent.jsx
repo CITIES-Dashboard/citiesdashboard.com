@@ -43,7 +43,6 @@ const StyledTabs = styled(Tabs)(({ theme }) => ({
   }
 }));
 
-// eslint-disable-next-line max-len
 function ChartComponent({ chartData: passedChartData, chartHeight: passedChartHeight, isHomepage }) {
   const isSmallWidth = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 

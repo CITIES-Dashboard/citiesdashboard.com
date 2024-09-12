@@ -90,7 +90,6 @@ export const transformDataForNivoHeatMap = (googleSheetsData) => {
     const data = cols.map((col, index) => {
       const value = row.c[index + 1].v; // +1 to offset label column
       const rowPercentage = rowTotal > 0 ? ((value / rowTotal) * 100).toFixed(1) : 0;
-      // eslint-disable-next-line max-len
       const colPercentage = columnTotals[index] > 0 ? ((value / columnTotals[index]) * 100).toFixed(1) : 0;
 
       return {

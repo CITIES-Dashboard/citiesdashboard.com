@@ -1,7 +1,5 @@
-// disable eslint for this file
-/* eslint-disable */
 import { useState, useEffect, useContext } from 'react';
-import { Container, Avatar, Modal, Tooltip, Box, Link, Typography, Stack, Select, FormControl, MenuItem, Grid, Chip, Dialog, Button, DialogActions, DialogContent, useMediaQuery, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Avatar, Modal, Tooltip, Box, Link, Typography, Stack, Select, FormControl, MenuItem, Grid, Chip, Dialog, Button, DialogActions, DialogContent, useMediaQuery, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 import { RawDatasetsMetadataContext } from '../../ContextProviders/RawDatasetsMetadataContext';
@@ -177,7 +175,7 @@ const Dataset = (props) => {
   const visibleVersions = dataset?.versions.slice(0, NUM_RECENT_VERSIONS);
   // if currently selected version is not in first NUM_RECENT_VERSION rows,
   // add it to the list
-  if (!visibleVersions.find((version) => version == selectedVersionOfThisDataset)) {
+  if (!visibleVersions.find((version) => version === selectedVersionOfThisDataset)) {
     visibleVersions.push({ ...selectedVersionOfThisDataset, isOlderVersion: true });
   }
 
@@ -412,7 +410,7 @@ const PreviewDataset = (props) => {
               return rowIndex;
             }
             // No index for the middle row
-            else if (rowIndex == numFirstLastRowsToPreview + 1) {
+            else if (rowIndex === numFirstLastRowsToPreview + 1) {
               return '';
             }
             // Indices for the last rows

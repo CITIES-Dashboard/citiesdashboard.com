@@ -85,7 +85,7 @@ function SubChart(props) {
   if (chartData.chartType === 'Calendar') {
     useEffect(() => {
       if (!google) return;
-      fetchDataFromSheet({ chartData: chartData, subchartIndex: subchartIndex })
+      fetchDataFromSheet({ chartData: chartData, subchartIndex: subchartIndex, google: google })
         .then(response => {
           const rawData = response.getDataTable();
           const dataColumn = chartData.columns ? chartData.columns[1] : 1
@@ -137,7 +137,7 @@ function SubChart(props) {
   if (chartData.chartType === 'HeatMap') {
     useEffect(() => {
       if (!google) return;
-      fetchDataFromSheet({ chartData: chartData, subchartIndex: subchartIndex })
+      fetchDataFromSheet({ chartData: chartData, subchartIndex: subchartIndex, google: google })
         .then(response => {
           const rawData = response.getDataTable();
           const heatMapData = transformDataForNivoHeatMap(rawData);
@@ -489,7 +489,7 @@ function SubChart(props) {
   // Call this function to fetch the data and draw the initial chart
   useEffect(() => {
     if (google && !chartWrapper) {
-      fetchDataFromSheet({ chartData: chartData, subchartIndex: subchartIndex })
+      fetchDataFromSheet({ chartData: chartData, subchartIndex: subchartIndex, google: google })
         .then(response => {
           const thisDataTable = response.getDataTable();
           setDataTable(thisDataTable);
