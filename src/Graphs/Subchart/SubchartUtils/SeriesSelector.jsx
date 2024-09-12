@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { useState, useEffect } from 'react';
 import { Stack, Grid, MenuItem, FormControl, Select, Chip, Radio, Checkbox, Typography, Switch } from "@mui/material";
 import { useTheme } from '@mui/material/styles';
@@ -52,7 +51,7 @@ export default function SeriesSelector(props) {
       }));
       onSeriesSelection(updatedItems);
     }
-  }, []);
+  }, [allowMultiple, items, onSeriesSelection]);
 
   // Update items if itemsFromChart changes
   useEffect(() => {
@@ -75,7 +74,7 @@ export default function SeriesSelector(props) {
     // - IF SELECT_ALL is being de-selected now, then set all items but the first one to be unselected 
     // (to make sure there's always at least 1 item being selected)
     if (value.includes(SELECT_ALL)) {
-      const updatedItems = items.map((item, index) => ({ ...item, selected: index == 0 ? true : !selectAll }));
+      const updatedItems = items.map((item, index) => ({ ...item, selected: index === 0 ? true : !selectAll }));
       onSeriesSelection({ newDataColumns: updatedItems });
       setSelectAll(!selectAll);
     }

@@ -1,6 +1,5 @@
 // disable eslint for this file
-/* eslint-disable */
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { LinkContext } from '../ContextProviders/LinkContext';
 import { TabContext } from '../ContextProviders/TabContext';
@@ -73,6 +72,10 @@ const Project = () => {
 
   const theme = useTheme();
 
+  // Memoize `setTab` and `navigate` to avoid unnecessary re-renders
+  const memoizedSetTab = useCallback((value) => setTab(value), [setTab]);
+  const memoizedNavigate = useCallback((path) => navigate(path, { replace: true }), [navigate]);
+
   // Update the currentPage with the project's ID
   // and the chartsTitle with all the charts' titles of the project
   useEffect(() => {
@@ -86,22 +89,26 @@ const Project = () => {
       for (let i = 0; i < project.charts.length; i++) {
         temp[i] = 0;
       }
-      setTab(temp);
+      memoizedSetTab(temp);
       setLoading(true);
       // Populate the array with all the charts' titles of the project
       chartsTitles = project.charts.map((element, index) => ({ chartTitle: element.title, chartID: `chart-${index + 1}` }));
     } else {
       setCurrentPage('404');
-      navigate('/404', { replace: true });
+      memoizedNavigate('/404');
     }
 
     setCurrentPage("project");
     setChartsTitlesList(chartsTitles);
 
-  }, [id, setCurrentPage, setChartsTitlesList]);
+  }, [id, setCurrentPage, setChartsTitlesList, memoizedSetTab, memoizedNavigate]);
 
   // Update the page's title
-  useEffect(() => { if (project.title) document.title = `${project.title} | CITIES Dashboard`, [project] });
+  useEffect(() => {
+    if (project.title) {
+      document.title = `${project.title} | CITIES Dashboard`;
+    }
+  }, [project]);
 
   // Update the project's last update date based on dataset versions
   useEffect(() => {
@@ -223,7 +230,7 @@ const Project = () => {
                 id={chartsTitlesList[index].chartID} // set the chartWrapper's ID to help Navbar in Header scroll to
                 key={index}
                 backgroundColor={
-                  index % 2 != 0 && 'customAlternateBackground'
+                  index % 2 !== 0 && 'customAlternateBackground'
                 }
               >
                 <Container
@@ -269,7 +276,7 @@ const Project = () => {
                           reference={element.reference ? element.reference : undefined}
                         />
                       }
-                      {Object.keys(tab)[index] == index &&
+                      {Number(Object.keys(tab)[index]) === index &&
                         element.subcharts &&
                         element.subcharts[Object.values(tab)[index]].subchartSubtitle &&
                         <CollapsibleSubtitle
