@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext, useMemo } from 'react';
+import { useState, useEffect, createContext, useMemo, useCallback } from 'react';
 import { fetchDataFromURL } from "../API/ApiFetch";
 
 export const RawDatasetsMetadataContext = createContext();
@@ -8,20 +8,21 @@ const url = 'https://raw.githubusercontent.com/CITIES-Dashboard/datasets/main/da
 export function RawDatasetsMetadataProvider({ children }) {
   const [rawDatasetsMetadata, setRawDatasetsMetadata] = useState();
 
-  useEffect(() => {
-    if (!rawDatasetsMetadata) {
-      try {
-        fetchDataFromURL(url, 'json')
-          .then((jsonData) => {
-            setRawDatasetsMetadata(jsonData);
-          });
-      } catch (error) {
-        console.log('Error fetching raw datasets metadata:', error);
-      }
+  const fetchMetadata = useCallback(async () => {
+    try {
+      const jsonData = await fetchDataFromURL(url, 'json');
+      setRawDatasetsMetadata(jsonData);
+    } catch (error) {
+      console.log('Error fetching raw datasets metadata:', error);
     }
   }, []);
 
-  // eslint-disable-next-line max-len
+  useEffect(() => {
+    if (!rawDatasetsMetadata) {
+      fetchMetadata();
+    }
+  }, [rawDatasetsMetadata, fetchMetadata]);
+
   const providerValue = useMemo(() => rawDatasetsMetadata, [rawDatasetsMetadata]);
 
   // return context provider

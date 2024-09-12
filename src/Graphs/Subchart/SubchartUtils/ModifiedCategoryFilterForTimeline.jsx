@@ -8,7 +8,6 @@ const extractContentInParentheses = (inputString) => {
   return start && end > start ? inputString.slice(start, end) : null;
 };
 
-// eslint-disable-next-line max-len
 function ModifiedCategoryFilterForTimeline({ onSliderChange, allCategories, currentCategoryIndex }) {
   if (allCategories.length === 0) return null;
 

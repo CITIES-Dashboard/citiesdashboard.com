@@ -1,6 +1,6 @@
 import { Box, Slider } from "@mui/material";
 import { useYearRange } from "../../../../ContextProviders/YearRangeContext";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 const YearRangeSlider = (props) => {
   const { dateRange, isPortrait } = props;
@@ -10,12 +10,12 @@ const YearRangeSlider = (props) => {
   const [shouldDisplaySlider, setShouldDisplaySlider] = useState(false);
   const [sliderMarks, setSliderMarks] = useState([]);
 
-  useEffect(() => {
+  const updateYearRange = useCallback(() => {
     if (!dateRange.max || !dateRange.min) return;
-    // Get the number of years we have data for and the number of years to display
+    
     const lastYear = new Date(dateRange.max).getFullYear();
     const firstYear = new Date(dateRange.min).getFullYear();
-    const firstVisibleYear = isPortrait ? lastYear - 3 : lastYear - 2; // initially display 3 years in landscape and 4 years in portrait
+    const firstVisibleYear = isPortrait ? lastYear - 3 : lastYear - 2;
 
     setYearRange([firstVisibleYear, lastYear]);
 
@@ -26,8 +26,11 @@ const YearRangeSlider = (props) => {
     setSliderMarks(marks);
 
     setShouldDisplaySlider((firstYear <= lastYear - 2));
-  }, [dateRange]);
+  }, [dateRange, isPortrait, setYearRange]);
 
+  useEffect(() => {
+    updateYearRange();
+  }, [updateYearRange]);
 
   return (
     shouldDisplaySlider ? (

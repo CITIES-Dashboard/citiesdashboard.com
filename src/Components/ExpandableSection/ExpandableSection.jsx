@@ -37,7 +37,6 @@ function ExpandableSection({ title, content }) {
   const handleAccordionChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : undefined);
 
-    // eslint-disable-next-line max-len
     Tracking.sendEventAnalytics(isExpanded ? Tracking.Events.expandSampleData : Tracking.Events.collapseSampleData);
   };
 
