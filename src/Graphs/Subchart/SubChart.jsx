@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import { useState, useRef, useEffect, useContext, useMemo, useCallback, memo } from 'react';
 
 import { GoogleContext } from '../../ContextProviders/GoogleContext';
@@ -31,7 +29,60 @@ import ModifiedCategoryFilterForTimeline from './SubchartUtils/ModifiedCategoryF
 
 function SubChart(props) {
   // Props
-  const { chartData, subchartIndex, windowSize, isPortrait, isHomepage, height, maxHeight, currentSubchart } = props;
+  const { chartData, subchartIndex, windowSize, isPortrait, isHomepage, height, maxHeight } = props;
+
+  // Use GoogleContext for loading and manipulating the Google Charts
+  const google = useContext(GoogleContext);
+
+  // Get the current theme
+  const theme = useTheme();
+
+  // State to store transformed data for CalendarChart
+  const [calendarDataArray, setCalendarDataArray] = useState(null);
+
+  const [NivoHeatMapData, setNivoHeatMapData] = useState(null);
+  const [NivoHeatMapWidth] = useState(500);
+
+  // States of the Google Charts
+  const [dataTable, setDataTable] = useState();
+  const [chartWrapper, setChartWrapper] = useState();
+  const [setDashboardWrapper] = useState();
+  const [controlWrapper, setControlWrapper] = useState();
+
+  // To determine the first time the chart renders to show/hide the LoadingAnimation
+  const [isFirstRender, setIsFirstRender] = useState(true);
+
+  // Keep track of the columns (series) of the chart
+  const [allInitialColumns, setAllInitialColumns] = useState();
+  const [dataColumns, setDataColumns] = useState();
+  const [initialVAxisRange, setInitialVAxisRage] = useState();
+
+  // Define the DOM container's ID for drawing the google chart inside
+  const [chartID] = useState(generateRandomID());
+
+  // Calendar chart's properties
+  const [chartTotalHeight] = useState(200);
+
+  // Hooks for CategoryFilter to be a timeline slider
+  const [allCategoriesForCategoryFilter, setAllCategoriesForCategoryFilter] = useState([]);
+  const [currentCategoryIndexForCategoryFilter, setCurrentCategoryIndexForCategoryFilter] = useState([]);
+
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+  const [tooltipClosed, setTooltipClosed] = useState(false);
+
+  const isMounted = useRef(true);
+
+  // Properties for chart control (if existed)
+  const chartControl = chartData.control || chartData.subcharts?.[subchartIndex].control;
+
+  // Only show the chart control if:
+  // It exists in the database (either for all subcharts or just for a particular subchart)
+  // And if the chart is currently not shown on homePage
+  const hasChartControl = Boolean(chartControl && !isHomepage);
+
+
+  // Properties for CategoryFilter to be a timeline slider
+  const isSlider = hasChartControl ? chartControl.options?.isSlider : false;
 
   // // Early return if this doesn't contain a normal Google Chart but a chartSubstituteComponent
   // const chartSubstituteComponentName = chartData.subcharts?.[subchartIndex].chartSubstituteComponentName;
@@ -44,184 +95,203 @@ function SubChart(props) {
     return chartData.customClassName ? `${chartData.chartType} ${chartData.customClassName}` : chartData.chartType;
   }, [chartData.customClassName, chartData.chartType]);
 
-
-  // Early return for 'GoogleSheetEmbedVisualization' chartType
-  if (chartData.chartType === 'GoogleSheetEmbedVisualization') {
-    return (
-      <Box
-        position="relative"
-        className={className}
-        height={chartData.height}
-        maxWidth={chartData.maxWidth ? chartData.maxWidth : '100%'}
-        width="100%"
-        sx={{ pt: 2, pb: 2, margin: 'auto' }}
-      >
-        <GoogleSheetEmbedVisualization
-          publishedSheetId={chartData.publishedSheetId}
-          gid={chartData.gid || chartData.subcharts[subchartIndex].gid || null}
-          range={
-            chartData.range || chartData.subcharts[subchartIndex].range || null
-          }
-        />
-      </Box>
-    );
-  }
-
-  // Use GoogleContext for loading and manipulating the Google Charts
-  const google = useContext(GoogleContext);
-
-  // Get the current theme
-  const theme = useTheme();
-
   // Get the options object for chart
   const options = useMemo(() => {
     return returnGenericOptions({ ...props, theme });
   }, [props, theme, chartData.chartType]);
 
-  // State to store transformed data for CalendarChart
-  const [calendarDataArray, setCalendarDataArray] = useState(null);
+  // Properties for selecting (showing or hiding) the serie(s)
+  const seriesSelector = options.seriesSelector || false;
+
+  // Properties for toggling stacked bars
+  const toggleStackedBars = options.toggleStackedBars || false;
+
+  const reconstructFunctionFromJSONstring = (columns) => {
+    if (!columns) return;
+
+    const evaluatedColumns = [];
+    for (const column of columns) {
+      if (typeof column === 'number') {
+        // If it's a number, add it as-is
+        evaluatedColumns.push(column);
+      } else if (typeof column === 'object') {
+        if (column.calc && column.calc !== 'stringify') {
+          // If it's an object with a 'calc' property, evaluate the 'calc' function
+          // using new Function() and add the result to the evaluatedColumns array
+          const calcFunction = new Function("dataTable", "rowNum", column.calc);
+          evaluatedColumns.push({
+            ...column,
+            calc: calcFunction,
+          });
+        } else {
+          // If it's an object without a 'calc' property, or with calc = 'stringify', add it as-is
+          evaluatedColumns.push(column);
+        }
+      }
+    }
+    return evaluatedColumns;
+  }
+
+  // Handler for CategoryFilter if isSlider is true
+  const handleCategoryChange = (_, newValue) => {
+    if (!isSlider) return;
+    if (!controlWrapper) return;
+
+    controlWrapper.setState({
+      selectedValues: [allCategoriesForCategoryFilter[newValue]]
+    });
+
+    setCurrentCategoryIndexForCategoryFilter(newValue);
+
+    controlWrapper.draw();
+  };
+
+  const renderChart = () => {
+    if (hasChartControl) {
+      return (
+        <Stack
+          id={`dashboard-${chartID}`}
+          direction={ChartControlType[chartControl.controlType]?.stackDirection || 'column-reverse'}
+          sx={{ height: '100%' }}
+        >
+          {renderChartControlBox()}
+          <Box id={chartID} sx={{ height: height, maxHeight: maxHeight }} />
+        </Stack>
+      );
+    }
+    return <Box id={chartID} sx={{ height: height, maxHeight: maxHeight }} />;
+  };
+
+  const renderChartControlBox = () => {
+    if (chartControl.controlType === "CategoryFilter") {
+      return (
+        isSlider ?
+          (
+            <>
+              <ModifiedCategoryFilterForTimeline
+                allCategories={allCategoriesForCategoryFilter}
+                currentCategoryIndex={currentCategoryIndexForCategoryFilter}
+                onSliderChange={handleCategoryChange}
+              />
+              <Box display="none">
+                {chartControlBox}
+              </Box>
+            </>
+          )
+          : { chartControlBox }
+      )
+    }
+
+    if (chartControl.controlType !== "ChartRangeFilter") {
+      return chartControlBox;
+    }
+
+    return (
+      <>
+        {isMobile && !isFirstRender && (
+          <Typography
+            variant="caption"
+            color={theme.palette.text.secondary}
+            sx={{ textAlign: 'center', mt: 1 }}
+          >
+            {rangeFilterTooltipText}
+          </Typography>
+        )}
+        <Tooltip
+          title={rangeFilterTooltipText}
+          placement="bottom"
+          arrow
+          open={tooltipOpen}
+          onClose={() => setTooltipOpen(false)}
+        >
+          {chartControlBox}
+        </Tooltip>
+      </>
+    );
+  };
+
+  const onChartReady = () => {
+    if (!isMounted.current) return;
+
+    if (!isFirstRender) return;
+    // Hide the circleProgress when chart finishes rendering the first time
+    setIsFirstRender(false);
+  };
+
+  const shouldShowTooltip = useMemo(() => !tooltipClosed && !isMobile, [tooltipClosed, isMobile]);
+
+  const handleControlBoxClick = useCallback(() => {
+    setTooltipOpen(false);
+    setTooltipClosed(true);
+  }, []);
+
+  const chartControlBox = useMemo(() => (
+    <Box
+      id={`control-${chartID}`}
+      sx={{
+        height: `calc(${height} / 8)`,
+        mt: 1,
+        opacity: chartControl?.controlType === 'ChartRangeFilter' ? 0.8 : 1,
+        filter: 'saturate(0.3)'
+      }}
+      // Disable tooltip on click or drag
+      onClick={handleControlBoxClick}
+      // Show tooltip on hover if it hasn't been closed yet
+      onMouseEnter={() => shouldShowTooltip && setTooltipOpen(true)}
+    />
+  ), [chartID, height, handleControlBoxClick, shouldShowTooltip]);
+
+  const [isStacked, setIsStacked] = useState(options.isStacked || false);
+
 
   // Early exit for 'Calendar' chartType
-  if (chartData.chartType === 'Calendar') {
-    useEffect(() => {
-      if (!google) return;
-      fetchDataFromSheet({ chartData: chartData, subchartIndex: subchartIndex, google: google })
-        .then(response => {
-          const rawData = response.getDataTable();
-          const dataColumn = chartData.columns ? chartData.columns[1] : 1
-            || chartData.subcharts[subchartIndex].columns ? chartData.subcharts[subchartIndex].columns[1] : 1;
+  useEffect(() => {
+    if (chartData.chartType !== 'Calendar' || !google) return;
 
-          const getTooltipColumn = (chartData, subchartIndex) => {
-            // Search in top-level columns
-            let tooltipColumn = chartData.columns && chartData.columns.find(col => typeof col === 'object' && col.role === 'tooltip');
+    fetchDataFromSheet({ chartData, subchartIndex, google })
+      .then(response => {
+        const rawData = response.getDataTable();
+        const dataColumn = (chartData.columns && chartData.columns[1]) || 
+                           (chartData.subcharts[subchartIndex] && chartData.subcharts[subchartIndex].columns[1]) || 1;
 
-            // If not found, search in subcharts
-            if (!tooltipColumn && chartData.subcharts && chartData.subcharts[subchartIndex]) {
-              tooltipColumn = chartData.subcharts[subchartIndex].columns.find(col => typeof col === 'object' && col.role === 'tooltip');
-            }
+        const getTooltipColumn = (chartData, subchartIndex) => {
+          // Search in top-level columns
+          let tooltipColumn = chartData.columns && chartData.columns.find(col => typeof col === 'object' && col.role === 'tooltip');
 
-            return tooltipColumn;
+          // If not found, search in subcharts
+          if (!tooltipColumn && chartData.subcharts && chartData.subcharts[subchartIndex]) {
+            tooltipColumn = chartData.subcharts[subchartIndex].columns.find(col => typeof col === 'object' && col.role === 'tooltip');
           }
 
-          const tooltipColumn = getTooltipColumn(chartData, subchartIndex).sourceColumn;
-
-          setCalendarDataArray(
-            transformDataForNivoCalendarChart(rawData, dataColumn, tooltipColumn)
-          );
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }, [google]);
-
-    if (!calendarDataArray) {
-      return (
-        <Box sx={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
-          <LoadingAnimation />
-        </Box>
-      )
-    }
-
-    return (
-      <NivoCalendarChart
-        dataArray={calendarDataArray}
-        isPortrait={isPortrait}
-        options={options}
-      />
-    );
-  }
-
-  const [NivoHeatMapData, setNivoHeatMapData] = useState(null);
-  const [NivoHeatMapWidth, setNivoHeatMapWidth] = useState(500);
-  // Early return for 'HeatMap' chartType
-  if (chartData.chartType === 'HeatMap') {
-    useEffect(() => {
-      if (!google) return;
-      fetchDataFromSheet({ chartData: chartData, subchartIndex: subchartIndex, google: google })
-        .then(response => {
-          const rawData = response.getDataTable();
-          const heatMapData = transformDataForNivoHeatMap(rawData);
-          setNivoHeatMapData(heatMapData);
+          return tooltipColumn;
         }
-        )
-        .catch(error => {
-          console.log(error);
-        });
-    }, [google]);
 
-    if (!NivoHeatMapData) {
-      return (
-        <Box sx={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
-          <LoadingAnimation />
-        </Box>
-      )
-    }
+        const tooltipColumn = getTooltipColumn(chartData, subchartIndex);
+        const tooltipColumnIndex = tooltipColumn ? tooltipColumn.sourceColumn : null;
 
-    return (
-      <GoogleChartStyleWrapper
-        isPortrait={isPortrait}
-        className={className}
-        position="relative"
-        minWidth={NivoHeatMapWidth + 'px'}
-        height={isPortrait ? "420px" : "500px"}
-      >
-        <NivoHeatMap
-          data={NivoHeatMapData}
-          width={NivoHeatMapWidth}
-          isPortrait={isPortrait}
-          options={options}
-          tooltipTemplate={chartData.tooltipFormat || chartData.subcharts[subchartIndex].tooltipFormat}
-        />
-      </GoogleChartStyleWrapper>
-    );
-  }
-
-
-
-  // States of the Google Charts
-  const [dataTable, setDataTable] = useState();
-  const [chartWrapper, setChartWrapper] = useState();
-  const [dashboardWrapper, setDashboardWrapper] = useState();
-  const [controlWrapper, setControlWrapper] = useState();
-
-  // To determine the first time the chart renders to show/hide the LoadingAnimation
-  const [isFirstRender, setIsFirstRender] = useState(true);
-
-  // Keep track of the columns (series) of the chart
-  const [allInitialColumns, setAllInitialColumns] = useState();
-  const [dataColumns, setDataColumns] = useState();
-  const [initialVAxisRange, setInitialVAxisRage] = useState();
-
-  // Define the DOM container's ID for drawing the google chart inside
-  const [chartID, __] = useState(generateRandomID());
-
-  // Calendar chart's properties
-  const [chartTotalHeight, setChartTotalHeight] = useState(200);
-
-  // Properties for chart control (if existed)
-  const chartControl = chartData.control || chartData.subcharts?.[subchartIndex].control;
-
-  // Memoize the computation of chartControlOptions
-  const chartControlOptions = useMemo(() => {
-    if (!chartControl || isHomepage) return null;
-
-    return {
-      ...chartControl.options,
-      ui: returnChartControlUI({
-        chartControl,
-        mainChartData: chartData,
-        mainChartOptions: options,
-        subchartIndex,
-        theme,
-        isPortrait
+        setCalendarDataArray(
+          transformDataForNivoCalendarChart(rawData, dataColumn, tooltipColumnIndex)
+        );
       })
-    };
-  }, [chartControl, chartData, options, subchartIndex, theme, isPortrait, isHomepage]);
+      .catch(error => {
+        console.log(error);
+      });
+  }, [google, chartData, subchartIndex]);
 
-  // Only show the chart control if:
-  // It exists in the database (either for all subcharts or just for a particular subchart)
-  // And if the chart is currently not shown on homePage
-  const hasChartControl = Boolean(chartControl && !isHomepage);
+  // Early return for 'HeatMap' chartType
+  useEffect(() => {
+    if (chartData.chartType !== 'HeatMap' || !google) return;
+
+    fetchDataFromSheet({ chartData, subchartIndex, google })
+      .then(response => {
+        const rawData = response.getDataTable();
+        const heatMapData = transformDataForNivoHeatMap(rawData);
+        setNivoHeatMapData(heatMapData);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }, [google, chartData, subchartIndex]);
 
   // Separate useEffect for touch event logic
   useEffect(() => {
@@ -230,18 +300,6 @@ function SubChart(props) {
       return cleanupTouchEventListener;
     }
   }, [chartControl, controlWrapper, chartID]);
-
-  // Properties for selecting (showing or hiding) the serie(s)
-  const seriesSelector = options.seriesSelector || false;
-
-  // Properties for toggling stacked bars
-  const toggleStackedBars = options.toggleStackedBars || false;
-  const [isStacked, setIsStacked] = useState(options.isStacked || false);
-
-  // Properties for CategoryFilter to be a timeline slider
-  const isSlider = hasChartControl ? chartControl.options?.isSlider : false;
-  const [allCategoriesForCategoryFilter, setAllCategoriesForCategoryFilter] = useState([]);
-  const [currentCategoryIndexForCategoryFilter, setCurrentCategoryIndexForCategoryFilter] = useState([]);
 
   // Set new options prop and re-render the chart if theme or isPortrait changes
   useEffect(() => {
@@ -264,11 +322,113 @@ function SubChart(props) {
   // This only applies to when seriesSelector.method == "setViewColumn"
   useEffect(() => {
     if (!dataColumns) return;
-    if (seriesSelector && seriesSelector.method == "setViewColumn") {
+    if (seriesSelector && seriesSelector.method === "setViewColumn") {
       setInitialColumnsColors({ dataColumns: dataColumns });
       handleSeriesSelection({ newDataColumns: dataColumns });
     }
   }, [theme]);
+
+  // Call this function to fetch the data and draw the initial chart
+  useEffect(() => {
+    if (google && !chartWrapper) {
+      fetchDataFromSheet({ chartData: chartData, subchartIndex: subchartIndex, google: google })
+        .then(response => {
+          const thisDataTable = response.getDataTable();
+          setDataTable(thisDataTable);
+
+          // Get dataColumn views
+          const columns = chartData.columns
+            || (chartData.subcharts
+              && chartData.subcharts[subchartIndex].columns)
+            || null
+            || null;
+          const reconstructedColumns = reconstructFunctionFromJSONstring(columns);
+
+          const thisChartWrapper = new google.visualization.ChartWrapper({
+            chartType: chartData.chartType,
+            dataTable: (!hasChartControl) ? thisDataTable : undefined,
+            options: options,
+            view: {
+              columns: reconstructedColumns
+            },
+            containerId: chartID
+          });
+          setChartWrapper(thisChartWrapper);
+
+          let thisControlWrapper;
+          if (hasChartControl) {
+            const thisDashboardWrapper = new google.visualization.Dashboard(
+              document.getElementById(`dashboard-${chartID}`));
+            setDashboardWrapper(thisDashboardWrapper);
+            google.visualization.events.addListener(thisDashboardWrapper, 'ready', onChartReady);
+
+            thisControlWrapper = new google.visualization.ControlWrapper({
+              controlType: chartControl.controlType,
+              options: chartControlOptions,
+              containerId: `control-${chartID}`
+            });
+            setControlWrapper(thisControlWrapper);
+
+            // Set all of the available distinct categories for the CategoryFilter if isSlider is true
+            if (isSlider) {
+              const uniqueCategories = thisDataTable
+                .getDistinctValues(chartControlOptions.filterColumnIndex)
+                .filter(c => c !== null);
+
+              setAllCategoriesForCategoryFilter(uniqueCategories);
+              setCurrentCategoryIndexForCategoryFilter(uniqueCategories.length - 1);
+            }
+
+            // Establish dependencies
+            thisDashboardWrapper.bind(thisControlWrapper, thisChartWrapper);
+
+            thisDashboardWrapper.draw(thisDataTable);
+          }
+          else {
+            google.visualization.events.addListener(thisChartWrapper, 'ready', onChartReady);
+            thisChartWrapper.draw();
+          }
+
+          // Run the seriesSelector for the first time
+          if (seriesSelector) {
+            const { initAllInitialColumns, initDataColumns } = getInitialColumns({ chartWrapper: thisChartWrapper, dataTable: thisDataTable, seriesSelector: seriesSelector });
+            handleSeriesSelection({
+              _allInitialColumns: initAllInitialColumns,
+              newDataColumns: initDataColumns,
+              _chartWrapper: thisChartWrapper,
+              _controlWrapper: thisControlWrapper
+            });
+          }
+
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  }, [google]);
+
+  useEffect(() => {
+    isMounted.current = true;
+    return () => isMounted.current = false;
+  }, []);
+
+  // Memoize the computation of chartControlOptions
+  const chartControlOptions = useMemo(() => {
+    if (!chartControl || isHomepage) return null;
+
+    return {
+      ...chartControl.options,
+      ui: returnChartControlUI({
+        chartControl,
+        mainChartData: chartData,
+        mainChartOptions: options,
+        subchartIndex,
+        theme,
+        isPortrait
+      })
+    };
+  }, [chartControl, chartData, options, subchartIndex, theme, isPortrait, isHomepage]);
+
 
   const getInitialColumns = useCallback(({ chartWrapper, dataTable, seriesSelector }) => {
     // Update the initial DataView's columns (often, all of the series are displayed initially)
@@ -460,186 +620,6 @@ function SubChart(props) {
     }
   }, [allInitialColumns, options, seriesSelector, chartWrapper, controlWrapper, initialVAxisRange, hasChartControl]);
 
-  const reconstructFunctionFromJSONstring = (columns) => {
-    if (!columns) return;
-
-    const evaluatedColumns = [];
-    for (const column of columns) {
-      if (typeof column === 'number') {
-        // If it's a number, add it as-is
-        evaluatedColumns.push(column);
-      } else if (typeof column === 'object') {
-        if (column.calc && column.calc !== 'stringify') {
-          // If it's an object with a 'calc' property, evaluate the 'calc' function
-          // using new Function() and add the result to the evaluatedColumns array
-          const calcFunction = new Function("dataTable", "rowNum", column.calc);
-          evaluatedColumns.push({
-            ...column,
-            calc: calcFunction,
-          });
-        } else {
-          // If it's an object without a 'calc' property, or with calc = 'stringify', add it as-is
-          evaluatedColumns.push(column);
-        }
-      }
-    }
-    return evaluatedColumns;
-  }
-
-  // Call this function to fetch the data and draw the initial chart
-  useEffect(() => {
-    if (google && !chartWrapper) {
-      fetchDataFromSheet({ chartData: chartData, subchartIndex: subchartIndex, google: google })
-        .then(response => {
-          const thisDataTable = response.getDataTable();
-          setDataTable(thisDataTable);
-
-          // Get dataColumn views
-          const columns = chartData.columns
-            || (chartData.subcharts
-              && chartData.subcharts[subchartIndex].columns)
-            || null
-            || null;
-          const reconstructedColumns = reconstructFunctionFromJSONstring(columns);
-
-          const thisChartWrapper = new google.visualization.ChartWrapper({
-            chartType: chartData.chartType,
-            dataTable: (!hasChartControl) ? thisDataTable : undefined,
-            options: options,
-            view: {
-              columns: reconstructedColumns
-            },
-            containerId: chartID
-          });
-          setChartWrapper(thisChartWrapper);
-
-          let thisControlWrapper;
-          if (hasChartControl) {
-            const thisDashboardWrapper = new google.visualization.Dashboard(
-              document.getElementById(`dashboard-${chartID}`));
-            setDashboardWrapper(thisDashboardWrapper);
-            google.visualization.events.addListener(thisDashboardWrapper, 'ready', onChartReady);
-
-            thisControlWrapper = new google.visualization.ControlWrapper({
-              controlType: chartControl.controlType,
-              options: chartControlOptions,
-              containerId: `control-${chartID}`
-            });
-            setControlWrapper(thisControlWrapper);
-
-            // Set all of the available distinct categories for the CategoryFilter if isSlider is true
-            if (isSlider) {
-              const uniqueCategories = thisDataTable
-                .getDistinctValues(chartControlOptions.filterColumnIndex)
-                .filter(c => c !== null);
-
-              setAllCategoriesForCategoryFilter(uniqueCategories);
-              setCurrentCategoryIndexForCategoryFilter(uniqueCategories.length - 1);
-            }
-
-            // Establish dependencies
-            thisDashboardWrapper.bind(thisControlWrapper, thisChartWrapper);
-
-            thisDashboardWrapper.draw(thisDataTable);
-          }
-          else {
-            google.visualization.events.addListener(thisChartWrapper, 'ready', onChartReady);
-            thisChartWrapper.draw();
-          }
-
-          // Run the seriesSelector for the first time
-          if (seriesSelector) {
-            const { initAllInitialColumns, initDataColumns } = getInitialColumns({ chartWrapper: thisChartWrapper, dataTable: thisDataTable, seriesSelector: seriesSelector });
-            handleSeriesSelection({
-              _allInitialColumns: initAllInitialColumns,
-              newDataColumns: initDataColumns,
-              _chartWrapper: thisChartWrapper,
-              _controlWrapper: thisControlWrapper
-            });
-          }
-
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }
-  }, [google]);
-
-  const [tooltipOpen, setTooltipOpen] = useState(false);
-  const [tooltipClosed, setTooltipClosed] = useState(false);
-
-  const handleControlBoxClick = useCallback(() => {
-    setTooltipOpen(false);
-    setTooltipClosed(true);
-  }, []);
-
-  const shouldShowTooltip = useMemo(() => !tooltipClosed && !isMobile, [tooltipClosed, isMobile]);
-  const rangeFilterTooltipText = 'Use the sliders to interact with the graph';
-
-  const chartControlBox = useMemo(() => (
-    <Box
-      id={`control-${chartID}`}
-      sx={{
-        height: `calc(${height} / 8)`,
-        mt: 1,
-        opacity: chartControl?.controlType === 'ChartRangeFilter' ? 0.8 : 1,
-        filter: 'saturate(0.3)'
-      }}
-      // Disable tooltip on click or drag
-      onClick={handleControlBoxClick}
-      // Show tooltip on hover if it hasn't been closed yet
-      onMouseEnter={() => shouldShowTooltip && setTooltipOpen(true)}
-    />
-  ), [chartID, height, handleControlBoxClick, shouldShowTooltip]);
-
-  const renderChartControlBox = () => {
-    if (chartControl.controlType === "CategoryFilter") {
-      return (
-        isSlider ?
-          (
-            <>
-              <ModifiedCategoryFilterForTimeline
-                allCategories={allCategoriesForCategoryFilter}
-                currentCategoryIndex={currentCategoryIndexForCategoryFilter}
-                onSliderChange={handleCategoryChange}
-              />
-              <Box display="none">
-                {chartControlBox}
-              </Box>
-            </>
-          )
-          : { chartControlBox }
-      )
-    }
-
-    if (chartControl.controlType !== "ChartRangeFilter") {
-      return chartControlBox;
-    }
-
-    return (
-      <>
-        {isMobile && !isFirstRender && (
-          <Typography
-            variant="caption"
-            color={theme.palette.text.secondary}
-            sx={{ textAlign: 'center', mt: 1 }}
-          >
-            {rangeFilterTooltipText}
-          </Typography>
-        )}
-        <Tooltip
-          title={rangeFilterTooltipText}
-          placement="bottom"
-          arrow
-          open={tooltipOpen}
-          onClose={() => setTooltipOpen(false)}
-        >
-          {chartControlBox}
-        </Tooltip>
-      </>
-    );
-  };
-
   // Handler for changing the chart to a stacked bar chart
   const handleStackedBarChart = useCallback(() => {
     if (chartWrapper) {
@@ -653,50 +633,75 @@ function SubChart(props) {
     }
   }, [chartWrapper, isStacked, options]);
 
-  // Handler for CategoryFilter if isSlider is true
-  const handleCategoryChange = (_, newValue) => {
-    if (!isSlider) return;
-    if (!controlWrapper) return;
+  // Early return for 'GoogleSheetEmbedVisualization' chartType
+  if (chartData.chartType === 'GoogleSheetEmbedVisualization') {
+    return (
+      <Box
+        position="relative"
+        className={className}
+        height={chartData.height}
+        maxWidth={chartData.maxWidth ? chartData.maxWidth : '100%'}
+        width="100%"
+        sx={{ pt: 2, pb: 2, margin: 'auto' }}
+      >
+        <GoogleSheetEmbedVisualization
+          publishedSheetId={chartData.publishedSheetId}
+          gid={chartData.gid || chartData.subcharts[subchartIndex].gid || null}
+          range={
+            chartData.range || chartData.subcharts[subchartIndex].range || null
+          }
+        />
+      </Box>
+    );
+  }
 
-    controlWrapper.setState({
-      selectedValues: [allCategoriesForCategoryFilter[newValue]]
-    });
-
-    setCurrentCategoryIndexForCategoryFilter(newValue);
-
-    controlWrapper.draw();
-  };
-
-  const renderChart = () => {
-    if (hasChartControl) {
+  if (chartData.chartType === 'Calendar') {
+    if (!calendarDataArray) {
       return (
-        <Stack
-          id={`dashboard-${chartID}`}
-          direction={ChartControlType[chartControl.controlType]?.stackDirection || 'column-reverse'}
-          sx={{ height: '100%' }}
-        >
-          {renderChartControlBox()}
-          <Box id={chartID} sx={{ height: height, maxHeight: maxHeight }} />
-        </Stack>
+        <Box sx={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+          <LoadingAnimation />
+        </Box>
       );
     }
-    return <Box id={chartID} sx={{ height: height, maxHeight: maxHeight }} />;
-  };
 
-  const isMounted = useRef(true);
+    return (
+      <NivoCalendarChart
+        dataArray={calendarDataArray}
+        isPortrait={isPortrait}
+        options={options}
+      />
+    );
+  }
 
-  useEffect(() => {
-    isMounted.current = true;
-    return () => isMounted.current = false;
-  }, []);
+  if (chartData.chartType === 'HeatMap') {
+    if (!NivoHeatMapData) {
+      return (
+        <Box sx={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+          <LoadingAnimation />
+        </Box>
+      );
+    }
 
-  const onChartReady = () => {
-    if (!isMounted.current) return;
-
-    if (!isFirstRender) return;
-    // Hide the circleProgress when chart finishes rendering the first time
-    setIsFirstRender(false);
-  };
+    return (
+      <GoogleChartStyleWrapper
+        isPortrait={isPortrait}
+        className={className}
+        position="relative"
+        minWidth={NivoHeatMapWidth + 'px'}
+        height={isPortrait ? "420px" : "500px"}
+      >
+        <NivoHeatMap
+          data={NivoHeatMapData}
+          width={NivoHeatMapWidth}
+          isPortrait={isPortrait}
+          options={options}
+          tooltipTemplate={chartData.tooltipFormat || chartData.subcharts[subchartIndex].tooltipFormat}
+        />
+      </GoogleChartStyleWrapper>
+    );
+  }
+ 
+  const rangeFilterTooltipText = 'Use the sliders to interact with the graph';
 
   return (
     <GoogleChartStyleWrapper
