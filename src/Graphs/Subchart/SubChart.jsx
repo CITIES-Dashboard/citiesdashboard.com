@@ -44,9 +44,9 @@ function SubChart(props) {
   const [NivoHeatMapWidth] = useState(500);
 
   // States of the Google Charts
-  const [dataTable, setDataTable] = useState();
+  const [, setDataTable] = useState();
   const [chartWrapper, setChartWrapper] = useState();
-  const [setDashboardWrapper] = useState();
+  const [, setDashboardWrapper] = useState();
   const [controlWrapper, setControlWrapper] = useState();
 
   // To determine the first time the chart renders to show/hide the LoadingAnimation
@@ -98,7 +98,7 @@ function SubChart(props) {
   // Get the options object for chart
   const options = useMemo(() => {
     return returnGenericOptions({ ...props, theme });
-  }, [props, theme, chartData.chartType]);
+  }, [props, theme]);
 
   // Properties for selecting (showing or hiding) the serie(s)
   const seriesSelector = options.seriesSelector || false;
@@ -251,8 +251,8 @@ function SubChart(props) {
     fetchDataFromSheet({ chartData, subchartIndex, google })
       .then(response => {
         const rawData = response.getDataTable();
-        const dataColumn = (chartData.columns && chartData.columns[1]) || 
-                           (chartData.subcharts[subchartIndex] && chartData.subcharts[subchartIndex].columns[1]) || 1;
+        const dataColumn = (chartData.columns && chartData.columns[1]) ||
+          (chartData.subcharts[subchartIndex] && chartData.subcharts[subchartIndex].columns[1]) || 1;
 
         const getTooltipColumn = (chartData, subchartIndex) => {
           // Search in top-level columns
@@ -700,7 +700,7 @@ function SubChart(props) {
       </GoogleChartStyleWrapper>
     );
   }
- 
+
   const rangeFilterTooltipText = 'Use the sliders to interact with the graph';
 
   return (
