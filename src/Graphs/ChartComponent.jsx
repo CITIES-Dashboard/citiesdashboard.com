@@ -4,6 +4,7 @@ import { Box, Tabs, Tab, useMediaQuery } from '@mui/material/';
 import { TabContext } from '../ContextProviders/TabContext';
 
 import SubChart from './Subchart/SubChart';
+import NewSubChart from './Subchart/NewSubChart';
 import { YearRangeProvider } from '../ContextProviders/YearRangeContext';
 
 const debounceMilliseconds = 100;
@@ -122,7 +123,7 @@ function ChartComponent({ chartData: passedChartData, chartHeight: passedChartHe
     // If the chart in in homepage, just display the first subChart
     if (isHomepage) {
       renderedComponent = (
-        <SubChart
+        <NewSubChart
           chartData={chartData}
           subchartIndex={0}
           isPortrait={isPortrait}
@@ -174,7 +175,7 @@ function ChartComponent({ chartData: passedChartData, chartHeight: passedChartHe
                   overflowY: 'hidden',
                 }}
               >
-                <SubChart
+                <NewSubChart
                   chartData={chartData}
                   subchartIndex={index}
                   isPortrait={isPortrait}
@@ -197,7 +198,7 @@ function ChartComponent({ chartData: passedChartData, chartHeight: passedChartHe
   } else {
     // If there is only one single chart
     renderedComponent = (
-      <SubChart
+      <NewSubChart
         chartData={chartData}
         isPortrait={isPortrait}
         isHomepage={isHomepage}
