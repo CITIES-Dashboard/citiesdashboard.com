@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useContext, useMemo, useCallback, memo } f
 
 import { GoogleContext } from '../../ContextProviders/GoogleContext';
 
-import { Box, Stack, Tooltip, Typography } from '@mui/material/';
+import { Box, Stack, Grid, Tooltip, Typography } from '@mui/material/';
 
 import { useTheme } from '@mui/material/styles';
 import GoogleSheetEmbedVisualization from '../GoogleSheetEmbedVisualization';
@@ -698,6 +698,52 @@ function SubChart(props) {
     setIsFirstRender(false);
   };
 
+  const showAuxiliaryControls = () => {
+    if (!isFirstRender) {
+      return (
+        <Grid
+          container
+          mt={1}
+          sx={{
+            gap: 1
+          }}
+        >
+          {seriesSelector &&
+            <Grid item
+              sm={12}
+              sx={{
+                [theme.breakpoints.down('sm')]: { width: '100%' }
+              }}
+            >
+              <SeriesSelector
+                items={dataColumns}
+                allowMultiple={seriesSelector.allowMultiple}
+                seriesLabel={seriesSelector.seriesLabel}
+                selectorID={`${chartData.title}-selector`}
+                onSeriesSelection={handleSeriesSelection}
+              />
+            </Grid>
+          }
+          {(toggleStackedBars && !isHomepage) && (
+            <Grid item
+              sx={{
+                [theme.breakpoints.down('sm')]: { width: '100%' }
+              }}
+            >
+              <StackedBarToggle
+                onToggle={handleStackedBarChart}
+                isStacked={isStacked}
+                isPortrait={isPortrait}
+              />
+            </Grid>
+          )}
+        </Grid >
+      );
+    } else {
+      return null;
+    }
+  };
+
   return (
     <GoogleChartStyleWrapper
       isPortrait={isPortrait}
@@ -714,26 +760,8 @@ function SubChart(props) {
         </Box>
       )}
 
-      {/* Conditionally display seriesSelector here */}
-      {(seriesSelector && !isFirstRender) && (
-        <SeriesSelector
-          items={dataColumns}
-          allowMultiple={seriesSelector.allowMultiple}
-          selectorID={`${chartData.title}-selector`}
-          onSeriesSelection={handleSeriesSelection}
-        />
-      )}
+      {showAuxiliaryControls()}
 
-      {/* Conditionally display Button to Toggle Stacked Bars */}
-      {(toggleStackedBars && !isHomepage && !isFirstRender) && (
-        <StackedBarToggle
-          onToggle={handleStackedBarChart}
-          isStacked={isStacked}
-          isPortrait={isPortrait}
-          theme={theme}
-        />
-      )}
-      {/* Display chart here */}
       {renderChart()}
     </GoogleChartStyleWrapper>
   );
