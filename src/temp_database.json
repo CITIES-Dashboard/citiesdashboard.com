@@ -967,6 +967,46 @@
                 }
               }
             }
+          },
+          {
+            "gid": 1557671026,
+            "subchartTitle": "Average Number of Pages per User vs. Soft Cap",
+            "subchartSubtitle": "<p>In 2022, the Office of Sustainability and Stewardship, in collaboration with NYUAD IT, introduced a soft printing cap of <b>1,000 pages per user every 6 months</b> to encourage more mindful printing habits among community members. The cap resets in September and March of each academic year (AY). Thus, each AY consists of 2 periods of 1,000 soft cap. </p> <p>This chart compares the average number of pages consumed by a single user during soft cap periods against the allocated quota, across various demographic groups. On average, it is evident that NYUAD community members <b>consume less than half of their allocated quota</b>, averaging around 400 pages per user every 6 months. The data suggests that the soft cap campaign has successfully promoted more thoughtful printing practices, showing a gradual reduction in both absolute and average printing numbers over time.</p> <p>Based on this trend, it might be possible to <b>lower soft printing cap quota to 500-800 pages</b> to further reduce printing demand.</p>",
+            "options": {
+              "seriesSelector": {
+                "allowMultiple": true,
+                "method": "setViewColumn"
+              },
+              "seriesType": "bars",
+              "series": {
+                "4": {
+                  "type": "line",
+                  "lineWidth": 3,
+                  "pointSize": 5
+                },
+                "5": {
+                  "type": "line",
+                  "lineWidth": 3,
+                  "enableInteractivity": false
+                }
+              },
+              "bar": {
+                "groupWidth": "40%"
+              },
+              "vAxis": {
+                "title": "Average Number of Pages per User in a Soft Cap Period",
+                "format": "#",
+                "viewWindow": {
+                  "max": 1200
+                }
+              },
+              "hAxis": {
+                "title": "6-month Soft Cap Periods (Two per AY)",
+                "minorGridlines": {
+                  "count": 0
+                }
+              }
+            }
           }
         ]
       },
@@ -1070,12 +1110,21 @@
         ]
       },
       {
-        "title": "Boxplot Distribution of Pages Printed by User Category by Month",
+        "title": "Boxplot Distribution of Pages Printed by User Category",
         "headers": 1,
         "chartType": "BarChart",
-        "gid": 1705611582,
+        "subcharts": [
+          {
+            "gid": 1705611582,
+            "subchartTitle": "By Month"
+          },
+          {
+            "gid": 666095775,
+            "subchartTitle": "By Soft Cap Period"
+          }
+        ],
         "query": "SELECT * ORDER BY A DESC",
-        "subtitle": "<p>These boxplots illustrate the distribution of pages printed by different user categories, showcasing data variability on a month-by-month basis via <b>a controllable slider</b>. For each category, the large dot represents the mean (average) number of pages printed by a user from that category, while the line inside each box marks the median, the box marks the 25th and 75th percentile, and the whiskers represent min and max values. More information on how to read a boxplot can be found <a href='https://en.wikipedia.org/wiki/Box_plot'>here</a>.</p><p>Consistently across all user categories, the mean is higher than the median, indicating a right-skewed distribution. This suggests that within each user category, <b>there are outliers or a subset of heavy users who print significantly more pages than the average person</b>, thereby pulling the mean upwards. <b>Faculty & Researcher</b> category, in particular, exhibits the greatest spread, highlighting a broad range of printing behaviors, from minimal to very high usage. The presence of such skewness across all categories indicates that a majority of users print a moderate number of pages, but the overall average is much higher, caused by few individuals printing large quantities.</p>",
+        "subtitle": "<p>These boxplots illustrate the distribution of pages printed by different user categories, showcasing data variability over time via <b>a controllable slider</b>. For each category, the large dot represents the mean (average) number of pages printed by a user from that category, while the line inside each box marks the median, the box marks the 25th and 75th percentile, and the whiskers represent min and max values (excluding outliers). More information on how to read a boxplot can be found <a href='https://en.wikipedia.org/wiki/Box_plot'>here</a>.</p><p>Consistently across all user categories, the mean is higher than the median, indicating a right-skewed distribution. This suggests that within each user category, <b>there are outliers or a subset of heavy users who print significantly more pages than the average person</b>, thereby pulling the mean upwards. <b>Faculty & Researcher</b> category, in particular, exhibits the greatest spread, highlighting a broad range of printing behaviors, from minimal to very high usage. The presence of such skewness across all categories indicates that a majority of users print a moderate number of pages, but the overall average is much higher, caused by few individuals printing large quantities.</p>",
         "columns": [
           36,
           7,
