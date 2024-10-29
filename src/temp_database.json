@@ -871,23 +871,26 @@
     "id": "printing",
     "title": "Printing & Copying",
     "sheetId": "1O1X73cSXO1lQuiQ1lj7d9QdE3KgdIufFlurmAPeI1ek",
-    "description": "This dataset visualizes printing and copying activities at NYUAD dating back to September 2018. While historical data from September 2018 to August 2022 only included the total number of pages per month, data from September 2019 to now details the usage of black and white (B/W) and color printing data across various paper sizes like A3 and A4, segmented by different user categories. The visualizations offers a detailed breakdown including time trends and user category comparisons.<br><br>While there are 20+ original types of printing accounts, our data visualizations simplify them into <b>four distinct demographic groups</b>. For detailed data of the original types of printing accounts, you can download the raw dataset. <table><thead><tr><th>Simplified groups</th><th>Original types of printing accounts</th></tr></thead><tbody><tr><td>Student</td><td>admitted_student, legacy_student, degree, student_applicant, student on leave, abu_dhabi_smsp, account_sponsored_student</td></tr><tr><td>Faculty and Researcher</td><td>adjunct faculty, faculty, researcher, research_affiliate, retired faculty, visiting_academic_other, visiting_scholar, account_sponsored_staff</td></tr><tr><td>Staff</td><td>ad_contingent, ad_employee_of_vendor, administrator, contractor, employee_of_vendor, prospective_employee, security_staff</td></tr><tr><td>Others</td><td>ad_executive_authority, employee_family_member, nyu_building_resident, account_sponsored_retiree, program_affiliate_other, nyu_commercial_tenant, unknown</td></tr></tbody></table>",
+    "description": "This dataset visualizes printing and copying activities at NYUAD dating back to <b>September 2018</b>. While historical data from September 2018 to August 2022 only included the total number of pages per month, data from September 2019 to now details the usage of black and white (B/W) and color printing data across various paper sizes like A3 and A4, segmented by different user categories. The visualizations offers a detailed breakdown including time trends and user category comparisons.<br><br>While there are 20+ original types of printing accounts, our data visualizations simplify them into <b>four distinct demographic groups</b>. For detailed data of the original types of printing accounts, you can download the raw dataset. <table><thead><tr><th>Simplified groups</th><th>Original types of printing accounts</th></tr></thead><tbody><tr><td>Student</td><td>admitted_student, legacy_student, degree, student_applicant, student on leave, abu_dhabi_smsp, account_sponsored_student</td></tr><tr><td>Faculty and Researcher</td><td>adjunct faculty, faculty, researcher, research_affiliate, retired faculty, visiting_academic_other, visiting_scholar, account_sponsored_staff</td></tr><tr><td>Staff</td><td>ad_contingent, ad_employee_of_vendor, administrator, contractor, employee_of_vendor, prospective_employee, security_staff</td></tr><tr><td>Others</td><td>ad_executive_authority, employee_family_member, nyu_building_resident, account_sponsored_retiree, program_affiliate_other, nyu_commercial_tenant, unknown</td></tr></tbody></table>",
     "owner": "NYUAD IT",
     "contact": "nyuad.it@nyu.edu",
     "rawDataTables": [
       {
         "gid": 1304606517
+      },
+            {
+        "gid": 1821457990
       }
     ],
     "charts": [
       {
-        "title": "Statistics By Academic Year",
+        "title": "Total Number of Pages",
         "headers": 1,
         "chartType": "ComboChart",
         "subcharts": [
           {
             "gid": 858079617,
-            "subchartTitle": "Total Number of Pages",
+            "subchartTitle": "By Academic Year",
             "subchartSubtitle": "The number of pages consumed have significantly dropped from <b>almost 7 million pages</b> in AY 18-19 to only <b>around 2 million</b> in recent AYs. That is an impressive <b>70%</b> reduction! Although annual printing statistics briefly rebounded in the years following AY 20-21 (after COVID restrictions), each subsequent year has shown a gradual decline in total printing numbers.<br/></br/>This highlights the success of the university management in implementing thoughtful printing initiatives, such as the soft cap campaign, along with a positive increase in awareness among community members.",
             "options": {
               "trendlines": {
@@ -929,96 +932,9 @@
             }
           },
           {
-            "gid": 1762464764,
-            "subchartTitle": "Average Number of Pages per User vs. Soft Cap",
-            "subchartSubtitle": "<p>In 2022, the Office of Sustainability and Stewardship, in collaboration with NYUAD IT, introduced a soft printing cap of <b>1,000 pages per user every 6 months</b> to encourage more mindful printing habits among community members. The cap resets in September and March of each academic year (AY). Thus, each AY consists of 2 periods of 1,000 soft cap. </p> <p>This chart compares the average number of pages consumed by a single user during soft cap periods against the allocated quota, across various demographic groups. On average, it is evident that NYUAD community members <b>consume less than half of their allocated quota</b>, averaging around 400 pages per user every 6 months. The data suggests that the soft cap campaign has successfully promoted more thoughtful printing practices, showing a gradual reduction in both absolute and average printing numbers over time.</p> <p>Based on this trend, it might be possible to <b>lower soft printing cap quota to 500-800 pages</b> to further reduce printing demand.</p>",
-            "options": {
-              "seriesSelector": {
-                "allowMultiple": true,
-                "method": "setViewColumn"
-              },
-              "seriesType": "bars",
-              "series": {
-                "4": {
-                  "type": "line",
-                  "lineWidth": 3,
-                  "pointSize": 5
-                },
-                "5": {
-                  "type": "line",
-                  "lineWidth": 3,
-                  "enableInteractivity": false
-                }
-              },
-              "bar": {
-                "groupWidth": "40%"
-              },
-              "vAxis": {
-                "title": "Average Number of Pages per User in a Soft Cap Period",
-                "format": "#",
-                "viewWindow": {
-                  "max": 1200
-                }
-              },
-              "hAxis": {
-                "title": "6-month Soft Cap Periods (Two per AY)",
-                "minorGridlines": {
-                  "count": 0
-                }
-              }
-            }
-          },
-          {
-            "gid": 1557671026,
-            "subchartTitle": "Average Number of Pages per User vs. Soft Cap",
-            "subchartSubtitle": "<p>In 2022, the Office of Sustainability and Stewardship, in collaboration with NYUAD IT, introduced a soft printing cap of <b>1,000 pages per user every 6 months</b> to encourage more mindful printing habits among community members. The cap resets in September and March of each academic year (AY). Thus, each AY consists of 2 periods of 1,000 soft cap. </p> <p>This chart compares the average number of pages consumed by a single user during soft cap periods against the allocated quota, across various demographic groups. On average, it is evident that NYUAD community members <b>consume less than half of their allocated quota</b>, averaging around 400 pages per user every 6 months. The data suggests that the soft cap campaign has successfully promoted more thoughtful printing practices, showing a gradual reduction in both absolute and average printing numbers over time.</p> <p>Based on this trend, it might be possible to <b>lower soft printing cap quota to 500-800 pages</b> to further reduce printing demand.</p>",
-            "options": {
-              "seriesSelector": {
-                "allowMultiple": true,
-                "method": "setViewColumn"
-              },
-              "seriesType": "bars",
-              "series": {
-                "4": {
-                  "type": "line",
-                  "lineWidth": 3,
-                  "pointSize": 5
-                },
-                "5": {
-                  "type": "line",
-                  "lineWidth": 3,
-                  "enableInteractivity": false
-                }
-              },
-              "bar": {
-                "groupWidth": "40%"
-              },
-              "vAxis": {
-                "title": "Average Number of Pages per User in a Soft Cap Period",
-                "format": "#",
-                "viewWindow": {
-                  "max": 1200
-                }
-              },
-              "hAxis": {
-                "title": "6-month Soft Cap Periods (Two per AY)",
-                "minorGridlines": {
-                  "count": 0
-                }
-              }
-            }
-          }
-        ]
-      },
-      {
-        "title": "Statistics by Month",
-        "headers": 1,
-        "chartType": "ComboChart",
-        "subcharts": [
-          {
             "gid": 1705611582,
             "query": "SELECT A, B, I, P, W, AD",
-            "subchartTitle": "Total Number of Pages",
+            "subchartTitle": "By Month",
             "subchartSubtitle": "<p>Monthly printing activities vary significantly throughout academic years (AYs), typically peaking at the start of the Fall and Spring semesters. There is also a noticeable decrease of usage during winter and summer breaks, with the lowest months clocking in at only around <b>1/4</b> of peak-usage months. This pattern underscores the direct impact of academic cycles on paper consumption behaviors across different user groups.</p> <p>Overall, despite monthly fluctuations, printing consumption has drastically decreased over the past AYs, evident in the negative slope of the linear trend line. While printing levels in recent years have surpassed those during COVID lock-down periods, they remain at less than half of the pre-COVID levels.</p> <p><b>Faculty & Researcher</b> and <b>Student</b> are the two biggest contributors in campus' paper usage, followed by <b>Staff</b> and <b>Others</b>.</p>",
             "options": {
               "trendlines": {
@@ -1110,17 +1026,60 @@
         ]
       },
       {
+        "title": "Average Number of Pages per User by Soft Cap Period",
+        "headers": 1,
+        "chartType": "ComboChart",
+        "gid": 666095775,
+        "query": "SELECT A, C, J, Q, X, AE, AQ",
+        "subtitle": "<p>In 2022, the Office of Sustainability and Stewardship, in collaboration with NYUAD IT, introduced a soft printing cap of <b>1,000 pages per user every 6 months</b> to encourage more mindful printing habits among community members. The cap resets in September and March of each academic year (AY). Thus, each AY consists of 2 periods of 1,000 soft cap: <ul><li><b>1st period: </b>from September to February</li><li><b>2nd period: </b>from March to August</li></ul></p><p>This chart compares the average number of pages consumed by a single user during soft cap periods against the allocated quota, across various demographic groups. It is evident that an average NYUAD community member <b>consumes less than a third of their allocated quota</b>, averaging around 300 pages every 6 months. The data suggests that the soft cap campaign has successfully promoted more thoughtful printing practices, showing a gradual reduction in both absolute and average printing numbers over time.</p> <p>Based on this trend, it might be possible to <b>lower soft printing cap quota, for example, to 500 pages</b> to further reduce printing demand.</p>",
+        "options": {
+          "seriesSelector": {
+            "allowMultiple": true,
+            "method": "setViewColumn"
+          },
+          "seriesType": "bars",
+          "series": {
+            "4": {
+              "type": "line",
+              "lineWidth": 3,
+              "pointSize": 5
+            },
+            "5": {
+              "type": "line",
+              "lineWidth": 3,
+              "enableInteractivity": false
+            }
+          },
+          "bar": {
+            "groupWidth": "40%"
+          },
+          "vAxis": {
+            "title": "Average Number of Pages per User in a Soft Cap Period",
+            "format": "#",
+            "viewWindow": {
+              "max": 1200
+            }
+          },
+          "hAxis": {
+            "title": "6-month Soft Cap Periods (Two per AY)",
+            "minorGridlines": {
+              "count": 0
+            }
+          }
+        }
+      },
+      {
         "title": "Boxplot Distribution of Pages Printed by User Category",
         "headers": 1,
         "chartType": "BarChart",
         "subcharts": [
           {
-            "gid": 1705611582,
-            "subchartTitle": "By Month"
-          },
-          {
             "gid": 666095775,
             "subchartTitle": "By Soft Cap Period"
+          },
+          {
+            "gid": 1705611582,
+            "subchartTitle": "By Month"
           }
         ],
         "query": "SELECT * ORDER BY A DESC",
