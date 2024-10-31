@@ -114,108 +114,110 @@ export default function SeriesSelector(props) {
   };
 
   return (
-    <Stack spacing={1} direction="row" alignItems="center">
-      <FormControl
-        sx={{
-          [theme.breakpoints.down('sm')]: { width: '100%' },
-          minWidth: '200px',
-          '& .MuiInputBase-root': { borderRadius: `${theme.shape.borderRadius}px` }
-        }}
-        size="small"
-      >
-        <Select
-          labelId={`${selectorID}-label`}
-          id={selectorID}
-          multiple={allowMultiple}
-          value={items.filter(item => item.selected).map(item => item.label)}
-          onChange={handleChange}
-          MenuProps={MenuProps}
-          renderValue={(selected) => renderedLabel(selected)}
-          sx={{ fontSize: '0.75em' }}
+    <Grid container spacing={1} alignItems="center">
+      <Grid item xs={6} sm={2} minWidth="200px">
+        <FormControl
+          sx={{
+            width: '100%',
+            '& .MuiInputBase-root': { borderRadius: `${theme.shape.borderRadius}px` }
+          }}
+          size="small"
         >
-          {/* Display all available items, together with checkbox for each item to select from */}
-          {items.map((item) => (
-            <MenuItem
-              disabled={
-                // If there is only 1 selected item and this is the selected item
-                // Then, prevent user from de-select this item too
-                // To ensure at least there is 1 selected item at all times
-                (items.filter(item => item.selected).length === 1 && item.selected) ? true : false
-              }
-              key={item.label}
-              value={item.label}
-              sx={{
-                backgroundColor: 'unset !important',
-                "&:hover": {
-                  backgroundColor: 'inherit !important',
-                }
-              }}
-            >
-              { /* checkboxes for MultiSelect, radioButtons for singleSelect*/}
-              {allowMultiple ? <Checkbox
-                checked={item.selected}
-                onClick={() => handleItemToggle(item)}
-
-                sx={{ p: 0.25, transform: 'scale(0.8)' }} />
-                : <Radio
-                  checked={item.selected}
-                  onChange={() => handleChange(item)}
-
-                  sx={{ p: 0.25, transform: 'scale(0.8)' }} />
-              }
-              <Typography variant='caption'>{item.label}</Typography>
-            </MenuItem>
-          ))}
-
-          {/* Show the option to select all if multiSelect is true*/}
-          {allowMultiple ?
-            (
+          <Select
+            labelId={`${selectorID}-label`}
+            id={selectorID}
+            multiple={allowMultiple}
+            value={items.filter(item => item.selected).map(item => item.label)}
+            onChange={handleChange}
+            MenuProps={MenuProps}
+            renderValue={(selected) => renderedLabel(selected)}
+            sx={{ fontSize: '0.75em' }}
+          >
+            {/* Display all available items, together with checkbox for each item to select from */}
+            {items.map((item) => (
               <MenuItem
-                key={SELECT_ALL}
-                value={SELECT_ALL}
+                disabled={
+                  // If there is only 1 selected item and this is the selected item
+                  // Then, prevent user from de-select this item too
+                  // To ensure at least there is 1 selected item at all times
+                  (items.filter(item => item.selected).length === 1 && item.selected) ? true : false
+                }
+                key={item.label}
+                value={item.label}
                 sx={{
-                  borderTop: 'solid 0.5px', borderColor: theme.palette.text.secondary,
-                  position: 'sticky', bottom: 0, zIndex: 1, marginBottom: theme.spacing(-1),
-                  background: theme.palette.customAlternateBackground,
+                  backgroundColor: 'unset !important',
                   "&:hover": {
-                    background: theme.palette.customAlternateBackground
+                    backgroundColor: 'inherit !important',
                   }
                 }}
               >
-                <Stack direction='row' width='100%' alignItems='center' justifyContent='space-between'>
-                  <Typography fontWeight={500} variant='caption' sx={{ pl: 1 }}>{SELECT_ALL}</Typography>
-                  <Switch
-                    checked={selectAll}
-                    onClick={() => handleItemToggle(SELECT_ALL)}
-                    sx={{ transform: 'scale(0.8)' }}
-                  />
-                </Stack>
+                { /* checkboxes for MultiSelect, radioButtons for singleSelect*/}
+                {allowMultiple ? <Checkbox
+                  checked={item.selected}
+                  onClick={() => handleItemToggle(item)}
+
+                  sx={{ p: 0.25, transform: 'scale(0.8)' }} />
+                  : <Radio
+                    checked={item.selected}
+                    onChange={() => handleChange(item)}
+
+                    sx={{ p: 0.25, transform: 'scale(0.8)' }} />
+                }
+                <Typography variant='caption'>{item.label}</Typography>
               </MenuItem>
-            ) : null
-          }
-        </Select>
-      </FormControl>
+            ))}
+
+            {/* Show the option to select all if multiSelect is true*/}
+            {allowMultiple ?
+              (
+                <MenuItem
+                  key={SELECT_ALL}
+                  value={SELECT_ALL}
+                  sx={{
+                    borderTop: 'solid 0.5px', borderColor: theme.palette.text.secondary,
+                    position: 'sticky', bottom: 0, zIndex: 1, marginBottom: theme.spacing(-1),
+                    background: theme.palette.customAlternateBackground,
+                    "&:hover": {
+                      background: theme.palette.customAlternateBackground
+                    }
+                  }}
+                >
+                  <Stack direction='row' width='100%' alignItems='center' justifyContent='space-between'>
+                    <Typography fontWeight={500} variant='caption' sx={{ pl: 1 }}>{SELECT_ALL}</Typography>
+                    <Switch
+                      checked={selectAll}
+                      onClick={() => handleItemToggle(SELECT_ALL)}
+                      sx={{ transform: 'scale(0.8)' }}
+                    />
+                  </Stack>
+                </MenuItem>
+              ) : null
+            }
+          </Select>
+        </FormControl>
+      </Grid>
 
       {/* Display only selected items in the Grids, and only in landscape mode and if multiSelect is true*/}
-      {(displayChip && allowMultiple) && <Grid container spacing={1}
-        sx={{
-          [theme.breakpoints.down('sm')]: {
-            display: 'none'
-          },
-        }}
-      >
-        {items.filter(item => item.selected).map((item) => (
-          <Grid item key={item.label}>
+      {(displayChip && allowMultiple) ?
+        items.filter(item => item.selected).map((item) => (
+          <Grid
+            item
+            key={item.label}
+            sx={{
+              [theme.breakpoints.down('sm')]: {
+                display: 'none'
+              },
+            }}
+          >
             <Chip
               label={<Typography variant='caption'>{item.label}</Typography>}
               size="small"
               {...(items.filter(item => item.selected).length !== 1 && { onDelete: () => handleItemToggle(item) })}
             />
           </Grid>
-        ))}
-      </Grid>}
+        )) : null
+      }
 
-
-    </Stack>
+    </Grid>
   );
 }
