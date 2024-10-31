@@ -701,13 +701,7 @@ function SubChart(props) {
   const showAuxiliaryControls = () => {
     if (!isFirstRender) {
       return (
-        <Grid
-          container
-          mt={1}
-          sx={{
-            gap: 1
-          }}
-        >
+        <Grid container>
           {seriesSelector &&
             <Grid item
               sm={12}

@@ -114,7 +114,7 @@ export default function SeriesSelector(props) {
   };
 
   return (
-    <Grid container spacing={1} alignItems="center">
+    <Grid container spacing={1} alignItems="center" py={1}>
       <Grid item xs={6} sm={2} minWidth="200px">
         <FormControl
           sx={{
