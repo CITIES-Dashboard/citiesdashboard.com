@@ -871,20 +871,20 @@
     "id": "printing",
     "title": "Printing & Copying",
     "sheetId": "1O1X73cSXO1lQuiQ1lj7d9QdE3KgdIufFlurmAPeI1ek",
-    "description": "This dataset visualizes printing and copying activities at NYUAD dating back to <b>September 2018</b>. While historical data from September 2018 to August 2022 only included the total number of pages per month, data from September 2019 to now details the usage of black and white (B/W) and color printing data across various paper sizes like A3 and A4, segmented by different user categories. The visualizations offers a detailed breakdown including time trends and user category comparisons.<br><br>While there are 20+ original types of printing accounts, our data visualizations simplify them into <b>four distinct demographic groups</b>. For detailed data of the original types of printing accounts, you can download the raw dataset. <table><thead><tr><th>Simplified groups</th><th>Original types of printing accounts</th></tr></thead><tbody><tr><td>Student</td><td>admitted_student, legacy_student, degree, student_applicant, student on leave, abu_dhabi_smsp, account_sponsored_student</td></tr><tr><td>Faculty and Researcher</td><td>adjunct faculty, faculty, researcher, research_affiliate, retired faculty, visiting_academic_other, visiting_scholar, account_sponsored_staff</td></tr><tr><td>Staff</td><td>ad_contingent, ad_employee_of_vendor, administrator, contractor, employee_of_vendor, prospective_employee, security_staff</td></tr><tr><td>Others</td><td>ad_executive_authority, employee_family_member, nyu_building_resident, account_sponsored_retiree, program_affiliate_other, nyu_commercial_tenant, unknown</td></tr></tbody></table>",
+    "description": "This dataset visualizes printing and copying activities at NYUAD dating back to <b>September 2018</b>. While historical data from September 2018 to August 2022 only included the total number of pages per month, data from <b>September 2022 to now</b> details the usage of black and white (B/W) and color printing data across various paper sizes like A3 and A4, segmented by different user categories. The visualizations offers a detailed breakdown including time trends and user category comparisons.<br><br>While there are 20+ original types of printing accounts, our data visualizations simplify them into <b>four distinct demographic groups</b>. For detailed data of the original types of printing accounts, you can download the raw dataset. <table><thead><tr><th>Simplified groups</th><th>Original types of printing accounts</th></tr></thead><tbody><tr><td>Student</td><td>admitted_student, legacy_student, degree, student_applicant, student on leave, abu_dhabi_smsp, account_sponsored_student</td></tr><tr><td>Faculty and Researcher</td><td>adjunct faculty, faculty, researcher, research_affiliate, retired faculty, visiting_academic_other, visiting_scholar, account_sponsored_staff</td></tr><tr><td>Staff</td><td>ad_contingent, ad_employee_of_vendor, administrator, contractor, employee_of_vendor, prospective_employee, security_staff</td></tr><tr><td>Others</td><td>ad_executive_authority, employee_family_member, nyu_building_resident, account_sponsored_retiree, program_affiliate_other, nyu_commercial_tenant, unknown</td></tr></tbody></table>",
     "owner": "NYUAD IT",
     "contact": "nyuad.it@nyu.edu",
     "rawDataTables": [
       {
         "gid": 1304606517
       },
-            {
+      {
         "gid": 1821457990
       }
     ],
     "charts": [
       {
-        "title": "Total Number of Pages",
+        "title": "Total Number of Pages Consumed",
         "headers": 1,
         "chartType": "ComboChart",
         "subcharts": [
@@ -902,10 +902,6 @@
                   "lineWidth": 2,
                   "enableInteractivity": false
                 }
-              },
-              "seriesSelector": {
-                "allowMultiple": true,
-                "method": "setViewColumn"
               },
               "isStacked": true,
               "seriesType": "bars",
@@ -947,11 +943,6 @@
                   "enableInteractivity": false
                 }
               },
-              "seriesSelector": {
-                "allowMultiple": true,
-                "method": "setViewColumn",
-                "allowedMultiple": false
-              },
               "isStacked": true,
               "seriesType": "bars",
               "series": {
@@ -989,13 +980,7 @@
             "gid": 1705611582,
             "subchartTitle": "Percentage by User Category",
             "subchartSubtitle": "<p>This stacked bar graph illustrates the <b>distribution</b> of paper consumption among four distinct user categories on a month-by-month basis since September 2022. Demographic data prior to September 2022 is unavailable due to a different printing system in place at that time.</p> <p><b>Faculty & Researcher</b> consistently represents the largest group of paper usage, accounting for around 30% - 40% of all papers printed. <b>Student</b> follows closely behind. <b>Staff</b>, although representing a lower proportion than the previous two demographic groups during most months, exhibits a surge during the summer months from June to August, where their usage exceeds 60% of the entire university, surpassing all other categories. This is due to the majority of the student body not residing on campus during such periods. <b>Others</b> consistently shows the smallest portion of usage across all months, only accounting for 5 - 10% of all papers printed.</p>",
-            "columns": [
-              0,
-              1,
-              8,
-              15,
-              22
-            ],
+            "columns": [0, 1, 8, 15, 22],
             "options": {
               "seriesType": "bars",
               "bar": {
@@ -1026,12 +1011,12 @@
         ]
       },
       {
-        "title": "Average Number of Pages per User by Soft Cap Period",
+        "title": "Average Number of Pages Consumed per User by Soft Cap Period",
         "headers": 1,
         "chartType": "ComboChart",
         "gid": 666095775,
         "query": "SELECT A, C, J, Q, X, AE, AQ",
-        "subtitle": "<p>In 2022, the Office of Sustainability and Stewardship, in collaboration with NYUAD IT, introduced a soft printing cap of <b>1,000 pages per user every 6 months</b> to encourage more mindful printing habits among community members. The cap resets in September and March of each academic year (AY). Thus, each AY consists of 2 periods of 1,000 soft cap: <ul><li><b>1st period: </b>from September to February</li><li><b>2nd period: </b>from March to August</li></ul></p><p>This chart compares the average number of pages consumed by a single user during soft cap periods against the allocated quota, across various demographic groups. It is evident that an average NYUAD community member <b>consumes less than a third of their allocated quota</b>, averaging around 300 pages every 6 months. The data suggests that the soft cap campaign has successfully promoted more thoughtful printing practices, showing a gradual reduction in both absolute and average printing numbers over time.</p> <p>Based on this trend, it might be possible to <b>lower soft printing cap quota, for example, to 500 pages</b> to further reduce printing demand.</p>",
+        "subtitle": "<p>In 2022, the Office of Sustainability and Stewardship, in collaboration with NYUAD IT, introduced a soft printing cap of <b>1,000 pages per user every 6 months</b> to encourage more mindful printing habits among community members. The cap resets in September and March of each academic year (AY). Thus, each AY consists of 2 periods of 1,000 soft cap: <ul><li><b>1st period: </b>from September to February</li><li><b>2nd period: </b>from March to August</li></ul></p><p>This chart compares the average number of pages consumed by a single user during soft cap periods against the allocated quota, across various demographic groups. It is evident that an average NYUAD community member <b>consumes less than a third of their allocated quota</b>, averaging around 300 pages every 6 months. The data suggests that the soft cap campaign has successfully promoted more thoughtful printing practices, showing a gradual reduction in both absolute and average printing numbers over time, with an exception of a small increase from the first to the second period of AY23-24.</p> <p>Based on this trend, it might be possible to <b>lower soft printing cap quota, for example, to 500 pages</b> to further reduce printing demand.</p>",
         "options": {
           "seriesSelector": {
             "allowMultiple": true,
@@ -1069,7 +1054,7 @@
         }
       },
       {
-        "title": "Boxplot Distribution of Pages Printed by User Category",
+        "title": "Boxplot Distribution of Pages Consumed by User Category",
         "headers": 1,
         "chartType": "BarChart",
         "subcharts": [
@@ -1083,7 +1068,7 @@
           }
         ],
         "query": "SELECT * ORDER BY A DESC",
-        "subtitle": "<p>These boxplots illustrate the distribution of pages printed by different user categories, showcasing data variability over time via <b>a controllable slider</b>. For each category, the large dot represents the mean (average) number of pages printed by a user from that category, while the line inside each box marks the median, the box marks the 25th and 75th percentile, and the whiskers represent min and max values (excluding outliers). More information on how to read a boxplot can be found <a href='https://en.wikipedia.org/wiki/Box_plot'>here</a>.</p><p>Consistently across all user categories, the mean is higher than the median, indicating a right-skewed distribution. This suggests that within each user category, <b>there are outliers or a subset of heavy users who print significantly more pages than the average person</b>, thereby pulling the mean upwards. <b>Faculty & Researcher</b> category, in particular, exhibits the greatest spread, highlighting a broad range of printing behaviors, from minimal to very high usage. The presence of such skewness across all categories indicates that a majority of users print a moderate number of pages, but the overall average is much higher, caused by few individuals printing large quantities.</p>",
+        "subtitle": "<p>These boxplots illustrate the distribution of pages consumed by different user categories, showcasing data variability over time via <b>a controllable slider</b>. For each category, the large dot represents the mean (average) number of pages consumed by a user from that category, while the line inside each box marks the median, the box marks the 25th and 75th percentile, and the whiskers represent min and max values (excluding outliers). More information on how to read a boxplot can be found <a href='https://en.wikipedia.org/wiki/Box_plot'>here</a>.</p><p>Consistently across all user categories, the mean is higher than the median, indicating a right-skewed distribution. This suggests that within each user category, <b>there are outliers or a subset of heavy users who print significantly more pages than the average person</b>, thereby pulling the mean upwards. <b>Faculty & Researcher</b> category, in particular, exhibits the greatest spread, highlighting a broad range of printing behaviors, from minimal to very high usage. The presence of such skewness across all categories indicates that a majority of users print a moderate number of pages, but the overall average is much higher, caused by few individuals printing large quantities.</p>",
         "columns": [
           36,
           7,
@@ -1412,7 +1397,7 @@
         }
       },
       {
-        "title": "Compositions of Page Type by User Category (Since Sep 2022)",
+        "title": "Compositions of Page Type Consumed by User Category, Since Sep 2022",
         "headers": 1,
         "chartType": "HeatMap",
         "nivo": true,
@@ -1464,9 +1449,7 @@
     "description": "",
     "owner": "CITIES Research",
     "contact": "cities.nyuad@nyu.edu",
-    "rawDataTables": [
-      {}
-    ],
+    "rawDataTables": [{}],
     "charts": []
   }
 ]
