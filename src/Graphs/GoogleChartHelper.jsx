@@ -113,7 +113,7 @@ export const returnGenericOptions = (props) => {
     chartArea: {
       ...chartData.options?.chartArea,
       width: isPortrait ? (chartData.options?.chartArea?.width?.portrait || '80%') : (chartData.options?.chartArea?.width?.landscape || '75%'),
-      height: isPortrait ? (chartData.options?.chartArea?.height?.portrait || '60%') : (chartData.options?.chartArea?.height?.landscape || '70%'),
+      height: isPortrait ? (chartData.options?.chartArea?.height?.portrait || '60%') : (chartData.options?.chartArea?.height?.landscape || '65%'),
     },
     width: isPortrait ? (chartData.options?.width?.portrait || '100%') : (chartData.options?.width?.landscape || '100%'),
     // if there is a filter, we make space for the chartFilter from the chart's height.

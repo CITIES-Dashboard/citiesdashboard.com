@@ -95,7 +95,7 @@ function ChartComponent({ chartData: passedChartData, chartHeight: passedChartHe
   }, [chartData]);
 
   if (chartData.chartType !== 'Calendar' && !chartHeight) {
-    chartHeight = isPortrait ? '80vw' : '35vw';
+    chartHeight = isPortrait ? '80vw' : '40vw';
     chartMaxHeight = isPortrait ? '800px' : '500px';
   }
 
