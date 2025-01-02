@@ -871,7 +871,7 @@
     "id": "printing",
     "title": "Printing & Copying",
     "sheetId": "1O1X73cSXO1lQuiQ1lj7d9QdE3KgdIufFlurmAPeI1ek",
-    "description": "This dataset visualizes printing and copying activities at NYUAD dating back to <b>September 2018</b>. While historical data from September 2018 to August 2022 only included the total number of pages per month, data from <b>September 2022 to now</b> details the usage of black and white (B/W) and color printing data across various paper sizes like A3 and A4, segmented by different user categories. The visualizations offers a detailed breakdown including time trends and user category comparisons.<br><br>While there are 20+ original types of printing accounts, our data visualizations simplify them into <b>four distinct demographic groups</b>. For detailed data of the original types of printing accounts, you can download the raw dataset. <table><thead><tr><th>Simplified groups</th><th>Original types of printing accounts</th></tr></thead><tbody><tr><td>Student</td><td>admitted_student, legacy_student, degree, student_applicant, student on leave, abu_dhabi_smsp, account_sponsored_student</td></tr><tr><td>Faculty and Researcher</td><td>adjunct faculty, faculty, researcher, research_affiliate, retired faculty, visiting_academic_other, visiting_scholar, account_sponsored_staff</td></tr><tr><td>Staff</td><td>ad_contingent, ad_employee_of_vendor, administrator, contractor, employee_of_vendor, prospective_employee, security_staff</td></tr><tr><td>Others</td><td>ad_executive_authority, employee_family_member, nyu_building_resident, account_sponsored_retiree, program_affiliate_other, nyu_commercial_tenant, unknown</td></tr></tbody></table>",
+    "description": "This dataset visualizes printing and copying activities at NYUAD dating back to <b>September 2018</b>. While historical data from September 2018 to August 2022 only included the total number of pages per month, data from <b>September 2022 to now</b> details the usage of black and white (B/W) and color printing data across various paper sizes like A3 and A4, segmented by different user categories. The visualizations offers a detailed breakdown including time trends and user category comparisons.<br><br>While there are 20+ original types of printing accounts, our data visualizations simplify them into <b>four distinct demographic groups</b>. For detailed data of the original types of printing accounts, you can download the raw dataset. <table><thead><tr><th>Simplified groups</th><th>Original types of printing accounts</th></tr></thead><tbody><tr><td>Student</td><td>admitted_student, legacy_student, degree, student_applicant, student on leave, abu_dhabi_smsp, account_sponsored_student</td></tr><tr><td>Faculty and Researcher</td><td>adjunct faculty, faculty, researcher, research_affiliate, retired faculty, visiting_academic_other, visiting_scholar, account_sponsored_staff</td></tr><tr><td>Staff</td><td>ad_contingent, ad_employee_of_vendor, administrator, contractor, employee_of_vendor, employee_service_provider, prospective_employee, security_staff</td></tr><tr><td>Others</td><td>ad_executive_authority, employee_family_member, nyu_building_resident, account_sponsored_retiree, program_affiliate_other, nyu_commercial_tenant, unknown</td></tr></tbody></table>",
     "owner": "NYUAD IT",
     "contact": "nyuad.it@nyu.edu",
     "rawDataTables": [
@@ -980,7 +980,13 @@
             "gid": 1705611582,
             "subchartTitle": "Percentage by User Category",
             "subchartSubtitle": "<p>This stacked bar graph illustrates the <b>distribution</b> of paper consumption among four distinct user categories on a month-by-month basis since September 2022. Demographic data prior to September 2022 is unavailable due to a different printing system in place at that time.</p> <p><b>Faculty & Researcher</b> consistently represents the largest group of paper usage, accounting for around 30% - 40% of all papers printed. <b>Student</b> follows closely behind. <b>Staff</b>, although representing a lower proportion than the previous two demographic groups during most months, exhibits a surge during the summer months from June to August, where their usage exceeds 60% of the entire university, surpassing all other categories. This is due to the majority of the student body not residing on campus during such periods. <b>Others</b> consistently shows the smallest portion of usage across all months, only accounting for 5 - 10% of all papers printed.</p>",
-            "columns": [0, 1, 8, 15, 22],
+            "columns": [
+              0,
+              1,
+              8,
+              15,
+              22
+            ],
             "options": {
               "seriesType": "bars",
               "bar": {
@@ -1449,7 +1455,9 @@
     "description": "",
     "owner": "CITIES Research",
     "contact": "cities.nyuad@nyu.edu",
-    "rawDataTables": [{}],
+    "rawDataTables": [
+      {}
+    ],
     "charts": []
   }
 ]
