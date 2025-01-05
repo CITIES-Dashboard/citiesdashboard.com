@@ -1,7 +1,9 @@
 import { Link, List, ListItem, ListItemText, Table, TableBody, TableCell, TableHead, TableRow, styled, TableFooter } from '@mui/material';
 import { domToReact } from 'html-react-parser';
+import { Fragment } from 'react';
 
 // Function to check if an array has valid data
+// eslint-disable-next-line max-len
 export const isValidArray = (array) => Array.isArray(array) && array.length > 0 && !array.every((item) => item == null);
 
 // Function to replace characters like "-" with " " from a string and capitalize it
@@ -43,7 +45,13 @@ export const replacePlainHTMLWithMuiComponents = (node) => {
     replace: replacePlainHTMLWithMuiComponents
   };
 
-  const parseChildren = (children) => children.map((child, index) => domToReact([child], { ...options, key: `child-${index}` }));
+  const parseChildren = (children) => {
+    return children.map((child, index) => (
+      <Fragment key={`child-${index}`}>
+        {domToReact(child, options)}
+      </Fragment>
+    ));
+  };
 
   switch (node.name) {
     case 'a': {
