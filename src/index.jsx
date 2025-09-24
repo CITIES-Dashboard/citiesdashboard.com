@@ -15,17 +15,18 @@ ReactDOM.render(
   <React.StrictMode>
     <GoogleProvider>
       <HomePageProvider>
-        <CommentCountsProvider>
-          <RawDatasetsMetadataProvider>
-            <LinkProvider>
-              <TabProvider>
-                <PreferenceProvider>
-                  <App />
-                </PreferenceProvider>
-              </TabProvider>
-            </LinkProvider>
-          </RawDatasetsMetadataProvider>
-        </CommentCountsProvider>
+        {/* TEMPORARILY DISABLE COMMENTS */}
+        {/* <CommentCountsProvider> */}
+        <RawDatasetsMetadataProvider>
+          <LinkProvider>
+            <TabProvider>
+              <PreferenceProvider>
+                <App />
+              </PreferenceProvider>
+            </TabProvider>
+          </LinkProvider>
+        </RawDatasetsMetadataProvider>
+        {/* </CommentCountsProvider> */}
       </HomePageProvider>
     </GoogleProvider>
   </React.StrictMode>,

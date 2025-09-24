@@ -64,8 +64,9 @@ const Project = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const commentCounts = useContext(CommentCountsContext);
-  const thisProjectCommentCount = commentCounts[project.id];
+  {/* TEMPORARILY DISABLE COMMENTS */ }
+  // const commentCounts = useContext(CommentCountsContext);
+  // const thisProjectCommentCount = commentCounts[project.id];
 
   const rawDatasetsMetadata = useContext(RawDatasetsMetadataContext);
   const [lastUpdate, setLastUpdate] = useState(null);
@@ -183,7 +184,8 @@ const Project = () => {
                   </Grid>
                 }
 
-                {thisProjectCommentCount !== null ?
+                {/* TEMPORARILY DISABLE COMMENTS */}
+                {/* {thisProjectCommentCount !== null ?
                   (
                     <Grid item>
                       <CustomChip
@@ -201,7 +203,7 @@ const Project = () => {
                         }}
                       />
                     </Grid>
-                  ) : null}
+                  ) : null} */}
               </Grid>
 
               <Typography
@@ -292,10 +294,10 @@ const Project = () => {
           </Box>
 
           <Divider />
-
-          <FullWidthBox id={jsonData.commentSection.id} sx={{ pt: 3, pb: 4 }}>
+          {/* TEMPORARILY DISABLE COMMENTS */}
+          {/* <FullWidthBox id={jsonData.commentSection.id} sx={{ pt: 3, pb: 4 }}>
             <CommentSection pageID={project.id} />
-          </FullWidthBox>
+          </FullWidthBox> */}
         </Box>
       )}
     </>

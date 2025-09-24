@@ -25,7 +25,7 @@ function Home({ title }) {
   const { themePreference } = useContext(PreferenceContext);
   const { setCurrentPage, setChartsTitlesList } = useContext(LinkContext);
   const { homeData } = useContext(HomeDataContext);
-  const commentCounts = useContext(CommentCountsContext);
+  // const commentCounts = useContext(CommentCountsContext);
 
   // Update the page's title
   useEffect(() => {
@@ -118,7 +118,7 @@ function Home({ title }) {
                     <Divider />
                     <CardContent>
                       <Grid container justifyContent="space-between" alignItems="end">
-                        <Grid item xs={10}>
+                        <Grid item xs={11}>
                           <Typography
                             variant="body1"
                             component="div"
@@ -148,7 +148,7 @@ function Home({ title }) {
                         {
                           project.isActive
                           && (
-                            <Grid item xs={2}>
+                            <Grid item xs={1}>
                               <Stack direction="row" spacing={1.5}>
                                 <Tooltip title="Number of Charts" enterDelay={0} leaveDelay={200}>
                                   <Stack direction="row" spacing={0.2} alignItems="center">
@@ -158,7 +158,8 @@ function Home({ title }) {
                                     </Typography>
                                   </Stack>
                                 </Tooltip>
-                                {(commentCounts[key] != null) && (
+                                {/* TEMPORARILY DISABLE COMMENTS */}
+                                {/* {(commentCounts[key] != null) && (
                                   <Tooltip title="Number of Comments" enterDelay={0} leaveDelay={200}>
                                     <Stack direction="row" spacing={0.2} alignItems="center">
                                       <CommentIcon sx={{ fontSize: '0.75rem', color: 'text.secondary' }} />
@@ -167,7 +168,7 @@ function Home({ title }) {
                                       </Typography>
                                     </Stack>
                                   </Tooltip>
-                                )}
+                                )} */}
                               </Stack>
                             </Grid>
                           )
