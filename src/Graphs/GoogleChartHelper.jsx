@@ -183,7 +183,7 @@ export const returnGenericOptions = (props) => {
       item.color = theme.palette.primary.main;
     });
   }
-  // 4.4. Color axis of the Calendar chart
+  // 4.4.1. Color axis of the Calendar chart
   if (options.colorAxis) {
     switch (options.colorAxis.colors) {
       case 'matchingColor':
@@ -201,6 +201,13 @@ export const returnGenericOptions = (props) => {
       default:
         break;
     }
+  }
+  // 4.4.2. Color for TreeMap
+  if (options.colorAxis && chartData?.chartType === "TreeMap") {
+    const colorArray = theme.palette.chart.optionsColors[options.colorAxis];
+    options.minColor = colorArray[0];
+    options.midColor = colorArray[1];
+    options.maxColor = colorArray[colorArray.length - 1];
   }
   // 4.5. Colors of other elements of the chart (typographies and gridlines)
   options.vAxis = {
@@ -384,4 +391,52 @@ export const addTouchEventListenerForChartControl = ({ controlWrapper, chartID }
       controlDOM.removeEventListener(touchEvent, touchHandler, { capture: true });
     });
   };
+}
+
+export const showFullTooltipForTreeMapChart = (dt, unit) => (row) => {
+  if (!dt.getValue(row, 2)) return '';
+
+  const col2 = `${Math.round(dt.getValue(row, 2)).toLocaleString()}${unit ? " " + unit : ""}`;
+  const col3 = `${dt.getValue(row, 3)?.toFixed(1).toLocaleString()}${unit ? " " + unit : ""}`;
+  const col4 = `${Math.round(dt.getValue(row, 4)).toLocaleString()}`;
+
+  return `
+    <div class="treemap-tooltip">
+      <span><b>${dt.getValue(row, 0)}</b>, ${dt.getValue(row, 1)}</span><br>
+      ${dt.getColumnLabel(2)}: ${col2}<br>
+      ${dt.getColumnLabel(3)}: ${col3}<br>
+      ${dt.getColumnLabel(4)}: ${col4}
+    </div>
+  `;
+};
+
+
+
+export const returnStylesForChartWrapper = ({ theme, isPortrait }) => {
+  return {
+    width: 'unset !important',
+    maxWidth: '350px',
+    height: 'unset',
+    padding: '1em',
+    boxShadow: '0px 2px 2px 0px rgba(25, 14, 14, 0.6)',
+    mozBoxShadow: '0px 2px 2px 0px rgba(204, 204, 204, 0.6)',
+    webkitBoxShadow: '0px 2px 2px 0px rgba(204, 204, 204, 0.6)',
+    border: 'solid 1px',
+    borderColor: theme.palette.text.secondaryRGB,
+    fontSize: `${isPortrait ? 9 : 12}px`,
+    color: theme.palette.chart.tooltip.text,
+    background: theme.palette.chart.tooltip.background,
+    borderRadius: theme.spacing(1 / 2),
+    '& ul': {
+      margin: '0 !important',
+      '& li': {
+        margin: '0 !important',
+        padding: '0 !important',
+        '& span': {
+          fontSize: `${isPortrait ? 9 : 12}px !important`,
+          color: `${theme.palette.chart.tooltip.text} !important`,
+        }
+      }
+    }
+  }
 }

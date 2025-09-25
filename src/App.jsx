@@ -21,6 +21,9 @@ import jsonData from './section_data.json';
 import SpeedDialButton from './Components/SpeedDial/SpeedDialButton';
 import { PreferenceContext } from './ContextProviders/PreferenceContext';
 
+import { GlobalStyles } from '@mui/system';
+import { returnStylesForChartWrapper } from './Graphs/GoogleChartHelper';
+
 // Lazy load pages
 const Home = lazy(() => import('./Pages/Home/Home'));
 const Project = lazy(() => import('./Pages/Project'));
@@ -72,6 +75,12 @@ function App() {
           <SpeedDialButton
             chartsTitlesList={chartsTitlesList}
             topAnchorID={jsonData.topAnchor.id}
+          />
+
+          <GlobalStyles
+            styles={{
+              '.treemap-tooltip': returnStylesForChartWrapper({ theme, isPortrait: false }),
+            }}
           />
 
           {useMemo(

@@ -11,7 +11,7 @@ import GoogleSheetEmbedVisualization from '../GoogleSheetEmbedVisualization';
 import SeriesSelector from './SubchartUtils/SeriesSelector';
 import StackedBarToggle from './SubchartUtils/StackedBarToggle';
 
-import { fetchDataFromSheet, generateRandomID, returnGenericOptions, returnChartControlUI, ChartControlType, addTouchEventListenerForChartControl } from '../GoogleChartHelper';
+import { fetchDataFromSheet, generateRandomID, returnGenericOptions, returnChartControlUI, ChartControlType, addTouchEventListenerForChartControl, showFullTooltipForTreeMapChart } from '../GoogleChartHelper';
 
 import GoogleChartStyleWrapper from './SubchartUtils/GoogleChartStyleWrapper';
 
@@ -491,8 +491,17 @@ function SubChart(props) {
     if (google && !chartWrapper) {
       fetchDataFromSheet({ chartData: chartData, subchartIndex: subchartIndex, google: google })
         .then(response => {
-          const thisDataTable = response.getDataTable();
-          setDataTable(thisDataTable);
+          const thisDT = response.getDataTable();
+          setDataTable(thisDT);
+
+          // If the chart is "TreeMap", add manual tooltip function generation
+          let thisOptions = { ...options };
+          if (chartData?.chartType === "TreeMap") {
+            thisOptions = {
+              ...thisOptions,
+              generateTooltip: showFullTooltipForTreeMapChart(thisDT, thisOptions.unit)
+            };
+          }
 
           // Get dataColumn views
           const columns = chartData.columns
@@ -504,8 +513,8 @@ function SubChart(props) {
 
           const thisChartWrapper = new google.visualization.ChartWrapper({
             chartType: chartData.chartType,
-            dataTable: (!hasChartControl) ? thisDataTable : undefined,
-            options: options,
+            dataTable: (!hasChartControl) ? thisDT : undefined,
+            options: thisOptions,
             view: {
               columns: reconstructedColumns
             },
@@ -529,7 +538,7 @@ function SubChart(props) {
 
             // Set all of the available distinct categories for the CategoryFilter if isSlider is true
             if (isSlider) {
-              const uniqueCategories = thisDataTable
+              const uniqueCategories = thisDT
                 .getDistinctValues(chartControlOptions.filterColumnIndex)
                 .filter(c => c !== null);
 
@@ -540,7 +549,7 @@ function SubChart(props) {
             // Establish dependencies
             thisDashboardWrapper.bind(thisControlWrapper, thisChartWrapper);
 
-            thisDashboardWrapper.draw(thisDataTable);
+            thisDashboardWrapper.draw(thisDT);
           }
           else {
             google.visualization.events.addListener(thisChartWrapper, 'ready', onChartReady);
@@ -549,7 +558,7 @@ function SubChart(props) {
 
           // Run the seriesSelector for the first time
           if (seriesSelector) {
-            const { initAllInitialColumns, initDataColumns } = getInitialColumns({ chartWrapper: thisChartWrapper, dataTable: thisDataTable, seriesSelector: seriesSelector });
+            const { initAllInitialColumns, initDataColumns } = getInitialColumns({ chartWrapper: thisChartWrapper, dataTable: thisDT, seriesSelector: seriesSelector });
             handleSeriesSelection({
               _allInitialColumns: initAllInitialColumns,
               newDataColumns: initDataColumns,
