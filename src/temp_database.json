@@ -1413,7 +1413,7 @@
           {
             "subchartTitle": "Grouped by User Category",
             "subchartSubtitle": "In this first heatmap, page usage has been visualized as a percentage of the total number of pages used by <b>each user category</b>. A marked preference for <b>B/W A4</b> pages is evident among Student, Faculty & Researcher, and Others, representing approximately <b>60-70%</b> of their respective total paper usages. Conversely, Staff exhibited a strong preference for <b>color A4 pages</b>.",
-            "tooltipFormat": "<span><strong>{columnCategory}</strong>: {y}<br />{percentage} of {rowOrColTotal} pages used by {rowCategory}</span>",
+            "tooltipFormat": "<span><b>{columnCategory}</b>: {y}<br />{percentage} of {rowOrColTotal} pages used by {rowCategory}</span>",
             "options": {
               "nivoHeatMap": {
                 "yInnerPadding": 0.2,
@@ -1424,7 +1424,7 @@
           {
             "subchartTitle": "Grouped by Page Type",
             "subchartSubtitle": "In this second heatmap, page usage is visualized as a percentage of all pages used for <b>each type of paper</b>. Student and Faculty & Researcher together account for approximately <b>80%</b> of all B/W A4 pages, signifying their substantial reliance on standard black and white documents for academic purposes. In contrast, Staff displays a pronounced preference for color documents, utilizing more than <b>40%</b> of both <b>A3 and A4 color pages</b>.<br><br>Notably, both Student and Staff use a much greater quantity of <b>A3 pages</b> — both in color and B/W — compared to Faculty & Researcher. This suggests they are more frequently involved in creating larger format materials, such as posters for events and presentations, which require the visibility and impact that larger page sizes provide.",
-            "tooltipFormat": "<span><strong>{rowCategory}</strong>: {y}<br />{percentage} of {rowOrColTotal} {columnCategory} pages used</span>",
+            "tooltipFormat": "<span><b>{rowCategory}</b>: {y}<br />{percentage} of {rowOrColTotal} {columnCategory} pages used</span>",
             "options": {
               "nivoHeatMap": {
                 "xInnerPadding": 0.2,
@@ -1442,6 +1442,417 @@
                 "title": "Number of Pages"
               }
             ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "isActive": false,
+    "id": "commuting",
+    "title": "Commuting (Scope 3 Emission)",
+    "sheetId": "1hplP90BKgcEj_fi28AxwoYZ2W2LF-2ONgBKHun-3LYg",
+    "description": "This dataset visualizes the commuting distances of NYU Abu Dhabi employees from their residences in the UAE to the university campus, using anonymized and confidential address data provided by Human Resources. These insights are important for estimating Scope 3 emissions related to employee commuting, which form a critical component of NYU Abu Dhabi's reporting and sustainability efforts.<br/><br/> <b>Key assumptions:</b> <ul><li>Employees living on campus, in adjacent buildings (Laffan St., Park View, Soho, Noon, Gulf Paradise, and Nasayem), or within one kilometer of campus are assumed to walk and are therefore excluded from the commuter calculation.</li><li>Commuting distances were estimated using Google Maps directions (driving mode) from self-reported home addresses to NYU Abu Dhabi. Google Maps automatically corrects minor typos in submitted data. For entries listing only a neighborhood (e.g., Reem Island) or a city (e.g., Abu Dhabi), Google Maps assumes a central point within that area for distance calculation.</li><li>Because address data is self-reported and non-standardized, results may occasionally appear implausible. Such cases are treated as outliers and reflect the limits of the available data. Future iterations may improve accuracy as employees are asked to provide more precise address details.</li></ul>",
+    "owner": "NYUAD OSS",
+    "contact": "nyuad.sustainability@nyu.edu",
+    "rawDataTables": [],
+    "charts": [
+      {
+        "title": "Descriptive Statistics By Emirate",
+        "chartType": "PieChart",
+        "query": "SELECT * LIMIT 5",
+        "headers": 3,
+        "subcharts": [
+          {
+            "gid": 871695046,
+            "subchartTitle": "Total Commuting Distance (km)",
+            "subchartSubtitle": "The total commuting distance of the NYU Abu Dhabi community amounts to <b>26,769 km</b>. The majority of this distance is accounted for by commuters from Abu Dhabi Emirate (82.8%), followed by Dubai Emirate (14.6%). A small minority from other emirates, such as Sharjah, Ajman, and Umm Al Quwain, contribute the remaining 2.6% of the total distance.",
+            "columns": [
+              0,
+              1
+            ],
+            "options": {
+              "pieHole": 0.6,
+              "seriesType": "bars",
+              "pieSliceText": "value"
+            }
+          },
+          {
+            "gid": 871695046,
+            "subchartTitle": "Number of Commuters",
+            "subchartSubtitle": "The dominance of Abu Dhabi in total commuting distance is explained by its largest share of residents: out of 1,163 commuters, <b>1,100 individuals (96.9%)</b> live in Abu Dhabi. Only 31 reside in Dubai, while the remaining emirates account for just one or two commuters each. Thus, despite the longer travel distances from other emirates, their overall impact on commuting statistics remains minimal compared to Abu Dhabi and Dubai.",
+            "columns": [
+              0,
+              2
+            ],
+            "options": {
+              "pieHole": 0.6,
+              "seriesType": "bars",
+              "pieSliceText": "value",
+              "sliceVisibilityThreshold": 0
+            }
+          },
+          {
+            "gid": 871695046,
+            "subchartTitle": "Number of Non-Commuters",
+            "subchartSubtitle": "In addition to the 1,100 Abu Dhabi commuters, there are <b>468 Abu Dhabi employees</b> classified as non-commuters because they live on campus or within walking distance. Non-commuters represent roughly <b>30% of the total employee population</b>.",
+            "columns": [
+              0,
+              4
+            ],
+            "options": {
+              "seriesType": "bars",
+              "pieHole": 1,
+              "pieSliceText": "value",
+              "sliceVisibilityThreshold": 0
+            }
+          }
+        ]
+      },
+      {
+        "title": "Distributions of Commuting Distance (km) by Emirate",
+        "headers": 1,
+        "chartType": "BarChart",
+        "gid": 1282937917,
+        "query": "SELECT * ORDER BY A DESC",
+        "subtitle": "<p>These boxplots illustrate the distribution of pages consumed by different emirates. For each category, the large dot represents the mean (average) commuting distance of employee residing in that emirate, while the line inside each box marks the median, the box marks the 25th and 75th percentile, and the whiskers represent min and max values (excluding outliers). More information on how to read a boxplot can be found <a href='https://en.wikipedia.org/wiki/Box_plot'>here</a>.</p><p>For both Abu Dhabi and Dubai commuters, the mean is consistently higher than the median, indicating a right-skewed distribution. This suggests that <b>a subset of commuters travel significantly farther than average</b>, pulling the mean upward. With only one or two commuters from the other emirates, those cases can also be regarded as outliers. On average, commuting distances are approximately <b>20 km for Abu Dhabi residents</b> and <b>126 km for Dubai residents</b>.</p>",
+        "columns": [
+          0,
+          7,
+          {
+            "role": "tooltip",
+            "type": "string",
+            "properties": {
+              "html": true
+            },
+            "sourceColumn": 44
+          },
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 4
+          },
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 3
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 3
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 5
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 6
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 4
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 5
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 7
+          },
+          {
+            "role": "interval",
+            "id": "avg",
+            "sourceColumn": 2
+          },
+          14,
+          {
+            "role": "tooltip",
+            "type": "string",
+            "properties": {
+              "html": true
+            },
+            "sourceColumn": 45
+          },
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 11
+          },
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 10
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 10
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 12
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 13
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 11
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 12
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 14
+          },
+          {
+            "role": "interval",
+            "id": "avg",
+            "sourceColumn": 9
+          },
+          21,
+          {
+            "role": "tooltip",
+            "type": "string",
+            "properties": {
+              "html": true
+            },
+            "sourceColumn": 46
+          },
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 18
+          },
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 17
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 17
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 19
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 20
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 18
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 19
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 21
+          },
+          {
+            "role": "interval",
+            "id": "avg",
+            "sourceColumn": 16
+          },
+          28,
+          {
+            "role": "tooltip",
+            "type": "string",
+            "properties": {
+              "html": true
+            },
+            "sourceColumn": 47
+          },
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 25
+          },
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 24
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 24
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 26
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 27
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 25
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 26
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 28
+          },
+          {
+            "role": "interval",
+            "id": "avg",
+            "sourceColumn": 23
+          },
+          35,
+          {
+            "role": "tooltip",
+            "type": "string",
+            "properties": {
+              "html": true
+            },
+            "sourceColumn": 48
+          },
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 32
+          },
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 31
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 31
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 33
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 34
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 32
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 33
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 35
+          },
+          {
+            "role": "interval",
+            "id": "avg",
+            "sourceColumn": 30
+          }
+        ],
+        "options": {
+          "bar": {
+            "groupWidth": "100%"
+          },
+          "dataOpacity": 0,
+          "interval": {
+            "iqr1": {
+              "style": "boxes",
+              "lineWidth": 2
+            },
+            "iqr2": {
+              "style": "boxes",
+              "lineWidth": 2
+            },
+            "min": {
+              "style": "sticks",
+              "lineWidth": 2
+            },
+            "max": {
+              "style": "sticks",
+              "lineWidth": 2
+            },
+            "avg": {
+              "style": "points",
+              "pointSize": 10,
+              "fillOpacity": 1
+            }
+          },
+          "seriesType": "bars",
+          "vAxis": {
+            "textPosition": "none"
+          },
+          "hAxis": {
+            "title": "Commuting Distance (km)",
+            "minorGridlines": {
+              "count": 0
+            }
+          }
+        }
+      },
+      {
+        "title": "Distributions of Commuting Distance (km) in Abu Dhabi",
+        "gid": 1525800564,
+        "query": "SELECT K WHERE B = 'Abu Dhabi' AND L = 'commuter'",
+        "chartType": "Histogram",
+        "subtitle": "<p>This histogram illustrates the distribution of commuting distances of Abu Dhabi residents, with the top 5% of values removed as outliers (primarily employees residing in smaller cities within the emirate, such as Al Ain). The distribution displays two main peaks: one between <b>2.5-5 km</b> and another between <b>12.5-15 km</b>.</p><p>The first peak largely reflects employees who reported only 'Saadiyat Island' as their address; in these cases, Google Maps assumes a central location on the island, yielding a commuting distance of roughly 3 km. The second peak corresponds to commuters traveling from Abu Dhabi’s city center (the main island). Beyond the <b>20 km</b> mark, the distribution declines sharply, though notable clusters appear between <b>30-50 km</b>, representing employees living further inland or on other farther islands of Abu Dhabi city.</p>",
+        "options": {
+          "legend": {
+            "position": "none"
+          },
+          "histogram": {
+            "lastBucketPercentile": 5
+          },
+          "vAxis": {
+            "title": "Number of Commuters",
+            "gridlines": {
+              "count": 0
+            }
+          },
+          "hAxis": {
+            "title": "Commuting Distance (km)",
+            "gridlines": {
+              "count": 0
+            }
           }
         }
       }
