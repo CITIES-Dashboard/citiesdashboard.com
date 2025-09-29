@@ -29,6 +29,7 @@ const CustomThemes = {
           multiColor: [colors.blue[darkShade], colors.pink[darkShade], colors.amber[darkShade], colors.teal[darkShade], colors.grey[darkShade], "#a947eb"],
           grayscale: [colors.grey[darkShade + 100], colors.grey[darkShade + 300]],
           rainbow: [colors.red[darkShade], colors.orange[darkShade], colors.amber[darkShade], colors.green[darkShade], colors.blue[darkShade], colors.indigo[darkShade], colors.blue[darkShade]],
+          trafficLight: [colors.green[darkShade], colors.amber[darkShade], colors.red[darkShade]]
         },
         colorAxisFirstColor: colors.grey[darkShadeColorAxis],
         axisTitle: colors.grey[darkShade - 100],
@@ -63,6 +64,7 @@ const CustomThemes = {
           multiColor: [colors.blue[lightShade], colors.pink[lightShade], colors.amber[lightShade], colors.teal[lightShade], colors.grey[lightShade], "#57068c"],
           grayscale: [colors.grey[lightShade - 100], colors.grey[lightShade + 200]],
           rainbow: [colors.red[lightShade], colors.orange[lightShade], colors.amber[lightShade], colors.green[lightShade], colors.blue[lightShade], colors.indigo[lightShade], colors.deepPurple[lightShade]],
+          trafficLight: [colors.green[lightShade], colors.amber[lightShade], colors.red[lightShade]]
         },
         colorAxisFirstColor: colors.common.white,
         axisTitle: colors.grey[lightShade + 100],

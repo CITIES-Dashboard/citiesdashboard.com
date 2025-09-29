@@ -1472,7 +1472,7 @@
               1
             ],
             "options": {
-              "pieHole": 0.6,
+              "pieHole": 0.4,
               "seriesType": "bars",
               "pieSliceText": "value"
             }
@@ -1486,7 +1486,7 @@
               2
             ],
             "options": {
-              "pieHole": 0.6,
+              "pieHole": 0.4,
               "seriesType": "bars",
               "pieSliceText": "value",
               "sliceVisibilityThreshold": 0
@@ -1787,6 +1787,60 @@
             "role": "interval",
             "id": "avg",
             "sourceColumn": 30
+          },
+          42,
+          {
+            "role": "tooltip",
+            "type": "string",
+            "properties": {
+              "html": true
+            },
+            "sourceColumn": 49
+          },
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 39
+          },
+          {
+            "role": "interval",
+            "id": "iqr1",
+            "sourceColumn": 38
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 38
+          },
+          {
+            "role": "interval",
+            "id": "iqr2",
+            "sourceColumn": 40
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 41
+          },
+          {
+            "role": "interval",
+            "id": "min",
+            "sourceColumn": 39
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 40
+          },
+          {
+            "role": "interval",
+            "id": "max",
+            "sourceColumn": 42
+          },
+          {
+            "role": "interval",
+            "id": "avg",
+            "sourceColumn": 37
           }
         ],
         "options": {
@@ -1832,9 +1886,9 @@
       {
         "title": "Distributions of Commuting Distance (km) in Abu Dhabi",
         "gid": 1525800564,
-        "query": "SELECT K WHERE B = 'Abu Dhabi' AND L = 'commuter'",
+        "query": "SELECT K WHERE B = 'Abu Dhabi' AND H = FALSE",
         "chartType": "Histogram",
-        "subtitle": "<p>This histogram illustrates the distribution of commuting distances of Abu Dhabi residents, with the top 5% of values removed as outliers (primarily employees residing in smaller cities within the emirate, such as Al Ain). The distribution displays two main peaks: one between <b>2.5-5 km</b> and another between <b>12.5-15 km</b>.</p><p>The first peak largely reflects employees who reported only 'Saadiyat Island' as their address; in these cases, Google Maps assumes a central location on the island, yielding a commuting distance of roughly 3 km. The second peak corresponds to commuters traveling from Abu Dhabi’s city center (the main island). Beyond the <b>20 km</b> mark, the distribution declines sharply, though notable clusters appear between <b>30-50 km</b>, representing employees living further inland or on other farther islands of Abu Dhabi city.</p>",
+        "subtitle": "<p>This histogram illustrates the distribution of commuting distances of Abu Dhabi residents, with the top 5% of values removed as outliers (primarily employees residing in smaller cities within the emirate, such as Al Ain). The distribution displays two main peaks: one between <b>2.5-5 km</b> and another between <b>12.5-15 km</b>.</p><p>The first peak largely reflects employees who reported only 'Saadiyat Island' as their address; in these cases, Google Maps assumes a central location on the island, yielding a commuting distance of roughly 3 km. The second peak corresponds to commuters traveling from Abu Dhabi's city center (the main island). Beyond the <b>20 km</b> mark, the distribution declines sharply, though notable clusters appear between <b>30-50 km</b>, representing employees living further inland or on other farther islands of Abu Dhabi city.</p>",
         "options": {
           "legend": {
             "position": "none"
@@ -1853,6 +1907,24 @@
             "gridlines": {
               "count": 0
             }
+          }
+        }
+      },
+      {
+        "title": "Commuting Distance (km) by Neighborhood in Abu Dhabi",
+        "chartType": "TreeMap",
+        "gid": 1224155878,
+        "subtitle": "<p><i>Hover over a tile to see detailed statistics</i></p><p>This nested map shows the main areas of Abu Dhabi and their neighborhoods as hierarchical tiles. Each tile's <b>size</b> represents the total commuting distance, while its <b>color</b> indicates the average commuting distance: from shorter <b style='color:green'>(green)</b> to longer <b style='color:red'>(red)</b>. The main areas include: Abu Dhabi's main island, other islands (such as Yas and Reem), the off-island outer city (e.g., Khalifa City), and an uncategorized group for vague addresses.</p><p>The majority (almost 8,000 km) of commuting distance comes from over 200 residents of the outer city, especially Khalifa City, Al Raha, and MBZ City, given their far distance from the campus.</p><p>By contrast, total commuting distances are around half as much (4,000 km) for the main island and nearby islands residents. Large groups from the main island include Al Danah (13.3 km average), Al Zahiyah (10.6 km average, and Al Nahyan (15.9 km average), each with about 30-50 commuters.</p><p>On the other islands, Reem Island contributes about 2,000 km in total commuting distance from nearly 150 commuters (average 14.2 km each), while Yas Island, though farther away (24 km), adds less than 700 km in total because it has far fewer commuters (around 30 people).</p><p>Finally, over 150 residents listed only “Abu Dhabi” as their address, so they remain uncategorized.</p>",
+        "options": {
+          "colorAxis": "trafficLight",
+          "maxDepth": 2,
+          "unit": "km",
+          "enableHighlight": true,
+          "showScale": true,
+          "useWeightedAverageForAggregation": true,
+          "eventsConfig": {
+            "rollup": [],
+            "drilldown": []
           }
         }
       }
