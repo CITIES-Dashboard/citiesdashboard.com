@@ -466,9 +466,23 @@
     "id": "food-waste",
     "title": "Food Waste",
     "sheetId": "1jQYr20b4c93RmIT4M014YY-qSC-n-qpNMysy6Oz3J6U",
-    "description": "This dataset visualizes food waste in the East Dining Hall (D2). The amount of food waste is measured by weighing the <i>plate-waste</i> (leftover food from the customers) with calibrated scales operated by the Dining service provider. Past data visualizations, such as the calendar-style monthly food waste counter at the entrance of D2, have brought about awareness among the community. Not being constrained by the crowded space of the Dining Hall, this visualization allows for a more detailed and nuanced break-down of the dataset into timeline, monthly, by-meal statistics.<br><br>The data provided here is the absolute amount of food waste. The number of transactions per meal or the number of customers who eat in D2 at each meal still need to be considered to shed light on the food waste variability over time. We are currently working with the service provider to get this data. In more detail, we aim to collect aggregate, anonymized numbers of transactions to calculate per-transaction waste.",
+    "description": "This dataset visualizes food waste in the East Dining Hall (D2). The amount of food waste is measured by weighing the <i>plate-waste</i> (leftover food from the customers) with calibrated scales operated by the Dining service provider. Past data visualizations, such as the calendar-style monthly food waste counter at the entrance of D2, have brought about awareness among the community. Not being constrained by the crowded space of the Dining Hall, this visualization allows for a more detailed and nuanced break-down of the dataset into timeline, monthly, by-meal statistics.",
     "owner": "NYUAD Dining",
     "contact": "nyuad.dining@nyu.edu",
+    "screen": {
+      "historical": {
+        "gid": 1952244844,
+        "query": "SELECT A, F ORDER BY A DESC LIMIT 30"
+      },
+      "dailyFoodWasteGoal": {
+        "gid": 356225229,
+        "query": "SELECT B LIMIT 1"
+      },
+      "lastWeek": {
+        "gid": 1409006115,
+        "query": "SELECT N ORDER BY C DESC LIMIT 1 OFFSET 1"
+      }
+    },
     "rawDataTables": [
       {
         "gid": 1952244844,

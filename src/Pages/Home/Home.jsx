@@ -3,18 +3,18 @@ import { Link } from 'react-router-dom';
 
 import { Box, Grid, Stack, Typography, Container, Card, CardContent, CardMedia, CardActionArea, Divider, Tooltip, Chip } from '@mui/material';
 import BarChartIcon from '@mui/icons-material/BarChart';
-import CommentIcon from '@mui/icons-material/Comment';
 import LaunchIcon from '@mui/icons-material/Launch';
 import { LinkContext } from '../../ContextProviders/LinkContext';
 import { HomeDataContext } from '../../ContextProviders/HomePageContext';
-import { CommentCountsContext } from '../../ContextProviders/CommentCountsContext';
+
+// import CommentIcon from '@mui/icons-material/Comment';
+// import { CommentCountsContext } from '../../ContextProviders/CommentCountsContext';
 
 import UppercaseTitle from '../../Components/UppercaseTitle';
 import FullWidthBox from '../../Components/FullWidthBox';
 
 // import AtAGlance from './AtAGlance';
 import About from './About';
-import GetInTouch from './GetInTouch';
 
 import jsonData from '../../section_data.json';
 
@@ -188,14 +188,7 @@ function Home({ title }) {
 
       <FullWidthBox id={jsonData.about.id} sx={{ pt: 3, pb: 4 }}>
         <Container>
-          <Grid container spacing={3}>
-            <Grid item md={5} id={jsonData.about.id}>
-              <About />
-            </Grid>
-            <Grid item md={7} id={jsonData.getInTouch.id}>
-              <GetInTouch />
-            </Grid>
-          </Grid>
+          <About />
         </Container>
       </FullWidthBox>
     </Box>

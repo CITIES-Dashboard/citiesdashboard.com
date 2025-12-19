@@ -16,17 +16,19 @@ import Footer from './Components/Footer';
 import FourOhFour from './Pages/404';
 import LoadingAnimation from './Components/LoadingAnimation';
 
-import { LinkContext } from './ContextProviders/LinkContext';
 import jsonData from './section_data.json';
 import SpeedDialButton from './Components/SpeedDial/SpeedDialButton';
 import { PreferenceContext } from './ContextProviders/PreferenceContext';
 
 import { GlobalStyles } from '@mui/system';
 import { returnStylesForChartWrapper } from './Graphs/GoogleChartHelper';
+import { ScreenProvider } from './ContextProviders/ScreenContext';
+import { ProjectProvider } from './ContextProviders/ProjectContext';
 
 // Lazy load pages
 const Home = lazy(() => import('./Pages/Home/Home'));
 const Project = lazy(() => import('./Pages/Project'));
+const Screen = lazy(() => import('./Pages/Screens/Screen'));
 
 // Create theme design tokens based on theme preference
 const getDesignTokens = (themePreference) => ({
@@ -48,7 +50,6 @@ const getDesignTokens = (themePreference) => ({
 
 function App() {
   const { themePreference } = useContext(PreferenceContext);
-  const { chartsTitlesList } = useContext(LinkContext);
 
   // Create theme using getDesignTokens
   const theme = useMemo(
@@ -73,7 +74,6 @@ function App() {
           }}
         >
           <SpeedDialButton
-            chartsTitlesList={chartsTitlesList}
             topAnchorID={jsonData.topAnchor.id}
           />
 
@@ -83,34 +83,63 @@ function App() {
             }}
           />
 
-          {useMemo(
-            () => (
-              <Header />
-            ),
-            []
-          )}
-          <Box flex={1} display="flex" width="100%">
-            <Suspense fallback={<LoadingAnimation optionalText="Loading Dashboard" />}>
-              <Routes>
-                <Route
-                  path="/"
-                  element={<Home title="CITIES Dashboard" />}
-                />
-                <Route
-                  path="/project/:id"
-                  element={<Project />}
-                />
-                <Route path="/404" element={<FourOhFour title="Page Not Found | CITIES Dashboard" />} />
-                <Route path="*" element={<Navigate replace to="/404" />} />
-              </Routes>
-            </Suspense>
-          </Box>
-          {useMemo(
-            () => (
-              <Footer />
-            ),
-            []
-          )}
+          <Suspense fallback={<LoadingAnimation optionalText="Loading Dashboard" />}>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <>
+                    <Header />
+                    <Home title="CITIES Dashboard" />
+                    <Footer />
+                  </>
+                }
+              />
+
+              <Route
+                path="/project/:id"
+                element={
+                  <>
+                    <Header />
+                    <ProjectProvider>
+                      <Project />
+                    </ProjectProvider>
+                    <Footer />
+                  </>
+                }
+              />
+
+              <Route
+                path="/project/:id/screen"
+                element={
+                  <>
+                    <ProjectProvider>
+                      <ScreenProvider>
+                        <Screen />
+                      </ScreenProvider>
+                    </ProjectProvider>
+                  </>}
+              />
+
+              <Route
+                path="/404"
+                element={
+                  <>
+                    <Header />
+                    <FourOhFour title="Page Not Found | CITIES Dashboard" />
+                    <Footer />
+                  </>
+                }
+              />
+
+              <Route
+                path="*"
+                element={
+                  <Navigate replace to="/404" />
+                }
+              />
+            </Routes>
+          </Suspense>
         </Box>
       </ThemeProvider>
     </BrowserRouter>

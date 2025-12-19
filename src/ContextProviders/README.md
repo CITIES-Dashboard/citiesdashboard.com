@@ -12,8 +12,6 @@
 
 [RawDatasetsMetadataContext](./RawDatasetsMetadataContext.jsx): Offers an application-wide access point for accessing dataset metadata from the [`datasets`](https://github.com/CITIES-Dashboard/datasets) repo, facilitating efficient data fetching, caching, and sharing of dataset details across project pages.
 
-[SheetsDataContext](./SheetsDataContext.jsx) [DEPRECATED]: Provides access to the Google Sheets API, ensuring seamless integration and uniform access to spreadsheet data throughout the application. Supports accessing sheets metadata (to fetch the last update data of a project) and other services. **Deprecated** in favor of fetching the last update data from the [`datasets_metadata.json`](https://github.com/CITIES-Dashboard/datasets/blob/main/datasets_metadata.json) file from the datasets repo.
-
 [TabContext](./TabContext.jsx): Controls tab state for projects with charts which have multiple subcharts.
 
 [YearRangeContext](./YearRangeContext.jsx): This context is used in the implementation of the year range slider. It ensures that all subcharts in a chart share the same year range. The year range is modified by the slider in [SubChart.jsx](/src/Graphs/Subchart/SubChart.jsx).

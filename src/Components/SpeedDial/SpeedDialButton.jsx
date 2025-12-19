@@ -14,6 +14,8 @@ import NavLinkBehavior from '../Header/NavLinkBehavior';
 import * as Tracking from '../../Utils/Tracking';
 import FadeInButtonForSpeedDial from './FadeInButtonForSpeedDial';
 import jsonData from '../../section_data.json';
+import { useContext } from 'react';
+import { LinkContext } from '../../ContextProviders/LinkContext';
 
 function HoverFocusMenu(props) {
   const { popupId, label, menuItems } = props;
@@ -40,7 +42,8 @@ function HoverFocusMenu(props) {
 }
 
 export default function SpeedDialButton(props) {
-  const { chartsTitlesList, topAnchorID } = props;
+  const { topAnchorID } = props;
+  const { chartsTitlesList } = useContext(LinkContext);
 
   const menuItemsArray = chartsTitlesList.length > 0 ? chartsTitlesList.map((element, index) => (
     <MenuItemAsNavLink

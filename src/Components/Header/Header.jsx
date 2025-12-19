@@ -1,12 +1,11 @@
 import { useState, useContext } from 'react';
 import { styled } from '@mui/material/styles';
-import { Link, Tooltip, Box, Typography, Container, Paper, AppBar, Toolbar, useScrollTrigger, Slide, Stack, Drawer } from '@mui/material';
+import { Tooltip, Box, Typography, Container, Paper, AppBar, Toolbar, useScrollTrigger, Slide, Stack, Drawer } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import SettingsIcon from '@mui/icons-material/Settings';
 
 import parse from 'html-react-parser';
-import * as Tracking from '../../Utils/Tracking';
 
 import { LinkContext } from '../../ContextProviders/LinkContext';
 import FullWidthBox from '../FullWidthBox';
@@ -179,29 +178,6 @@ export default function Header() {
                 {parse(jsonData.siteDescription, {
                   replace: replacePlainHTMLWithMuiComponents,
                 })}
-                <br />
-                <Link
-                  href={`#${jsonData.getInTouch.id}`}
-                  underline="hover"
-                  onClick={(e) => {
-                    // Smooth scrolling
-                    e.preventDefault();
-                    const section = document.getElementById(jsonData.getInTouch.id);
-                    if (section) {
-                      section.scrollIntoView({ behavior: 'smooth' });
-                    }
-
-                    Tracking.sendEventAnalytics(
-                      Tracking.Events.internalNavigation,
-                      {
-                        destination_id: jsonData.getInTouch.id,
-                        origin_id: 'header'
-                      }
-                    );
-                  }}
-                >
-                  Reach out to get involved!
-                </Link>
               </Typography>
             </Container>
           </FullWidthBox>

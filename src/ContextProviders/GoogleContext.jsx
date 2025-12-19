@@ -32,8 +32,11 @@ export function GoogleProvider({ children }) {
     };
   }, [google]);
 
-  const providerValue = useMemo(() => google, [google]);
-  // return context provider
+  const providerValue = useMemo(() => ({
+    google,
+    // isSheetAPIloaded
+  }), [google]);  // return context provider
+
   return (
     <GoogleContext.Provider value={providerValue}>
       {children}

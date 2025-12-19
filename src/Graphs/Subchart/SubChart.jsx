@@ -68,7 +68,7 @@ function SubChart(props) {
   }
 
   // Use GoogleContext for loading and manipulating the Google Charts
-  const google = useContext(GoogleContext);
+  const { google } = useContext(GoogleContext);
 
   // Get the current theme
   const theme = useTheme();
