@@ -1469,56 +1469,164 @@
     "description": "This dataset visualizes the commuting distances of NYU Abu Dhabi employees from their residences in the UAE to the university campus, using anonymized and confidential address data provided by Human Resources. These insights are important for estimating Scope 3 emissions related to employee commuting, which form a critical component of NYU Abu Dhabi's reporting and sustainability efforts.<br/><br/> <b>Key assumptions:</b> <ul><li>Employees living on campus, in adjacent buildings (Laffan St., Park View, Soho, Noon, Gulf Paradise, and Nasayem), or within one kilometer of campus are assumed to walk and are therefore excluded from the commuter calculation.</li><li>Commuting distances were estimated using Google Maps directions (driving mode) from self-reported home addresses to NYU Abu Dhabi. Google Maps automatically corrects minor typos in submitted data. For entries listing only a neighborhood (e.g., Reem Island) or a city (e.g., Abu Dhabi), Google Maps assumes a central point within that area for distance calculation.</li><li>Because address data is self-reported and non-standardized, results may occasionally appear implausible. Such cases are treated as outliers and reflect the limits of the available data. Future iterations may improve accuracy as employees are asked to provide more precise address details.</li></ul>",
     "owner": "NYUAD OSS",
     "contact": "nyuad.sustainability@nyu.edu",
-    "rawDataTables": [],
+    "rawDataTables": [
+      {
+        "gid": 1525800564,
+        "query": "SELECT A, B, H, K"
+      }
+    ],
     "charts": [
       {
-        "title": "Descriptive Statistics By Emirate",
-        "chartType": "PieChart",
-        "query": "SELECT * LIMIT 5",
-        "headers": 3,
+        "title": "Commuting Distance By Emirate",
+        "subtitle": "The total commuting distance of the NYU Abu Dhabi community amounts to <b>26,769 km</b> in 2024 and <b>29,120 km</b> in 2025, a 9% increase year-over-year. The majority of this distance is accounted for by commuters from Abu Dhabi Emirate, followed by Dubai Emirate. A small minority from other emirates, such as Sharjah, Ajman, and Umm Al Quwain, contribute the remaining of the total distance (less than 3%).",
+        "chartType": "ComboChart",
+        "gid": 871695046,
         "subcharts": [
           {
-            "gid": 871695046,
-            "subchartTitle": "Total Commuting Distance (km)",
-            "subchartSubtitle": "The total commuting distance of the NYU Abu Dhabi community amounts to <b>26,769 km</b>. The majority of this distance is accounted for by commuters from Abu Dhabi Emirate (82.8%), followed by Dubai Emirate (14.6%). A small minority from other emirates, such as Sharjah, Ajman, and Umm Al Quwain, contribute the remaining 2.6% of the total distance.",
-            "columns": [
-              0,
-              1
-            ],
+            "subchartTitle": "Total Distance",
             "options": {
-              "pieHole": 0.4,
+              "isStacked": false,
               "seriesType": "bars",
-              "pieSliceText": "value"
+              "series": {
+                "5": {
+                  "type": "line",
+                  "lineWidth": 3,
+                  "pointSize": 5
+                }
+              },
+              "bar": {
+                "groupWidth": "40%"
+              },
+              "vAxis": {
+                "title": "Total Commuting Distance by Emirate (km)",
+                "format": "short"
+              },
+              "hAxis": {
+                "title": "Calendar Year",
+                "minorGridlines": {
+                  "count": 0
+                }
+              }
             }
           },
           {
-            "gid": 871695046,
-            "subchartTitle": "Number of Commuters",
-            "subchartSubtitle": "The dominance of Abu Dhabi in total commuting distance is explained by its largest share of residents: out of 1,163 commuters, <b>1,125 individuals (96.9%)</b> live in Abu Dhabi. Only 31 reside in Dubai, while the remaining emirates account for just one or two commuters each. Thus, despite the longer travel distances from other emirates, their overall impact on commuting statistics remains minimal compared to Abu Dhabi and Dubai.",
+            "subchartTitle": "Percentage by Emirate",
             "columns": [
               0,
-              2
+              1,
+              2,
+              3,
+              4,
+              5
             ],
             "options": {
-              "pieHole": 0.4,
+              "isStacked": "percent",
               "seriesType": "bars",
-              "pieSliceText": "value",
-              "sliceVisibilityThreshold": 0
+              "bar": {
+                "groupWidth": "40%"
+              },
+              "vAxis": {
+                "title": "Percentage of Total Commuting Distance",
+                "format": "#.#%"
+              },
+              "hAxis": {
+                "title": "Calendar Year",
+                "minorGridlines": {
+                  "count": 0
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "title": "Number of Commuters and Non-Commuters By Emirate",
+        "chartType": "ComboChart",
+        "subtitle": "<p>The number of commuters saw a 5% increase from 2024 to 2025, nearing <b>1,700 commuters</b> in total.</p><p>In addition to the 1,100+ commuters living in Abu Dhabi commuters, there are around <b>450 non-commuters</b> because they live on campus or within walking distance, representing roughly <b>30%</b> of the total employee count.</p><p>The dominance of Abu Dhabi in total commuting distance is explained by its largest share of residents. <b>More than 96%</b> of commuters live in Abu Dhabi. Only around 30 to 40 reside in Dubai, while the remaining emirates account for just one or two commuters each. Thus, despite the longer travel distances from other emirates, their overall impact on commuting statistics remains minimal compared to Abu Dhabi and Dubai.<p/>",
+        "subcharts": [
+          {
+            "subchartTitle": "# Commuters",
+            "gid": 1026120864,
+            "options": {
+              "isStacked": false,
+              "seriesType": "bars",
+              "series": {
+                "5": {
+                  "type": "line",
+                  "lineWidth": 3,
+                  "pointSize": 5
+                }
+              },
+              "bar": {
+                "groupWidth": "40%"
+              },
+              "vAxis": {
+                "title": "Number of Commuters by Emirate",
+                "format": "short"
+              },
+              "hAxis": {
+                "title": "Calendar Year",
+                "minorGridlines": {
+                  "count": 0
+                }
+              }
             }
           },
           {
-            "gid": 871695046,
-            "subchartTitle": "Number of Non-Commuters",
-            "subchartSubtitle": "In addition to the 1,100 Abu Dhabi commuters, there are <b>468 Abu Dhabi employees</b> classified as non-commuters because they live on campus or within walking distance. Non-commuters represent roughly <b>30% of the total employee population</b>.",
+            "subchartTitle": "# Non-Commuters",
+            "gid": 1415752318,
+            "options": {
+              "isStacked": false,
+              "seriesType": "bars",
+              "series": {
+                "5": {
+                  "type": "line",
+                  "lineWidth": 3,
+                  "pointSize": 5
+                }
+              },
+              "bar": {
+                "groupWidth": "40%"
+              },
+              "vAxis": {
+                "title": "Number of Non-Commuters",
+                "format": "short"
+              },
+              "hAxis": {
+                "title": "Calendar Year",
+                "minorGridlines": {
+                  "count": 0
+                }
+              }
+            }
+          },
+          {
+            "subchartTitle": "Percentage of Commuters by Emirate",
+            "gid": 1026120864,
             "columns": [
               0,
-              4
+              1,
+              2,
+              3,
+              4,
+              5
             ],
             "options": {
+              "isStacked": "percent",
               "seriesType": "bars",
-              "pieHole": 1,
-              "pieSliceText": "value",
-              "sliceVisibilityThreshold": 0
+              "bar": {
+                "groupWidth": "40%"
+              },
+              "vAxis": {
+                "title": "Percentage of Commuters",
+                "format": "#.#%"
+              },
+              "hAxis": {
+                "title": "Calendar Year",
+                "minorGridlines": {
+                  "count": 0
+                }
+              }
             }
           }
         ]
@@ -1529,7 +1637,7 @@
         "chartType": "BarChart",
         "gid": 1282937917,
         "query": "SELECT * ORDER BY A DESC",
-        "subtitle": "<p>These boxplots illustrate the distribution of pages consumed by different emirates. For each category, the large dot represents the mean (average) commuting distance of employee residing in that emirate, while the line inside each box marks the median, the box marks the 25th and 75th percentile, and the whiskers represent min and max values (excluding outliers). More information on how to read a boxplot can be found <a href='https://en.wikipedia.org/wiki/Box_plot'>here</a>.</p><p>For both Abu Dhabi and Dubai commuters, the mean is consistently higher than the median, indicating a right-skewed distribution. This suggests that <b>a subset of commuters travel significantly farther than average</b>, pulling the mean upward. With only one or two commuters from the other emirates, those cases can also be regarded as outliers. On average, commuting distances are approximately <b>20 km for Abu Dhabi residents</b> and <b>126 km for Dubai residents</b>.</p>",
+        "subtitle": "<p>These boxplots illustrate the distribution of pages consumed by different emirates. For each category, the large dot represents the mean (average) commuting distance of employee residing in that emirate, while the line inside each box marks the median, the box marks the 25th and 75th percentile, and the whiskers represent min and max values (excluding outliers). More information on how to read a boxplot can be found <a href='https://en.wikipedia.org/wiki/Box_plot'>here</a>.</p><p>For both Abu Dhabi and Dubai commuters, the mean is consistently higher than the median, indicating a right-skewed distribution. This suggests that <b>a subset of commuters travel significantly farther than average</b>, pulling the mean upward. With only one or two commuters from the other emirates, those cases can also be regarded as outliers. On average, commuting distances are approximately <b>20 km for Abu Dhabi residents</b> and <b>over 120 km for Dubai residents</b>.</p>",
         "columns": [
           0,
           7,
@@ -1895,14 +2003,31 @@
               "count": 0
             }
           }
+        },
+        "control": {
+          "controlType": "CategoryFilter",
+          "options": {
+            "isSlider": true,
+            "filterColumnIndex": 0,
+            "ui": {
+              "label": "Filter by Calendar Year: ",
+              "allowTyping": false,
+              "allowNone": false,
+              "allowMultiple": false,
+              "sortValues": false
+            }
+          }
         }
       },
       {
         "title": "Distributions of Commuting Distance (km) in Abu Dhabi",
         "gid": 1525800564,
-        "query": "SELECT K WHERE B = 'Abu Dhabi' AND H = FALSE",
+        "query": "SELECT Q, K WHERE B = 'Abu Dhabi' AND H = FALSE",
         "chartType": "Histogram",
         "subtitle": "<p>This histogram illustrates the distribution of commuting distances of Abu Dhabi residents, with the top 5% of values removed as outliers (primarily employees residing in smaller cities within the emirate, such as Al Ain). The distribution displays two main peaks: one between <b>2.5-5 km</b> and another between <b>12.5-15 km</b>.</p><p>The first peak largely reflects employees who reported only 'Saadiyat Island' as their address; in these cases, Google Maps assumes a central location on the island, yielding a commuting distance of roughly 3 km. The second peak corresponds to commuters traveling from Abu Dhabi's city center (the main island). Beyond the <b>20 km</b> mark, the distribution declines sharply, though notable clusters appear between <b>30-50 km</b>, representing employees living further inland or on other farther islands of Abu Dhabi city.</p>",
+        "columns": [
+          1
+        ],
         "options": {
           "legend": {
             "position": "none"
@@ -1922,13 +2047,27 @@
               "count": 0
             }
           }
+        },
+        "control": {
+          "controlType": "CategoryFilter",
+          "options": {
+            "isSlider": true,
+            "filterColumnIndex": 0,
+            "ui": {
+              "label": "Filter by Calendar Year: ",
+              "allowTyping": false,
+              "allowNone": false,
+              "allowMultiple": false,
+              "sortValues": false
+            }
+          }
         }
       },
       {
         "title": "Commuting Distance (km) by Neighborhood in Abu Dhabi",
         "chartType": "TreeMap",
         "gid": 1224155878,
-        "subtitle": "<p><i>Hover over a tile to see detailed statistics</i></p><p>This nested map shows the main areas of Abu Dhabi and their neighborhoods as hierarchical tiles. Each tile's <b>size</b> represents the total commuting distance, while its <b>color</b> indicates the average commuting distance: from shorter <b style='color:green'>(green)</b> to longer <b style='color:red'>(red)</b>. The main areas include: Abu Dhabi's main island, other islands (such as Yas and Reem), the off-island outer city (e.g., Khalifa City), and an uncategorized group for vague addresses.</p><p>The majority (almost 8,000 km) of commuting distance comes from over 200 residents of the outer city, especially Khalifa City, Al Raha, and MBZ City, given their far distance from the campus.</p><p>By contrast, total commuting distances are around half as much (4,000 km) for the main island and nearby islands residents. Large groups from the main island include Al Danah (13.3 km average), Al Zahiyah (10.6 km average, and Al Nahyan (15.9 km average), each with about 30-50 commuters.</p><p>On the other islands, Reem Island contributes about 2,000 km in total commuting distance from nearly 150 commuters (average 14.2 km each), while Yas Island, though farther away (24 km), adds less than 700 km in total because it has far fewer commuters (around 30 people).</p><p>Finally, over 150 residents listed only “Abu Dhabi” as their address, so they remain uncategorized.</p>",
+        "subtitle": "<p><i>Hover over a tile to see detailed statistics</i></p><p>This nested map shows the main areas of Abu Dhabi and their neighborhoods as hierarchical tiles. Each tile's <b>size</b> represents the total commuting distance, while its <b>color</b> indicates the average commuting distance: from shorter <b style='color:green'>(green)</b> to longer <b style='color:red'>(red)</b>. The main areas include: Abu Dhabi's main island, other islands (such as Yas and Reem), the off-island outer city (e.g., Khalifa City), and an uncategorized group for vague addresses.</p><ul><li>The majority (around 8,000 km) of commuting distance comes from over 200+ residents of the outer city, especially Khalifa City, Al Raha, and MBZ City, given their far distance from the campus.</li><li>By contrast, total commuting distances are around half as much (around 4,000 km) for the main island and nearby islands residents. Large groups from the main island include Al Danah, Al Zahiyah, and Al Nahyan, each with about 30-50 commuters and an average commuting distance of around 10-16 km.</li><li>On the other islands, Reem Island contributes about 2,000 km in total commuting distance from nearly 150 commuters, with an average distance of around 14 km. Yas Island, though farther away (average 24 km), adds less than 700 km in total because it has far fewer commuters (fewer than 30 people).</li><li>Over 150 residents listed only “Abu Dhabi” as their address, so they remain uncategorized.</li></ul><p>Interestingly, from 2024 to 2025, the number of commuters from the Outer City (Off-Island) increased from 204 to 223, leading to a 9% rise in total commuting distance from this area. In contrast, the other areas remained relatively stable. This growth might be primarily attributed by the overall increase in the total number of commuters between 2024 and 2025 <i>(see Chart 2).</i></p>",
         "options": {
           "colorAxis": "trafficLight",
           "maxDepth": 2,
@@ -1940,7 +2079,17 @@
             "rollup": [],
             "drilldown": []
           }
-        }
+        },
+        "subcharts": [
+          {
+            "subchartTitle": "2025",
+            "query": "SELECT B, C, D, E, F WHERE A = 'Calendar Year 2025'"
+          },
+          {
+            "subchartTitle": "2024",
+            "query": "SELECT B, C, D, E, F WHERE A = 'Calendar Year 2024'"
+          }
+        ]
       }
     ]
   },
